@@ -1,0 +1,35 @@
+[[tools]]
+script = "insider.sh"
+name = "Insider"
+parse_command = { command = "bentoo", args = "convert insider" }
+
+[[tools.configs]]
+name = "Default"
+args = ""
+
+[[tools]]
+script = "codeql.sh"
+name = "CodeQL"
+parse_command = { command = "bentoo", args = "convert codeql" }
+
+[[tools.configs]]
+name = "Default"
+args = ""
+
+[[tools]]
+script = "semgrep.sh"
+name = "Semgrep"
+parse_command = { command = "bentoo", args = "convert semgrep" }
+
+[[tools.configs]]
+name = "Default"
+args = ""
+
+[[tools]]
+script = "sonarqube.sh"
+name = "SonarQube"
+parse_command = { command = "bentoo", args = "convert sonarqube" }
+
+[[tools.configs]]
+name = "Default"
+args = ""
