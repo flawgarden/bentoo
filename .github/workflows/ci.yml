@@ -1,0 +1,32 @@
+name: Format, build and lint test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+  format_build_lint_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Format
+      run: cargo fmt --check
+
+    - name: Build
+      run: cargo build --verbose
+
+    - name: Lint
+      run: cargo clippy --all-targets --all-features
+
+    - name: Run tests
+      run: cargo test --verbose
+

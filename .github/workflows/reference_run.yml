@@ -1,0 +1,29 @@
+name: "Reference run"
+
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  reference_run:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Reference run
+      shell: bash
+      run: ./playground/reference_run.sh
+
+    - name: Archive output
+      uses: actions/upload-artifact@v4
+      with:
+        name: output
+        path: playground/play/output

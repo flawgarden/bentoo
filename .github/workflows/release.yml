@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: ["Format, build and lint test"]
+    types:
+      - completed
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the bentoo repository
+        uses: actions/checkout@v4
+
+      - name: Build release
+        run: cargo build --release -j`nproc`
+
+      - name: Upload bentoo build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bentoo-linux
+          path: target/release/bentoo
+          retention-days: 1
+
+      - name: Compress binary
+        working-directory: target/release
+        run: tar -czvf bentoo.tar.gz bentoo
+
+      - name: Publish Pre-Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "latest"
+          prerelease: true
+          generate_release_notes: true
+          files: |
+            LICENSE
+            target/release/bentoo.tar.gz
