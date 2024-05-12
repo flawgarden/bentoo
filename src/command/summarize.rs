@@ -333,7 +333,7 @@ impl<'s> Summarizer<'s> {
                 name: String::new(),
                 results: vec![],
             };
-            evaluate_tool(&truth, &tool_result, None)
+            evaluate_tool(&truth, &tool_result, None, false)
         };
 
         let summary = self.summarize_tool(tool, &metadata, &card);
@@ -590,11 +590,12 @@ fn unzip_match_cards(
         .map(|result| {
             (
                 MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
-                result
-                    .max_match
-                    .iter()
-                    .map(|match_result| MatchCard(&result.expected_result, match_result))
-                    .collect(),
+                result.max_match.as_ref().map_or(vec![], |max_match| {
+                    max_match
+                        .iter()
+                        .map(|match_result| MatchCard(&result.expected_result, match_result))
+                        .collect()
+                }),
             )
         })
         .unzip();
