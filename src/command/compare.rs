@@ -285,10 +285,6 @@ fn evaluate_tool_result(
 
     let expected_cwe = expected_cwe.cwe;
     let reported_cwe = Some(tool_result.result.cwe.cwe);
-    let tool_result_str: String =
-        serde_json::to_string_pretty(&sarif::Result::try_from(tool_result).unwrap()).unwrap();
-    let truth_result_str: String =
-        serde_json::to_string_pretty(&sarif::Result::try_from(truth_result).unwrap()).unwrap();
 
     (
         ExpectedResult {
@@ -305,8 +301,30 @@ fn evaluate_tool_result(
             },
             all_files_match,
             all_regions_match,
-            tool_result: Some(serde_json::from_str(tool_result_str.as_str()).unwrap()),
-            truth_result: Some(serde_json::from_str(truth_result_str.as_str()).unwrap()),
+            tool_result: None,
+            truth_result: None,
+        },
+    )
+}
+
+fn evaluate_tool_result_detaled(
+    truth_result: &TruthResult,
+    tool_result: &ToolResult,
+    taxonomy: &Taxonomy,
+) -> (ExpectedResult, ResultMatch) {
+    let (expected_result, result_match) = evaluate_tool_result(truth_result, tool_result, taxonomy);
+    let tool_result_str: String =
+        serde_json::to_string_pretty(&sarif::Result::from(tool_result)).unwrap();
+    let truth_result_str: String =
+        serde_json::to_string_pretty(&sarif::Result::from(truth_result)).unwrap();
+    let tool_result = Some(serde_json::from_str(tool_result_str.as_str()).unwrap());
+    let truth_result = Some(serde_json::from_str(truth_result_str.as_str()).unwrap());
+    (
+        expected_result,
+        ResultMatch {
+            tool_result,
+            truth_result,
+            ..result_match
         },
     )
 }
@@ -316,6 +334,7 @@ fn evaluate_tool_results(
     path_to_tool_results: &HashMap<&String, HashSet<&ToolResult>>,
     cwe_to_tool_results: &HashMap<&CWE, HashSet<&ToolResult>>,
     taxonomy: &Taxonomy,
+    detailed: bool,
 ) -> ToolResultCard {
     let mut tool_results_to_evaluate: HashSet<&ToolResult> = HashSet::new();
     for truth_location in &truth_result.result.locations.0 {
@@ -332,7 +351,13 @@ fn evaluate_tool_results(
     }
     let max_result_cards = tool_results_to_evaluate
         .iter()
-        .map(|tool_result| evaluate_tool_result(truth_result, tool_result, taxonomy))
+        .map(|tool_result| {
+            if detailed {
+                evaluate_tool_result_detaled(truth_result, tool_result, taxonomy)
+            } else {
+                evaluate_tool_result(truth_result, tool_result, taxonomy)
+            }
+        })
         .partial_max_by(
             |(result_left, result_match_left), (result_right, result_match_right)| {
                 MatchCard(result_left, result_match_left)
@@ -376,11 +401,13 @@ pub fn evaluate_tool(
     truth_results: &TruthResults,
     tool_results: &ToolResults,
     taxonomy: Option<&Taxonomy>,
+    detailed: bool,
 ) -> ToolResultsCard {
     fn inner_evaluate_tool(
         truth_results: &TruthResults,
         tool_results: &ToolResults,
         taxonomy: &Taxonomy,
+        detailed: bool,
     ) -> ToolResultsCard {
         let path_to_tool_results = prepare_path_to_tool_results(tool_results);
         let mut cwe_to_tool_results: HashMap<&CWE, HashSet<&ToolResult>> = HashMap::new();
@@ -398,16 +425,17 @@ pub fn evaluate_tool(
                     &path_to_tool_results,
                     &cwe_to_tool_results,
                     taxonomy,
+                    detailed,
                 )
             })
             .collect();
         ToolResultsCard { result }
     }
     if let Some(taxonomy) = taxonomy {
-        inner_evaluate_tool(truth_results, tool_results, taxonomy)
+        inner_evaluate_tool(truth_results, tool_results, taxonomy, detailed)
     } else {
         let taxonomy = prepare_taxonomy();
-        inner_evaluate_tool(truth_results, tool_results, &taxonomy)
+        inner_evaluate_tool(truth_results, tool_results, &taxonomy, detailed)
     }
 }
 

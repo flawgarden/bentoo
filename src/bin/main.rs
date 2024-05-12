@@ -31,6 +31,9 @@ enum Command {
         truth: PathBuf,
         /// Tool's output to compare
         tool: PathBuf,
+        #[arg(short, long, default_value_t = false)]
+        /// Produce a slim report
+        slim: bool,
     },
     /// Generate a runs template for given project
     Template {
@@ -94,6 +97,9 @@ enum Command {
         #[arg(long)]
         /// Timeout for each run of each tool in seconds
         timeout: Option<u64>,
+        #[arg(long, default_value_t = false)]
+        /// Produce a slim report
+        slim: bool,
     },
 }
 
@@ -105,12 +111,12 @@ fn main() {
             let sarif = convert::convert_from(format, file);
             println!("{}", serde_json::to_string_pretty(&sarif).unwrap())
         }
-        Command::Compare { truth, tool } => {
+        Command::Compare { truth, tool, slim } => {
             let truth = truth::TruthResults::try_from(Path::new(&truth))
                 .expect("Could not parse truth file");
             let tool = truth::ToolResults::try_from(Path::new(&tool))
                 .expect("Could not parse tool result");
-            let card = compare::evaluate_tool(&truth, &tool, None);
+            let card = compare::evaluate_tool(&truth, &tool, None, !slim);
             println!("{}", serde_json::to_string_pretty(&card).unwrap());
         }
         Command::Template { tools, root } => {
@@ -152,6 +158,7 @@ fn main() {
             runs,
             output,
             timeout,
+            slim,
         } => {
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
