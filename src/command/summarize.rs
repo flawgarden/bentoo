@@ -5,6 +5,7 @@ use std::{
     time::Duration,
 };
 
+use csv::Writer;
 use itertools::Itertools;
 use serde::Serialize;
 
@@ -95,6 +96,16 @@ pub struct SummaryCard {
     truth_positive_cwe_1000_match_count: u64,
 }
 
+#[derive(Debug, Serialize)]
+pub struct SummaryMatchesCard {
+    pub matches: Vec<bool>,
+}
+
+pub struct ToolSummaryMatchesCard {
+    pub tool: Tool,
+    pub summary: SummaryMatchesCard,
+}
+
 #[derive(Debug, PartialEq, Serialize)]
 pub struct NamedSummaryCard {
     name: String,
@@ -117,6 +128,9 @@ pub struct ToolsSummaryCard {
     summaries: Vec<ToolSummaryCard>,
 }
 
+pub struct ToolsSummaryMatchesCard {
+    pub summaries: Vec<ToolSummaryMatchesCard>,
+}
 pub struct Summarizer<'s> {
     runs: &'s Runs,
     results_root: PathBuf,
@@ -340,6 +354,18 @@ impl<'s> Summarizer<'s> {
         Summarizer::summarize_match_card_vec(minimal_matches, matches)
     }
 
+    fn summarize_tool_results_matches(tool_result: &ToolResultsCard) -> SummaryMatchesCard {
+        let matches = tool_result
+            .result
+            .iter()
+            .map(|result| {
+                result.max_minimal_match.at_least_one_file_match
+                    && result.max_minimal_match.cwe_1000_match
+            })
+            .collect();
+        SummaryMatchesCard { matches }
+    }
+
     fn summarize_tool_results_by_cwe(tool_result: &ToolResultsCard) -> Vec<NamedSummaryCard> {
         tool_result
             .result
@@ -428,20 +454,35 @@ impl<'s> Summarizer<'s> {
             .collect()
     }
 
-    pub fn summarize(&self) -> ToolsSummaryCard {
+    pub fn summarize(&self) -> (ToolsSummaryCard, ToolsSummaryMatchesCard) {
         let cards = self.collect_cards();
         let metadata = self.collect_metadata();
-        let summary = cards
+        let (tools_summary, matches_smummary) = cards
             .into_iter()
-            .map(|(tool, card)| ToolSummaryCard {
-                tool: tool.clone(),
-                total_time: metadata[&tool],
-                runs_summary: Summarizer::summarize_tool_results(&card),
-                cwes_summary: Summarizer::summarize_tool_results_by_cwe(&card),
-                cwes_1000_summary: self.summarize_tool_results_by_cwe_1000(&card),
+            .map(|(tool, card)| {
+                (
+                    ToolSummaryCard {
+                        tool: tool.clone(),
+                        total_time: metadata[&tool],
+                        runs_summary: Summarizer::summarize_tool_results(&card),
+                        cwes_summary: Summarizer::summarize_tool_results_by_cwe(&card),
+                        cwes_1000_summary: self.summarize_tool_results_by_cwe_1000(&card),
+                    },
+                    ToolSummaryMatchesCard {
+                        tool,
+                        summary: Summarizer::summarize_tool_results_matches(&card),
+                    },
+                )
             })
-            .collect();
-        ToolsSummaryCard { summaries: summary }
+            .unzip();
+        (
+            ToolsSummaryCard {
+                summaries: tools_summary,
+            },
+            ToolsSummaryMatchesCard {
+                summaries: matches_smummary,
+            },
+        )
     }
 }
 
@@ -449,11 +490,30 @@ pub fn make_summary(runs: &RunsInfo, output: PathBuf) {
     let results_path = fs::canonicalize(output).unwrap();
 
     let summarizer = Summarizer::new(&runs.runs, results_path.clone());
-    let summary = summarizer.summarize();
+    let (tools_summary, matches_summary) = summarizer.summarize();
 
-    let summary_filename = "summary.json";
-    let summary_path = results_path.join(summary_filename);
+    let tools_summary_filename = "summary.json";
+    let tools_summary_path = results_path.join(tools_summary_filename);
 
-    let summary_file = File::create(summary_path).unwrap();
-    serde_json::to_writer_pretty(summary_file, &summary).expect("error: failure to write summary");
+    let tools_summary_file = File::create(tools_summary_path).unwrap();
+    serde_json::to_writer_pretty(tools_summary_file, &tools_summary)
+        .expect("error: failure to write summary");
+
+    let matches_summary_filename = "summary.csv";
+    let matches_summary_path = results_path.join(matches_summary_filename);
+
+    let mut wrt =
+        Writer::from_path(matches_summary_path).expect("error: failure to write matches summary");
+    for tool_matches_summary in matches_summary.summaries {
+        wrt.write_field(format!("{}", tool_matches_summary.tool))
+            .expect("error: failure during matches summary serialization");
+        wrt.write_record(
+            tool_matches_summary
+                .summary
+                .matches
+                .iter()
+                .map(bool::to_string),
+        )
+        .expect("error: failure during matches summary serialization");
+    }
 }
