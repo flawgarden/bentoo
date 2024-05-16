@@ -34,15 +34,18 @@ sonar_user="admin"
 sonar_default_password="admin"
 sonar_password="password"
 
-if [ -f build.xml ]; then
-  echo "Compile with ant" >> /dev/stderr
-  ant compile > /dev/null
-elif [ -f pom.xml ]; then
+if [ -f pom.xml ]; then
   echo "Compile with mvn" >> /dev/stderr
-  mvn compile > /dev/null
+    mvn clean package -f pom.xml -B -V -e \
+      -Dfindbugs.skip -Dcheckstyle.skip -Dpmd.skip=true -Dspotbugs.skip \
+      -Denforcer.skip -Dmaven.javadoc.skip -DskipTests -Dmaven.test.skip.exec \
+      -Dlicense.skip=true -Drat.skip=true -Dspotless.check.skip=true > /dev/null
 elif [ -f build.gradle ]; then
   echo "Compile with gradle" >> /dev/stderr
   gradle build > /dev/null
+elif [ -f build.xml ]; then
+  echo "Compile with ant" >> /dev/stderr
+  ant compile > /dev/null
 fi
 
 echo "Creating temporary SonarQube instance" >> /dev/stderr
