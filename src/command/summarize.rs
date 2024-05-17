@@ -9,7 +9,10 @@ use itertools::Itertools;
 use serde::Serialize;
 
 use crate::{
-    reference::truth::{self, Kind},
+    reference::{
+        taxonomy::{Taxonomy, TaxonomyVersion},
+        truth::{self, Kind},
+    },
     run::{
         description::{
             runs::{Runs, RunsInfo},
@@ -96,6 +99,7 @@ pub struct ToolSummaryCard {
     total_time: Duration,
     runs_summary: SummaryCard,
     cwes_summary: Vec<NamedSummaryCard>,
+    cwes_1000_summary: Vec<NamedSummaryCard>,
 }
 
 #[derive(Debug, PartialEq, Serialize)]
@@ -106,11 +110,16 @@ pub struct ToolsSummaryCard {
 pub struct Summarizer<'s> {
     runs: &'s Runs,
     results_root: PathBuf,
+    taxonomy: Taxonomy,
 }
 
 impl<'s> Summarizer<'s> {
     pub fn new(runs: &'s Runs, results_root: PathBuf) -> Self {
-        Summarizer { runs, results_root }
+        Summarizer {
+            runs,
+            results_root,
+            taxonomy: Taxonomy::from_known_version(&TaxonomyVersion::default()),
+        }
     }
 
     fn collect_cards(&self) -> HashMap<Tool, ToolResultsCard> {
@@ -344,6 +353,64 @@ impl<'s> Summarizer<'s> {
             .collect()
     }
 
+    fn summarize_tool_results_by_cwe_1000(
+        &self,
+        tool_result: &ToolResultsCard,
+    ) -> Vec<NamedSummaryCard> {
+        tool_result
+            .result
+            .iter()
+            .filter_map(|result| {
+                match self.taxonomy.to_cwe_1000(&truth::CWE {
+                    cwe: result.expected_result.expected_cwe,
+                }) {
+                    Some(cwes_1000) => {
+                        if cwes_1000.is_empty() {
+                            None
+                        } else {
+                            let mut cwes_1000_list = cwes_1000.iter().collect_vec();
+                            cwes_1000_list.sort();
+                            Some((result, *cwes_1000_list.iter().next_back().unwrap()))
+                        }
+                    }
+                    None => None,
+                }
+            })
+            .into_group_map_by(|(_result, cwe_1000)| cwe_1000.cwe)
+            .into_iter()
+            .map(|(cwe, results)| {
+                (
+                    cwe,
+                    results
+                        .into_iter()
+                        .map(|(result, _)| result)
+                        .collect::<Vec<_>>(),
+                )
+            })
+            .map(|(cwe, results)| {
+                let (minimal_matches, matches) = results
+                    .iter()
+                    .map(|result| {
+                        (
+                            MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
+                            result
+                                .max_match
+                                .iter()
+                                .map(|match_result| {
+                                    MatchCard(&result.expected_result, match_result)
+                                })
+                                .collect(),
+                        )
+                    })
+                    .unzip();
+                NamedSummaryCard {
+                    name: format!("CWE-{}", cwe),
+                    summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
+                }
+            })
+            .collect()
+    }
+
     pub fn summarize(&self) -> ToolsSummaryCard {
         let cards = self.collect_cards();
         let metadata = self.collect_metadata();
@@ -354,6 +421,7 @@ impl<'s> Summarizer<'s> {
                 total_time: metadata[&tool],
                 runs_summary: Summarizer::summarize_tool_results(&card),
                 cwes_summary: Summarizer::summarize_tool_results_by_cwe(&card),
+                cwes_1000_summary: self.summarize_tool_results_by_cwe_1000(&card),
             })
             .collect();
         ToolsSummaryCard { summaries: summary }
