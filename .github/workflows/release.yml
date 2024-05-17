@@ -34,6 +34,9 @@ jobs:
         working-directory: target/release
         run: tar -czvf bentoo.tar.gz bentoo
 
+      - name: Compress tool runers
+        run: tar -czvf tool_runners.tar.gz tool_runners
+
       - name: Publish Pre-Release
         uses: softprops/action-gh-release@v2
         with:
@@ -43,3 +46,4 @@ jobs:
           files: |
             LICENSE
             target/release/bentoo.tar.gz
+            tool_runners.tar.gz
