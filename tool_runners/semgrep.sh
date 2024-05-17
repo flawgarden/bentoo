@@ -10,7 +10,7 @@ cd $entry_point
 semgrep_version=$(docker run --rm returntocorp/semgrep semgrep --version)
 result_filename="Semgrep-v$semgrep_version.sarif"
 
-docker run --rm -v "${PWD}:/src" returntocorp/semgrep semgrep --config p/security-audit -q --sarif -o "$result_filename" . > /dev/null
+docker run --rm -v "${PWD}:/src" returntocorp/semgrep semgrep --config auto -q --sarif -o "$result_filename" . > /dev/null
 docker run --rm -v "${PWD}:/src" ubuntu sh -c "chown $(id -u $USER):$(id -g $USER) -R /src" > /dev/null
 
 result_file="$entry_point/$result_filename"
