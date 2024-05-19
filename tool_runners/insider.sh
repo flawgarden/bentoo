@@ -9,7 +9,7 @@ cd $entry_point
 
 result_filename="insider-v$insider_version.json"
 
-docker run --entrypoint /bin/sh --rm -v $entry_point:/target-project insidersec/insider:3.0.0 -c "./insider -tech java -exclude '.idea' -exclude '.mvn' -exclude 'results' -exclude 'scorecard' -exclude 'scripts' -exclude 'tools' -target /target-project; cp report.json /target-project/$result_filename" > /dev/null
+docker run --entrypoint /bin/sh --rm -v $entry_point:/target-project insidersec/insider:3.0.0 -c "./insider -tech java -no-html -target /target-project; cp report.json /target-project/$result_filename" > /dev/null
 
 docker run --rm -v "${PWD}:/src" ubuntu sh -c "chown $(id -u $USER):$(id -g $USER) -R /src" > /dev/null
 
