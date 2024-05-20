@@ -1,5 +1,7 @@
 # bentoo
 
+[![Build Status](https://github.com/flawgarden/bentoo/actions/workflows/ci.yml/badge.svg)](https://github.com/flawgarden/bentoo/actions)
+
 `bentoo` is a simple command-line utility to run SAST tools on benchmark suites and evaluate analysis results.
 
 It uses a [SARIF](https://sarifweb.azurewebsites.net/)-based format called [bentoo-sarif](docs/bentoo-sarif/format.md)
