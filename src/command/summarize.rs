@@ -9,9 +9,10 @@ use itertools::Itertools;
 use serde::Serialize;
 
 use crate::{
+    command::compare::evaluate_tool,
     reference::{
         taxonomy::{Taxonomy, TaxonomyVersion},
-        truth::{self, Kind},
+        truth::{self, Kind, ToolResults, TruthResults},
     },
     run::{
         description::{
@@ -144,7 +145,13 @@ impl<'s> Summarizer<'s> {
                         directory.tool,
                         directory.benchmark.display()
                     );
-                    None
+                    let truth = TruthResults::try_from(directory.truth_path().as_path()).unwrap();
+                    let tool_result = ToolResults {
+                        name: String::new(),
+                        results: vec![],
+                    };
+                    let faux_evaluate = evaluate_tool(&truth, &tool_result, None);
+                    Some((tool.clone(), faux_evaluate.result))
                 } else {
                     let file_name = self.make_file_name(root, tool, "json");
                     let tool_card = ToolResultsCard::try_from(Path::new(&file_name)).ok()?;

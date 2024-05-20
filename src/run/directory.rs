@@ -54,6 +54,10 @@ impl<'a> Directory<'a> {
         File::open(self.evaluate_path()).unwrap()
     }
 
+    pub fn ground_truth_read(&self) -> File {
+        File::open(self.truth_path()).unwrap()
+    }
+
     pub fn metadata_write(&self, metadata: &Metadata) {
         serde_json::to_writer_pretty(File::create(self.metadata_path()).unwrap(), &metadata)
             .unwrap()
@@ -82,6 +86,10 @@ impl<'a> Directory<'a> {
 
     pub fn evaluate_path(&self) -> PathBuf {
         self.path_to_file("json")
+    }
+
+    pub fn truth_path(&self) -> PathBuf {
+        self.output.join(self.benchmark).join("truth.sarif")
     }
 
     fn tool_name(&self) -> String {
