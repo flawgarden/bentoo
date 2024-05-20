@@ -34,6 +34,14 @@ sonar_user="admin"
 sonar_default_password="admin"
 sonar_password="password"
 
+for id in $(docker ps -q)
+do
+    if [[ $(docker port "${id}") == *"${sonar_port}"* ]]; then
+        echo "stopping container ${id}" >> /dev/stderr
+        docker stop "${id}" > /dev/null
+    fi
+done
+
 if [ -f pom.xml ]; then
   echo "Compile with mvn" >> /dev/stderr
     mvn clean package -f pom.xml -B -V -e \
