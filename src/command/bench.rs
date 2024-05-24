@@ -12,7 +12,13 @@ use crate::{
 
 use super::{evaluate, parse, run};
 
-pub fn bench_all(runs: RunsInfo, tools: ToolsInfo, output: PathBuf, timeout: Option<u64>) {
+pub fn bench_all(
+    runs: RunsInfo,
+    tools: ToolsInfo,
+    output: PathBuf,
+    timeout: Option<u64>,
+    detailed: bool,
+) {
     let runner = run::Runner::new(
         &runs,
         &tools,
@@ -47,7 +53,7 @@ pub fn bench_all(runs: RunsInfo, tools: ToolsInfo, output: PathBuf, timeout: Opt
         let directory = Directory::new(&output, benchmark, tool);
         runner.run_one(&directory);
         parser.parse_one(&directory);
-        evaluator.evaluate_one(&directory);
+        evaluator.evaluate_one(&directory, detailed);
     }
 
     println!("Evaluation done");

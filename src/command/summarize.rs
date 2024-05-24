@@ -159,7 +159,8 @@ impl<'s> Summarizer<'s> {
                         name: String::new(),
                         results: vec![],
                     };
-                    let faux_evaluate = evaluate_tool(&truth, &tool_result, None);
+                    let faux_evaluate =
+                        evaluate_tool(&truth, &tool_result, None, Default::default());
                     Some((tool.clone(), faux_evaluate.result))
                 } else {
                     let file_name = self.make_file_name(root, tool, "json");

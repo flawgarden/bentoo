@@ -314,9 +314,9 @@ fn evaluate_tool_result_detaled(
 ) -> (ExpectedResult, ResultMatch) {
     let (expected_result, result_match) = evaluate_tool_result(truth_result, tool_result, taxonomy);
     let tool_result_str: String =
-        serde_json::to_string_pretty(&sarif::Result::from(tool_result)).unwrap();
+        serde_json::to_string_pretty(&sarif::Result::try_from(tool_result).unwrap()).unwrap();
     let truth_result_str: String =
-        serde_json::to_string_pretty(&sarif::Result::from(truth_result)).unwrap();
+        serde_json::to_string_pretty(&sarif::Result::try_from(truth_result).unwrap()).unwrap();
     let tool_result = Some(serde_json::from_str(tool_result_str.as_str()).unwrap());
     let truth_result = Some(serde_json::from_str(truth_result_str.as_str()).unwrap());
     (
