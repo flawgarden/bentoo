@@ -17,18 +17,21 @@ jobs:
       - name: Clone the bentoo repository
         uses: actions/checkout@v4
 
+      - name: Install x86_64-unknown-linux-musl target
+        run: rustup target add x86_64-unknown-linux-musl
+
       - name: Build release
-        run: cargo build --release -j`nproc`
+        run: cargo build --target=x86_64-unknown-linux-musl --release -j`nproc`
 
       - name: Upload bentoo build artifact
         uses: actions/upload-artifact@v4
         with:
           name: bentoo-linux
-          path: target/release/bentoo
+          path: target/x86_64-unknown-linux-musl/release/bentoo
           retention-days: 1
 
       - name: Compress binary
-        working-directory: target/release
+        working-directory: target/x86_64-unknown-linux-musl/release
         run: tar -czvf bentoo.tar.gz bentoo
 
       - name: Compress tool runers
@@ -42,5 +45,5 @@ jobs:
           generate_release_notes: true
           files: |
             LICENSE
-            target/release/bentoo.tar.gz
+            target/x86_64-unknown-linux-musl/release/bentoo.tar.gz
             tool_runners.tar.gz
