@@ -59,6 +59,7 @@ fi
 echo "Creating temporary SonarQube instance" >> /dev/stderr
 
 docker pull sonarqube:10.4.1-community > /dev/null
+docker pull sonarsource/sonar-scanner-cli > /dev/null
 
 # start local sonarqube
 container_id=$(docker run --rm -d -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p "$sonar_port:9000" sonarqube:10.4.1-community) > /dev/null
