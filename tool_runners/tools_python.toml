@@ -1,0 +1,17 @@
+[[tools]]
+script = "codeql-nodocker.sh"
+name = "CodeQL"
+parse_command = { command = "bentoo", args = "convert codeql" }
+
+[[tools.configs]]
+name = "Python"
+args = "--tech python"
+
+[[tools]]
+script = "semgrep.sh"
+name = "Semgrep"
+parse_command = { command = "bentoo", args = "convert semgrep" }
+
+[[tools.configs]]
+name = "Python"
+args = ""

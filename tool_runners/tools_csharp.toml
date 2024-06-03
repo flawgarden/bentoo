@@ -4,17 +4,17 @@ name = "Insider"
 parse_command = { command = "bentoo", args = "convert insider" }
 
 [[tools.configs]]
-name = "Default"
-args = ""
+name = "C#"
+args = "--tech csharp"
 
 [[tools]]
-script = "codeql.sh"
+script = "codeql-nodocker.sh"
 name = "CodeQL"
 parse_command = { command = "bentoo", args = "convert codeql" }
 
 [[tools.configs]]
-name = "Default"
-args = ""
+name = "C#"
+args = "--tech csharp"
 
 [[tools]]
 script = "semgrep.sh"
@@ -22,14 +22,5 @@ name = "Semgrep"
 parse_command = { command = "bentoo", args = "convert semgrep" }
 
 [[tools.configs]]
-name = "Default"
-args = ""
-
-[[tools]]
-script = "sonarqube.sh"
-name = "SonarQube"
-parse_command = { command = "bentoo", args = "convert sonarqube" }
-
-[[tools.configs]]
-name = "Default"
+name = "C#"
 args = ""
