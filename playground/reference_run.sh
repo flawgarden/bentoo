@@ -8,48 +8,48 @@ files=(
 )
 
 files_14=(
-    "CodeQL_Default.err"
-    "CodeQL_Default.out"
-    "CodeQL_Default.metadata"
-    "Insider_Default.json"
-    "Insider_Default.sarif"
-    "Insider_Default.err"
-    "Insider_Default.out"
-    "Insider_Default.metadata"
-    "Semgrep_Default.json"
-    "Semgrep_Default.sarif"
-    "Semgrep_Default.err"
-    "Semgrep_Default.out"
-    "Semgrep_Default.metadata"
-    "SonarQube_Default.json"
-    "SonarQube_Default.sarif"
-    "SonarQube_Default.err"
-    "SonarQube_Default.out"
-    "SonarQube_Default.metadata"
+    "CodeQL_Java.err"
+    "CodeQL_Java.out"
+    "CodeQL_Java.metadata"
+    "Insider_Java.json"
+    "Insider_Java.sarif"
+    "Insider_Java.err"
+    "Insider_Java.out"
+    "Insider_Java.metadata"
+    "Semgrep_Java.json"
+    "Semgrep_Java.sarif"
+    "Semgrep_Java.err"
+    "Semgrep_Java.out"
+    "Semgrep_Java.metadata"
+    "SonarQube_Java.json"
+    "SonarQube_Java.sarif"
+    "SonarQube_Java.err"
+    "SonarQube_Java.out"
+    "SonarQube_Java.metadata"
     "truth.sarif"
 )
 
 files_16=(
-    "CodeQL_Default.json"
-    "CodeQL_Default.sarif"
-    "CodeQL_Default.err"
-    "CodeQL_Default.out"
-    "CodeQL_Default.metadata"
-    "Insider_Default.json"
-    "Insider_Default.sarif"
-    "Insider_Default.err"
-    "Insider_Default.out"
-    "Insider_Default.metadata"
-    "Semgrep_Default.json"
-    "Semgrep_Default.sarif"
-    "Semgrep_Default.err"
-    "Semgrep_Default.out"
-    "Semgrep_Default.metadata"
-    "SonarQube_Default.json"
-    "SonarQube_Default.sarif"
-    "SonarQube_Default.err"
-    "SonarQube_Default.out"
-    "SonarQube_Default.metadata"
+    "CodeQL_Java.json"
+    "CodeQL_Java.sarif"
+    "CodeQL_Java.err"
+    "CodeQL_Java.out"
+    "CodeQL_Java.metadata"
+    "Insider_Java.json"
+    "Insider_Java.sarif"
+    "Insider_Java.err"
+    "Insider_Java.out"
+    "Insider_Java.metadata"
+    "Semgrep_Java.json"
+    "Semgrep_Java.sarif"
+    "Semgrep_Java.err"
+    "Semgrep_Java.out"
+    "Semgrep_Java.metadata"
+    "SonarQube_Java.json"
+    "SonarQube_Java.sarif"
+    "SonarQube_Java.err"
+    "SonarQube_Java.out"
+    "SonarQube_Java.metadata"
     "truth.sarif"
 )
 
@@ -85,8 +85,8 @@ cargo build
 
 export PATH="$(pwd)/target/debug:$PATH"
 
-bentoo template --tools tool_runners/tools.toml playground/play/benchmark > playground/play/benchmark/runs.toml
-bentoo bench --tools tool_runners/tools.toml --runs playground/play/benchmark/runs.toml playground/play/output
+bentoo template --tools tool_runners/tools_java.toml playground/play/benchmark > playground/play/benchmark/runs.toml
+bentoo bench --tools tool_runners/tools_java.toml --runs playground/play/benchmark/runs.toml playground/play/output
 
 cd $root_dir
 cd playground/play/output
