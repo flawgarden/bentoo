@@ -26,8 +26,8 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
-if [ "$TECH" = "java" || "$TECH" = "csharp" ]; then
-    echo "TECH can only be java or csharp"
+if ! ( [ "$TECH" = "java" ] || [ "$TECH" = "csharp" ] ); then
+    echo "TECH can only be java or csharp (was $TECH)" >&2
     exit 1
 fi
 
