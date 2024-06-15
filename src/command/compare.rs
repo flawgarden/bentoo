@@ -240,8 +240,8 @@ fn evaluate_tool_result(
                 (None, None) => true,
                 (None, Some(_)) => true,
                 (Some(_), None) => false,
-                (Some(truth_region), Some(left_region)) => {
-                    match truth_region.partial_cmp(left_region) {
+                (Some(truth_region), Some(tool_region)) => {
+                    match truth_region.partial_cmp(tool_region) {
                         Some(region_ord) => match region_ord {
                             Ordering::Equal | Ordering::Greater => true,
                             Ordering::Less => false,
