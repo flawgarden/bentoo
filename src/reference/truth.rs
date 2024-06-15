@@ -44,7 +44,7 @@ pub struct Region {
 }
 
 impl PartialOrd for Region {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         let start_line_ord = self.start_line.cmp(&other.start_line);
         let self_end_line = self.end_line.unwrap_or(self.start_line);
         let other_end_line = other.end_line.unwrap_or(other.start_line);
@@ -64,8 +64,10 @@ impl PartialOrd for Region {
         let line_ord = line_ord.unwrap();
         let start_column_ord = match (self.start_column, other.start_column) {
             (None, None) => Ordering::Equal,
-            (None, Some(_)) => Ordering::Greater,
-            (Some(_), None) => Ordering::Less,
+            (None, Some(1)) => Ordering::Equal,
+            (None, Some(_)) => Ordering::Less,
+            (Some(1), None) => Ordering::Equal,
+            (Some(_), None) => Ordering::Greater,
             (Some(self_start_column), Some(other_start_column)) => {
                 self_start_column.cmp(&other_start_column)
             }
@@ -77,17 +79,6 @@ impl PartialOrd for Region {
             (Some(self_end_column), Some(other_end_column)) => {
                 self_end_column.cmp(&other_end_column)
             }
-        };
-        let column_ord = match (start_column_ord, end_column_ord) {
-            (Ordering::Equal, Ordering::Less) => Some(Ordering::Less),
-            (Ordering::Greater, Ordering::Equal) => Some(Ordering::Less),
-            (Ordering::Greater, Ordering::Less) => Some(Ordering::Less),
-            (Ordering::Equal, Ordering::Equal) => Some(Ordering::Equal),
-            (Ordering::Less, Ordering::Equal) => Some(Ordering::Greater),
-            (Ordering::Equal, Ordering::Greater) => Some(Ordering::Greater),
-            (Ordering::Less, Ordering::Greater) => Some(Ordering::Greater),
-            (Ordering::Less, Ordering::Less) => None,
-            (Ordering::Greater, Ordering::Greater) => None,
         };
         match (line_ord, start_line_ord, end_line_ord) {
             (Ordering::Less, Ordering::Equal, _) => match start_column_ord {
@@ -110,7 +101,17 @@ impl PartialOrd for Region {
                 Ordering::Greater => Some(Ordering::Greater),
                 Ordering::Less => None,
             },
-            (Ordering::Equal, _, _) => column_ord,
+            (Ordering::Equal, _, _) => match (start_column_ord, end_column_ord) {
+                (Ordering::Equal, Ordering::Less) => Some(Ordering::Less),
+                (Ordering::Greater, Ordering::Equal) => Some(Ordering::Less),
+                (Ordering::Greater, Ordering::Less) => Some(Ordering::Less),
+                (Ordering::Equal, Ordering::Equal) => Some(Ordering::Equal),
+                (Ordering::Less, Ordering::Equal) => Some(Ordering::Greater),
+                (Ordering::Equal, Ordering::Greater) => Some(Ordering::Greater),
+                (Ordering::Less, Ordering::Greater) => Some(Ordering::Greater),
+                (Ordering::Less, Ordering::Less) => None,
+                (Ordering::Greater, Ordering::Greater) => None,
+            },
             _ => Some(line_ord),
         }
     }
