@@ -20,7 +20,7 @@ use crate::{
             tools::Tool,
         },
         directory::Directory,
-        metadata::Metadata,
+        metadata::{Metadata, Status},
     },
     util,
 };
@@ -107,6 +107,9 @@ pub struct NamedSummaryCard {
 pub struct ToolSummaryCard {
     tool: Tool,
     total_time: Duration,
+    failed: usize,
+    timeouts: usize,
+    total: usize,
     runs_summary: SummaryCard,
     cwes_summary: Vec<NamedSummaryCard>,
     cwes_1000_summary: Vec<NamedSummaryCard>,
@@ -115,6 +118,13 @@ pub struct ToolSummaryCard {
 #[derive(Debug, PartialEq, Serialize)]
 pub struct ToolsSummaryCard {
     summaries: Vec<ToolSummaryCard>,
+}
+
+struct SummarizedMetadata {
+    time: Duration,
+    failed: usize,
+    timeouts: usize,
+    total: usize,
 }
 
 pub struct Summarizer<'s> {
@@ -182,7 +192,7 @@ impl<'s> Summarizer<'s> {
         cards
     }
 
-    fn collect_metadata(&self) -> HashMap<Tool, Duration> {
+    fn collect_metadata(&self) -> HashMap<Tool, SummarizedMetadata> {
         let metadata = self
             .runs
             .runs
@@ -197,11 +207,27 @@ impl<'s> Summarizer<'s> {
             .into_group_map()
             .into_iter()
             .map(|(tool, metadatas)| {
-                let mut total_time = Duration::new(0, 0);
-                for metadata in metadatas {
-                    total_time += metadata.time;
+                let mut time = Duration::new(0, 0);
+                let mut failed: usize = 0;
+                let mut timeouts: usize = 0;
+                for metadata in metadatas.iter() {
+                    time += metadata.time;
+                    if !metadata.evaluated {
+                        failed += 1;
+                    }
+                    if metadata.status == Status::Timeout {
+                        timeouts += 1;
+                    }
                 }
-                (tool, total_time)
+                (
+                    tool,
+                    SummarizedMetadata {
+                        time,
+                        failed,
+                        timeouts,
+                        total: metadatas.len(),
+                    },
+                )
             })
             .collect();
 
@@ -434,7 +460,10 @@ impl<'s> Summarizer<'s> {
             .into_iter()
             .map(|(tool, card)| ToolSummaryCard {
                 tool: tool.clone(),
-                total_time: metadata[&tool],
+                total_time: metadata[&tool].time,
+                failed: metadata[&tool].failed,
+                timeouts: metadata[&tool].timeouts,
+                total: metadata[&tool].total,
                 runs_summary: Summarizer::summarize_tool_results(&card),
                 cwes_summary: Summarizer::summarize_tool_results_by_cwe(&card),
                 cwes_1000_summary: self.summarize_tool_results_by_cwe_1000(&card),
