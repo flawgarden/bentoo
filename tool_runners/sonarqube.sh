@@ -8,7 +8,7 @@
 # - shutdown sonarqube server
 
 requireCommand() {
-  if ! command -v "$1" &> /dev/null
+  if ! command -v "$1" &> /dev/stderr
   then
     echo "$1 is required. Please install it and then try again." >> /dev/stderr
     exit 1
@@ -38,7 +38,7 @@ for id in $(docker ps -q)
 do
     if [[ $(docker port "${id}") == *"${sonar_port}"* ]]; then
         echo "stopping container ${id}" >> /dev/stderr
-        docker stop "${id}" > /dev/null
+        docker stop "${id}" > /dev/stderr
     fi
 done
 
@@ -47,27 +47,27 @@ if [ -f pom.xml ]; then
     mvn clean package -f pom.xml -B -V -e \
       -Dfindbugs.skip -Dcheckstyle.skip -Dpmd.skip=true -Dspotbugs.skip \
       -Denforcer.skip -Dmaven.javadoc.skip -DskipTests -Dmaven.test.skip.exec \
-      -Dlicense.skip=true -Drat.skip=true -Dspotless.check.skip=true > /dev/null
+      -Dlicense.skip=true -Drat.skip=true -Dspotless.check.skip=true > /dev/stderr
 elif [ -f build.gradle ]; then
   echo "Compile with gradle" >> /dev/stderr
-  gradle build > /dev/null
+  gradle build > /dev/stderr
 elif [ -f build.xml ]; then
   echo "Compile with ant" >> /dev/stderr
-  ant compile > /dev/null
+  ant compile > /dev/stderr
 fi
 
 echo "Creating temporary SonarQube instance" >> /dev/stderr
 
-docker pull sonarqube:10.4.1-community > /dev/null
-docker pull sonarsource/sonar-scanner-cli > /dev/null
+docker pull sonarqube:10.4.1-community > /dev/stderr
+docker pull sonarsource/sonar-scanner-cli > /dev/stderr
 
 # start local sonarqube
-container_id=$(docker run --rm -d -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p "$sonar_port:9000" sonarqube:10.4.1-community) > /dev/null
+container_id=$(docker run --rm -d -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p "$sonar_port:9000" sonarqube:10.4.1-community) > /dev/stderr
 
 echo "Waiting for instance to come up" >> /dev/stderr
 
 # wait for container to come up
-while [[ "$(curl --connect-timeout 5 --max-time 5 --retry 60 --retry-delay 0 --retry-max-time 120 -s -o /dev/null -w '%{http_code}' "$sonar_host")" != "200" ]]; do
+while [[ "$(curl --connect-timeout 5 --max-time 5 --retry 60 --retry-delay 0 --retry-max-time 120 -s -o /dev/stderr -w '%{http_code}' "$sonar_host")" != "200" ]]; do
   sleep 3;
 done
 
@@ -79,10 +79,10 @@ done
 echo "Setting up instance" >> /dev/stderr
 
 # change default password
-curl "$sonar_host/api/users/change_password" --silent -u "$sonar_user:$sonar_default_password" -X POST --data-raw "login=$sonar_user&password=$sonar_password&previousPassword=$sonar_default_password" -o /dev/null
+curl "$sonar_host/api/users/change_password" --silent -u "$sonar_user:$sonar_default_password" -X POST --data-raw "login=$sonar_user&password=$sonar_password&previousPassword=$sonar_default_password" -o /dev/stderr
 
 # create project
-curl "$sonar_host/api/projects/create" --silent -u "$sonar_user:$sonar_password" -X POST --data-raw "project=$sonar_project&name=$sonar_project" -o /dev/null
+curl "$sonar_host/api/projects/create" --silent -u "$sonar_user:$sonar_password" -X POST --data-raw "project=$sonar_project&name=$sonar_project" -o /dev/stderr
 
 # create token
 sonar_token=$(curl "$sonar_host/api/user_tokens/generate" --silent -u "$sonar_user:$sonar_password" -X POST --data-raw "name=$(date)" | jq -r '.token')
@@ -92,7 +92,7 @@ echo "Starting scan (might take some time!)" >> /dev/stderr
 # run scan (using net=host to be able to connect to localhost sonarqube)
 docker run --env SONAR_SCANNER_OPTS=-Xmx4g --net=host --rm -v ~/.m2:/root/.m2 -v "$(pwd)":"/benchmark" -w "/benchmark" sonarsource/sonar-scanner-cli \
   -Dsonar.java.binaries="." -Dsonar.scm.disabled="true" -Dsonar.projectKey="$sonar_project" -Dsonar.host.url="$sonar_host" -Dsonar.login="$sonar_token" \
-  -Dsonar.sources="." > /dev/null
+  -Dsonar.sources="." > /dev/stderr
 
 echo "Waiting for SonarQube CE to finish task" >> /dev/stderr
 
@@ -174,9 +174,9 @@ rm resdump.json buffdump.json;
 
 echo "Shutting down SonarQube" >> /dev/stderr
 
-docker stop "$container_id" > /dev/null
+docker stop "$container_id" > /dev/stderr
 
-docker run --rm -v "${PWD}:/src" ubuntu sh -c "chown $(id -u $USER):$(id -g $USER) -R /src" > /dev/null
+docker run --rm -v "${PWD}:/src" ubuntu sh -c "chown $(id -u $USER):$(id -g $USER) -R /src" > /dev/stderr
 
 result_file="$entry_point/$result_filename"
 

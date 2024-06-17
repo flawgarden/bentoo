@@ -20,8 +20,20 @@ jobs:
       - name: Install x86_64-unknown-linux-musl target
         run: rustup target add x86_64-unknown-linux-musl
 
-      - name: Build release
+      - name: Install x86_64-apple-darwin target
+        run: rustup target add x86_64-apple-darwin
+
+      - name: Install x86_64-apple-darwin target
+        run: rustup target add aarch64-apple-darwin
+
+      - name: Build release (Linux)
         run: cargo build --target=x86_64-unknown-linux-musl --release -j`nproc`
+
+      - name: Build release (Mac OS x86)
+        run: cargo build --target=x86_64-apple-darwin --release -j`nproc`
+
+      - name: Build release (Mac OS ARM)
+        run: cargo build --target=aarch64-apple-darwin --release -j`nproc`
 
       - name: Upload bentoo build artifact
         uses: actions/upload-artifact@v4
@@ -30,8 +42,30 @@ jobs:
           path: target/x86_64-unknown-linux-musl/release/bentoo
           retention-days: 1
 
-      - name: Compress binary
+      - name: Upload bentoo build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bentoo-linux
+          path: target/x86_64-apple-darwin/release/bentoo
+          retention-days: 1
+
+      - name: Upload bentoo build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bentoo-linux
+          path: target/aarch64-apple-darwin/release/bentoo
+          retention-days: 1
+
+      - name: Compress binary (Linux)
         working-directory: target/x86_64-unknown-linux-musl/release
+        run: tar -czvf bentoo.tar.gz bentoo
+
+      - name: Compress binary (Mac OS x86)
+        working-directory: target/x86_64-apple-darwin/release
+        run: tar -czvf bentoo.tar.gz bentoo
+
+      - name: Compress binary (Mac OS ARM)
+        working-directory: target/aarch64-apple-darwin/release
         run: tar -czvf bentoo.tar.gz bentoo
 
       - name: Compress tool runers
@@ -46,4 +80,6 @@ jobs:
           files: |
             LICENSE
             target/x86_64-unknown-linux-musl/release/bentoo.tar.gz
+            target/x86_64-apple-darwin/release/bentoo.tar.gz
+            target/aarch64-apple-darwin/release/bentoo.tar.gz
             tool_runners.tar.gz

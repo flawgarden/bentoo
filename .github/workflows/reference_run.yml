@@ -13,10 +13,20 @@ env:
 jobs:
   reference_run:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        # Using x86 Mac OS runner because M-series chips do not support nested virtualization
+        runner: [ ubuntu-latest, macos-12 ]
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Docker on macOS
+      if: runner.os == 'macos'
+      run: |
+        brew install docker
+        colima start
 
     - name: Reference run
       shell: bash
@@ -26,5 +36,5 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: output
+        name: ${{ matrix.runner }}-output
         path: playground/play/output
