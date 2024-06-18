@@ -11,31 +11,35 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  linux:
+  build:
+    uses: ./.github/workflows/build_binaries.yml
+
+  release:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Clone the bentoo repository
         uses: actions/checkout@v4
 
-      - name: Install x86_64-unknown-linux-musl target
-        run: rustup target add x86_64-unknown-linux-musl
-
-      - name: Build release
-        run: cargo build --target=x86_64-unknown-linux-musl --release -j`nproc`
-
-      - name: Upload bentoo build artifact
-        uses: actions/upload-artifact@v4
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          name: bentoo-linux
-          path: target/x86_64-unknown-linux-musl/release/bentoo
-          retention-days: 1
+          path: ${{ github.workspace }}/artifacts
 
-      - name: Compress binary
-        working-directory: target/x86_64-unknown-linux-musl/release
-        run: tar -czvf bentoo.tar.gz bentoo
+      - name: debug
+        run: ls ${{ github.workspace }}/artifacts/bentoo-x86-linux
 
-      - name: Compress tool runers
-        run: tar -czvf tool_runners.tar.gz tool_runners
+      - name: Compress release files
+        working-directory: ${{ github.workspace }}/artifacts
+        run: |
+          chmod +x bentoo-x86-linux/bentoo
+          chmod +x bentoo-x86-macos/bentoo
+          chmod +x bentoo-arm-macos/bentoo
+          chmod +x tool_runners/*.sh
+          tar -czvf bentoo-x86-linux.tar.gz -C bentoo-x86-linux bentoo
+          tar -czvf bentoo-x86-macos.tar.gz -C bentoo-x86-macos bentoo
+          tar -czvf bentoo-arm-macos.tar.gz -C bentoo-arm-macos bentoo
+          tar -czvf tool_runners.tar.gz tool_runners
 
       - name: Publish Pre-Release
         uses: softprops/action-gh-release@v2
@@ -43,7 +47,7 @@ jobs:
           tag_name: "latest"
           prerelease: true
           generate_release_notes: true
+          fail_on_unmatched_files: true
           files: |
             LICENSE
-            target/x86_64-unknown-linux-musl/release/bentoo.tar.gz
-            tool_runners.tar.gz
+            ${{ github.workspace }}/artifacts/*
