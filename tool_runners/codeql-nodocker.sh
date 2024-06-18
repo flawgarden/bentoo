@@ -31,6 +31,12 @@ fi
 entry_point=$1
 cd $entry_point
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    archive_name="codeql-bundle-osx64.tar.gz"
+else
+    archive_name="codeql-bundle-linux64.tar.gz"
+fi
+
 result_filename="codeql.sarif"
 
 if command -v codeql &> /dev/null; then
@@ -39,11 +45,11 @@ if command -v codeql &> /dev/null; then
 else
     if ! [ -f $HOME/.bentoo/codeql/codeql ]; then
         echo "Downloading CodeQL" >&2
-        rm -f codeql-bundle-linux64.tar.gz
-        wget "https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.17.3/codeql-bundle-linux64.tar.gz" >&2
+        rm -f $archive_name
+        wget "https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.17.3/$archive_name" >&2
         mkdir -p $HOME/.bentoo >&2
-        tar -xvzf codeql-bundle-linux64.tar.gz --directory $HOME/.bentoo/ >&2
-        rm codeql-bundle-linux64.tar.gz >&2
+        tar -xvzf $archive_name --directory $HOME/.bentoo/ >&2
+        rm $archive_name >&2
     fi
     echo "Using downloaded CodeQL" >&2
     CODEQL=$HOME/.bentoo/codeql/codeql
