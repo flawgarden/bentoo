@@ -1,0 +1,26 @@
+[[tools]]
+script = "insider.sh"
+name = "Insider"
+parse_command = { command = "bentoo", args = "convert insider" }
+
+[[tools.configs]]
+name = "Java"
+args = "--tech java"
+
+[[tools]]
+script = "codeql-nodocker.sh"
+name = "CodeQL"
+parse_command = { command = "bentoo", args = "convert codeql" }
+
+[[tools.configs]]
+name = "Java"
+args = "--tech java"
+
+[[tools]]
+script = "semgrep.sh"
+name = "Semgrep"
+parse_command = { command = "bentoo", args = "convert semgrep" }
+
+[[tools.configs]]
+name = "Java"
+args = ""
