@@ -31,7 +31,7 @@ impl RuleMap for CodeQLReport {
                     .as_ref()
                     .map(|property_bag| {
                         property_bag.tags.as_ref().map(|tags_vect| {
-                            let cwes = tags_vect
+                            let cwes: HashSet<u64> = tags_vect
                                 .iter()
                                 .filter_map(|tag| tag.strip_prefix(CWE_TAG_PREFIX))
                                 .map(|tag| {
@@ -39,7 +39,9 @@ impl RuleMap for CodeQLReport {
                                     cwe
                                 })
                                 .collect();
-                            rule_to_cwes.insert(reporting_descriptor.id.to_string(), cwes);
+                            if !cwes.is_empty() {
+                                rule_to_cwes.insert(reporting_descriptor.id.to_string(), cwes);
+                            }
                         })
                     });
             }
