@@ -406,7 +406,7 @@ impl<'s> Summarizer<'s> {
                 let cwes_1000 = result
                     .expected_result
                     .expected_cwe
-                    .cwes
+                    .0
                     .iter()
                     .map(|cwe| match self.taxonomy.to_cwe_1000(cwe) {
                         Some(cwes_1000) => cwes_1000.clone(),
@@ -453,7 +453,7 @@ impl<'s> Summarizer<'s> {
                     })
                     .unzip();
                 NamedSummaryCard {
-                    name: format!("{}", CWEs { cwes: cwe.clone() }),
+                    name: format!("{}", CWEs(cwe.clone())),
                     summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
                 }
             })

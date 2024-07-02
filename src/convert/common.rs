@@ -55,8 +55,8 @@ where
     ) -> Option<serde_sarif::sarif::Result> {
         if let Some(rule_id) = result.rule_id.as_ref() {
             if let Some(cwes) = rule_to_cwes.get(rule_id) {
-                let cwes = cwes.iter().map(|cwe| CWE { cwe: *cwe }).collect();
-                let cwes = CWEs { cwes };
+                let cwes = cwes.iter().map(|cwe| CWE(*cwe)).collect();
+                let cwes = CWEs(cwes);
                 result.locations.as_ref().map(|locations| {
                     let mut result_builder = ResultBuilder::default();
                     assert!(rule_to_cwes.contains_key(rule_id));

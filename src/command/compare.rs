@@ -263,9 +263,9 @@ fn evaluate_tool_result(
     let cwe_match = truth_result
         .result
         .cwes
-        .cwes
+        .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.cwes.iter())
+        .cartesian_product(tool_result.result.cwes.0.iter())
         .any(
             |(truth_cwe, tool_cwe)| match taxonomy.cwe_partial_cmp(truth_cwe, tool_cwe) {
                 Some(ord) => match ord {
@@ -279,9 +279,9 @@ fn evaluate_tool_result(
     let cwe_1000_match = truth_result
         .result
         .cwes
-        .cwes
+        .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.cwes.iter())
+        .cartesian_product(tool_result.result.cwes.0.iter())
         .any(|(truth_cwe, tool_cwe)| {
             if let Some(cwe_classes) = taxonomy.to_cwe_1000(truth_cwe) {
                 cwe_classes.iter().any(|cwe_class| {
@@ -340,7 +340,7 @@ fn evaluate_tool_results(
             }
         }
     }
-    for truth_cwe in &truth_result.result.cwes.cwes {
+    for truth_cwe in &truth_result.result.cwes.0 {
         if let Some(tool_results) = cwe_to_tool_results.get(truth_cwe) {
             for tool_result in tool_results {
                 tool_results_to_evaluate.insert(tool_result);
@@ -402,7 +402,7 @@ pub fn evaluate_tool(
         let path_to_tool_results = prepare_path_to_tool_results(tool_results);
         let mut cwe_to_tool_results: HashMap<&CWE, HashSet<&ToolResult>> = HashMap::new();
         for result in &tool_results.results {
-            for tool_cwe in &result.result.cwes.cwes {
+            for tool_cwe in &result.result.cwes.0 {
                 let entry = cwe_to_tool_results.entry(tool_cwe).or_default();
                 entry.insert(result);
             }

@@ -127,28 +127,24 @@ pub struct Location {
 pub struct Locations(pub Vec<Location>);
 
 #[derive(Serialize, Deserialize, Debug, PartialOrd, Ord, PartialEq, Eq, Hash, Clone, Copy)]
-pub struct CWE {
-    pub cwe: u64,
-}
+pub struct CWE(pub u64);
 
 impl fmt::Display for CWE {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "CWE-{}", self.cwe)
+        write!(f, "CWE-{}", self.0)
     }
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialOrd, Ord, PartialEq, Eq, Hash, Clone)]
-pub struct CWEs {
-    pub cwes: Vec<CWE>,
-}
+pub struct CWEs(pub Vec<CWE>);
 
 impl fmt::Display for CWEs {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if !self.cwes.is_empty() {
-            write!(f, "{}", self.cwes.first().unwrap())?
+        if !self.0.is_empty() {
+            write!(f, "{}", self.0.first().unwrap())?
         }
-        if self.cwes.len() > 1 {
-            for cwe in &self.cwes[1..self.cwes.len()] {
+        if self.0.len() > 1 {
+            for cwe in &self.0[1..self.0.len()] {
                 write!(f, ",{}", cwe)?;
             }
         }
@@ -331,21 +327,22 @@ impl TryFrom<&sarif::Result> for Result {
     type Error = ParseError;
 
     fn try_from(result: &sarif::Result) -> result::Result<Self, ParseError> {
-        let cwe: Vec<CWE> = result
+        let cwes: Vec<CWE> = result
             .rule_id
             .as_ref()
             .ok_or(ParseError)?
             .split(',')
             .map(|cwe| {
                 let cwe = cwe
+                    .trim()
                     .strip_prefix("CWE-")
                     .ok_or(ParseError)?
                     .parse()
                     .map_err(|_| ParseError)?;
-                result::Result::<CWE, ParseError>::Ok(CWE { cwe })
+                result::Result::<CWE, ParseError>::Ok(CWE(cwe))
             })
             .collect::<result::Result<Vec<CWE>, ParseError>>()?;
-        let cwes = CWEs { cwes: cwe };
+        let cwes = CWEs(cwes);
         let message = result.message.text.clone();
         let locations = result.locations.as_ref();
         let locations = match locations {

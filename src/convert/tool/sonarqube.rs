@@ -91,9 +91,9 @@ fn from_json(json: Value) -> Sarif {
         }
         let cwes = rules.rule_mapping[rule]
             .iter()
-            .map(|cwe| CWE { cwe: *cwe })
+            .map(|cwe| CWE(*cwe))
             .collect();
-        let cwes = CWEs { cwes };
+        let cwes = CWEs(cwes);
         let mut result_builder = ResultBuilder::default();
         let text_range = &issue.text_range;
         let region = RegionBuilder::default()

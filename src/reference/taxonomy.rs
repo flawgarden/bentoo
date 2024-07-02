@@ -43,14 +43,14 @@ impl Taxonomy {
                         let parent_number: u64 = relationship.target.id.as_ref().unwrap()[4..]
                             .parse()
                             .unwrap();
-                        let entry = parent.entry(CWE { cwe: number }).or_default();
-                        entry.insert(CWE { cwe: parent_number });
+                        let entry = parent.entry(CWE(number)).or_default();
+                        entry.insert(CWE(parent_number));
                     }
                     if number == 1000 && kinds[0] == "subset" {
                         let class_number: u64 = relationship.target.id.as_ref().unwrap()[4..]
                             .parse()
                             .unwrap();
-                        cwe_1000.insert(CWE { cwe: class_number });
+                        cwe_1000.insert(CWE(class_number));
                     }
                 }
             }
