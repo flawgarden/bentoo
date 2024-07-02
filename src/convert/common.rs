@@ -6,6 +6,8 @@ use serde_sarif::sarif::{
     ToolBuilder, ToolComponentBuilder,
 };
 
+use crate::reference::truth::{CWEs, CWE};
+
 pub trait RuleMap {
     fn collect_rules_map(
         notifications: Option<&Vec<ReportingDescriptor>>,
@@ -20,7 +22,7 @@ mod tool_sarif_impl {
         fn build_result(
             result: &serde_sarif::sarif::Result,
             rule_to_cwes: &HashMap<String, HashSet<u64>>,
-        ) -> Vec<serde_sarif::sarif::Result>;
+        ) -> Option<serde_sarif::sarif::Result>;
         fn build_locations(
             locations: &[serde_sarif::sarif::Location],
         ) -> Vec<serde_sarif::sarif::Location>;
@@ -38,8 +40,9 @@ where
             let results_opt = run.results.as_ref();
             if let Some(results_in) = results_opt {
                 for result in results_in {
-                    let mut result_out = Self::build_result(result, &rule_to_cwes);
-                    results_out.append(&mut result_out);
+                    if let Some(result_out) = Self::build_result(result, &rule_to_cwes) {
+                        results_out.push(result_out);
+                    }
                 }
             }
         }
@@ -49,26 +52,26 @@ where
     fn build_result(
         result: &serde_sarif::sarif::Result,
         rule_to_cwes: &HashMap<String, HashSet<u64>>,
-    ) -> Vec<serde_sarif::sarif::Result> {
+    ) -> Option<serde_sarif::sarif::Result> {
         if let Some(rule_id) = result.rule_id.as_ref() {
-            rule_to_cwes[rule_id]
-                .iter()
-                .filter_map(|cwe| {
-                    result.locations.as_ref().map(|locations| {
-                        let mut result_builder = ResultBuilder::default();
-                        assert!(rule_to_cwes.contains_key(rule_id));
-                        result_builder.rule_id("CWE-".to_string() + cwe.to_string().as_str());
-                        let locations_out = Self::build_locations(locations);
-                        result_builder.locations(locations_out);
-                        let empty_text = "".to_string();
-                        let message = result.message.text.as_ref().unwrap_or(&empty_text);
-                        let sarif_message =
-                            MessageBuilder::default().text(message).build().unwrap();
-                        result_builder.message(sarif_message);
-                        result_builder.build().unwrap()
-                    })
+            if let Some(cwes) = rule_to_cwes.get(rule_id) {
+                let cwes = cwes.iter().map(|cwe| CWE(*cwe)).collect();
+                let cwes = CWEs(cwes);
+                result.locations.as_ref().map(|locations| {
+                    let mut result_builder = ResultBuilder::default();
+                    assert!(rule_to_cwes.contains_key(rule_id));
+                    result_builder.rule_id(format!("{}", cwes));
+                    let locations_out = Self::build_locations(locations);
+                    result_builder.locations(locations_out);
+                    let empty_text = "".to_string();
+                    let message = result.message.text.as_ref().unwrap_or(&empty_text);
+                    let sarif_message = MessageBuilder::default().text(message).build().unwrap();
+                    result_builder.message(sarif_message);
+                    result_builder.build().unwrap()
                 })
-                .collect()
+            } else {
+                Default::default()
+            }
         } else {
             Default::default()
         }

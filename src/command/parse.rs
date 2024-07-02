@@ -67,10 +67,10 @@ impl<'a> Parser<'a> {
         if let Some(converted) = converted {
             let sarif: Option<Sarif> = serde_json::from_str(converted.as_str()).ok();
             if let Some(sarif) = sarif {
+                serde_json::to_writer_pretty(directory.sarif_file_write(), &sarif).unwrap();
                 let result = truth::ToolResults::try_from(&sarif);
                 if result.is_ok() {
                     metadata.parsed = ParseStatus::Yes;
-                    serde_json::to_writer_pretty(directory.sarif_file_write(), &sarif).unwrap();
                     directory.metadata_write(&metadata);
                     return;
                 }

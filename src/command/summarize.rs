@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     fs::{self, File},
     path::{Path, PathBuf},
     time::Duration,
@@ -12,7 +12,7 @@ use crate::{
     command::compare::evaluate_tool,
     reference::{
         taxonomy::{Taxonomy, TaxonomyVersion},
-        truth::{self, Kind, ToolResults, TruthResults},
+        truth::{self, CWEs, Kind, ToolResults, TruthResults},
     },
     run::{
         description::{
@@ -369,7 +369,7 @@ impl<'s> Summarizer<'s> {
         tool_result
             .result
             .iter()
-            .into_group_map_by(|result| result.expected_result.expected_cwe)
+            .into_group_map_by(|result| result.expected_result.expected_cwe.clone())
             .into_iter()
             .map(|(cwe, results)| {
                 let (minimal_matches, matches) = results
@@ -388,7 +388,7 @@ impl<'s> Summarizer<'s> {
                     })
                     .unzip();
                 NamedSummaryCard {
-                    name: format!("CWE-{}", cwe),
+                    name: format!("{}", cwe),
                     summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
                 }
             })
@@ -403,22 +403,29 @@ impl<'s> Summarizer<'s> {
             .result
             .iter()
             .filter_map(|result| {
-                match self.taxonomy.to_cwe_1000(&truth::CWE {
-                    cwe: result.expected_result.expected_cwe,
-                }) {
+                let cwes_1000 = result
+                    .expected_result
+                    .expected_cwe
+                    .0
+                    .iter()
+                    .map(|cwe| match self.taxonomy.to_cwe_1000(cwe) {
+                        Some(cwes_1000) => cwes_1000.clone(),
+                        None => HashSet::default(),
+                    })
+                    .reduce(|x, y| x.union(&y).cloned().collect());
+                match cwes_1000 {
                     Some(cwes_1000) => {
                         if cwes_1000.is_empty() {
                             None
                         } else {
-                            let mut cwes_1000_list = cwes_1000.iter().collect_vec();
-                            cwes_1000_list.sort();
-                            Some((result, *cwes_1000_list.iter().next_back().unwrap()))
+                            let cwes_1000_list = cwes_1000.iter().cloned().collect_vec();
+                            Some((result, cwes_1000_list))
                         }
                     }
                     None => None,
                 }
             })
-            .into_group_map_by(|(_result, cwe_1000)| cwe_1000.cwe)
+            .into_group_map_by(|(_result, cwe_1000)| cwe_1000.clone())
             .into_iter()
             .map(|(cwe, results)| {
                 (
@@ -446,7 +453,7 @@ impl<'s> Summarizer<'s> {
                     })
                     .unzip();
                 NamedSummaryCard {
-                    name: format!("CWE-{}", cwe),
+                    name: format!("{}", CWEs(cwe.clone())),
                     summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
                 }
             })

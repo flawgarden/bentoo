@@ -8,6 +8,8 @@ use serde_sarif::sarif::{
     ToolComponentBuilder,
 };
 
+use crate::reference::truth::{CWEs, CWE};
+
 #[derive(Debug, Deserialize)]
 struct RuleMap {
     pub rule_mapping: HashMap<String, Vec<u64>>,
@@ -87,41 +89,44 @@ fn from_json(json: Value) -> Sarif {
         if !rules.rule_mapping.contains_key(rule) {
             continue;
         }
-        for cwe in &rules.rule_mapping[rule] {
-            let mut result_builder = ResultBuilder::default();
-            let text_range = &issue.text_range;
-            let region = RegionBuilder::default()
-                .start_line(text_range.start_line)
-                .end_line(text_range.end_line)
-                .start_column(text_range.start_offset)
-                .end_column(text_range.end_offset)
-                .build()
-                .unwrap();
-            let path = issue.component.split_once(':').unwrap().1;
-            let artifact = ArtifactLocationBuilder::default()
-                .uri(path)
-                .build()
-                .unwrap();
-            let location = PhysicalLocationBuilder::default()
-                .artifact_location(artifact)
-                .region(region)
-                .build()
-                .unwrap();
-            let location = LocationBuilder::default()
-                .physical_location(location)
-                .build()
-                .unwrap();
-            result_builder.locations(vec![location]);
-            let sarif_message = MessageBuilder::default()
-                .text(&issue.message)
-                .build()
-                .unwrap();
-            result_builder.message(sarif_message);
+        let cwes = rules.rule_mapping[rule]
+            .iter()
+            .map(|cwe| CWE(*cwe))
+            .collect();
+        let cwes = CWEs(cwes);
+        let mut result_builder = ResultBuilder::default();
+        let text_range = &issue.text_range;
+        let region = RegionBuilder::default()
+            .start_line(text_range.start_line)
+            .end_line(text_range.end_line)
+            .start_column(text_range.start_offset)
+            .end_column(text_range.end_offset)
+            .build()
+            .unwrap();
+        let path = issue.component.split_once(':').unwrap().1;
+        let artifact = ArtifactLocationBuilder::default()
+            .uri(path)
+            .build()
+            .unwrap();
+        let location = PhysicalLocationBuilder::default()
+            .artifact_location(artifact)
+            .region(region)
+            .build()
+            .unwrap();
+        let location = LocationBuilder::default()
+            .physical_location(location)
+            .build()
+            .unwrap();
+        result_builder.locations(vec![location]);
+        let sarif_message = MessageBuilder::default()
+            .text(&issue.message)
+            .build()
+            .unwrap();
+        result_builder.message(sarif_message);
 
-            let cwe = format!("CWE-{}", cwe);
-            result_builder.rule_id(cwe);
-            results.push(result_builder.build().unwrap());
-        }
+        let cwe = format!("{}", cwes);
+        result_builder.rule_id(cwe);
+        results.push(result_builder.build().unwrap());
     }
     let tool = ToolBuilder::default()
         .driver(
