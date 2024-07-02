@@ -53,6 +53,9 @@ enum Command {
         #[arg(long)]
         /// Timeout for each run of each tool in seconds
         timeout: Option<u64>,
+        #[arg(long)]
+        /// Isolate the whole root directory instead of the project one
+        isolate_root: bool,
     },
     /// Parse tools' output for further evaluation
     Parse {
@@ -94,6 +97,9 @@ enum Command {
         #[arg(long)]
         /// Timeout for each run of each tool in seconds
         timeout: Option<u64>,
+        #[arg(long)]
+        /// Isolate the whole root directory instead of the project one
+        isolate_root: bool,
     },
 }
 
@@ -122,10 +128,18 @@ fn main() {
             runs,
             output,
             timeout,
+            isolate_root,
         } => {
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            run::Runner::new(&runs, &tools, timeout.map(Duration::from_secs), output).run_all();
+            run::Runner::new(
+                &runs,
+                &tools,
+                timeout.map(Duration::from_secs),
+                output,
+                isolate_root,
+            )
+            .run_all();
         }
         Command::Parse {
             tools,
@@ -152,10 +166,11 @@ fn main() {
             runs,
             output,
             timeout,
+            isolate_root,
         } => {
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            bench::bench_all(runs, tools, output, timeout);
+            bench::bench_all(runs, tools, output, timeout, isolate_root);
         }
     }
 }
