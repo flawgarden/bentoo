@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use serde_sarif::sarif::Sarif;
 
-use crate::convert::tool::{codeql, insider, semgrep, snyk, sonarqube};
+use crate::convert::tool::{bearer, codeql, insider, semgrep, snyk, sonarqube};
 
 pub fn convert_from(format: String, file: PathBuf) -> Sarif {
     match format.as_str() {
@@ -11,6 +11,7 @@ pub fn convert_from(format: String, file: PathBuf) -> Sarif {
         "snyk" => snyk::from_file(file.as_path()),
         "semgrep" => semgrep::from_file(file.as_path()),
         "sonarqube" => sonarqube::from_file(file.as_path()),
+        "bearer" => bearer::from_file(file.as_path()),
         _ => {
             panic!("Error: unknown tool");
         }

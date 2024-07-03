@@ -26,6 +26,11 @@ files_14=(
     "SonarQube_Java.err"
     "SonarQube_Java.out"
     "SonarQube_Java.metadata"
+    "Bearer_Java.json"
+    "Bearer_Java.sarif"
+    "Bearer_Java.err"
+    "Bearer_Java.out"
+    "Bearer_Java.metadata"
     "truth.sarif"
 )
 
@@ -50,6 +55,11 @@ files_16=(
     "SonarQube_Java.err"
     "SonarQube_Java.out"
     "SonarQube_Java.metadata"
+    "Bearer_Java.json"
+    "Bearer_Java.sarif"
+    "Bearer_Java.err"
+    "Bearer_Java.out"
+    "Bearer_Java.metadata"
     "truth.sarif"
 )
 
