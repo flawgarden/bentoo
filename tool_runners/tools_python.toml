@@ -15,3 +15,12 @@ parse_command = { command = "bentoo", args = "convert semgrep" }
 [[tools.configs]]
 name = "Python"
 args = ""
+
+[[tools]]
+script = "bearer.sh"
+name = "Bearer"
+parse_command = { command = "bentoo", args = "convert bearer" }
+
+[[tools.configs]]
+name = "Python"
+args = ""
