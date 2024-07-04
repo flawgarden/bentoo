@@ -1,1421 +1,2666 @@
 {
   "rule_mapping": {
-    "S2225": [
-      476
-    ],
-    "S5328": [
-      330,
-      340
-    ],
-    "S3330": [
-      1004
-    ],
-    "S5604": [
-      250
-    ],
-    "S6690": [
-      259,
-      798
-    ],
-    "S5594": [
-      926
-    ],
-    "S6839": [
-      113,
-      20
-    ],
-    "S6652": [
-      259,
-      798
-    ],
-    "S4423": [
-      295,
-      326,
-      327
-    ],
-    "S6868": [
-      284
-    ],
-    "S6407": [
-      200,
-      319
-    ],
-    "S2637": [
-      476
-    ],
-    "S6380": [
-      668
-    ],
-    "S5131": [
-      79
-    ],
-    "S6717": [
-      259,
-      798
-    ],
-    "S6275": [
-      311
-    ],
-    "S6721": [
-      259,
-      798
-    ],
-    "S5814": [
-      120
-    ],
-    "S4434": [
-      502
-    ],
-    "S5757": [
-      532
-    ],
-    "S128": [
-      484
-    ],
-    "S2220": [
-      476
-    ],
-    "S4507": [
-      489,
-      215
-    ],
-    "S6399": [
-      91,
-      20
-    ],
-    "S5167": [
-      113,
-      20
-    ],
-    "S2583": [
-      489,
-      570,
-      571
-    ],
-    "SysOwnedFunctions": [
-      269,
-      270
-    ],
-    "S6429": [
-      284
-    ],
-    "S4721": [
-      78
-    ],
-    "S6361": [
-      1220
-    ],
-    "S6249": [
-      319
-    ],
-    "S1081": [
-      676,
-      119
-    ],
-    "S3367": [
-      104
-    ],
-    "S6341": [
-      95,
-      94,
-      79
-    ],
-    "S6648": [
-      200,
-      532
-    ],
-    "S6268": [
-      79
-    ],
-    "S2681": [
-      483
-    ],
-    "S1486": [
-      489
-    ],
-    "S4684": [
-      915
-    ],
-    "S6502": [
-      250,
-      284
-    ],
-    "S6444": [
-      400,
-      1333
-    ],
-    "S1948": [
-      594
-    ],
-    "S2222": [
-      459
-    ],
-    "S1874": [
-      477
-    ],
-    "S5816": [
-      120
-    ],
-    "S6463": [
-      284
-    ],
-    "S6334": [
-      259,
-      798
-    ],
-    "S3649": [
-      89,
-      20
-    ],
-    "S2598": [
-      400,
-      434
-    ],
-    "S888": [
-      835
-    ],
-    "S1121": [
-      481
-    ],
-    "S6781": [
-      259,
-      798
-    ],
-    "S1104": [
-      493
-    ],
-    "S5392": [
-      89,
-      20
-    ],
-    "S6687": [
-      259,
-      798
-    ],
-    "S1206": [
-      581
-    ],
-    "S2612": [
-      266,
-      732
-    ],
-    "S5496": [
-      77,
-      94
-    ],
-    "S6697": [
-      259,
-      798
-    ],
-    "S5308": [
-      272,
-      252
-    ],
-    "S4512": [
-      915
-    ],
-    "S5883": [
-      88,
-      20
-    ],
-    "S5445": [
-      377,
-      379
-    ],
-    "S1872": [
-      486
-    ],
-    "S939": [
-      469
-    ],
-    "S6692": [
-      259,
-      798
-    ],
-    "S112": [
-      397
-    ],
-    "S1053": [
-      120
-    ],
-    "S6869": [
-      770
-    ],
-    "S2589": [
-      489,
-      570,
-      571
-    ],
-    "S6765": [
-      259,
-      798
-    ],
-    "S6398": [
-      20,
-      76
-    ],
-    "S5736": [
-      200
-    ],
-    "S1143": [
-      584
-    ],
-    "S6433": [
-      668
-    ],
-    "S6431": [
-      653
-    ],
-    "S3374": [
-      102
-    ],
-    "S6549": [
-      20,
-      22
-    ],
-    "S1049": [
-      391
-    ],
-    "S6736": [
-      259,
-      798
-    ],
-    "S6752": [
-      259,
-      798
-    ],
-    "S6387": [
-      266
-    ],
-    "S1166": [
-      778
-    ],
-    "S6505": [
-      506,
-      829
-    ],
-    "S3329": [
-      780,
-      327
-    ],
-    "S2931": [
-      459
-    ],
-    "S6699": [
-      259,
-      798
-    ],
-    "S6783": [
-      259,
-      798
-    ],
-    "S6785": [
-      770
-    ],
-    "S961": [
-      628
-    ],
-    "S5320": [
-      927
-    ],
-    "S5849": [
-      250,
-      266
-    ],
-    "S6255": [
-      308
-    ],
-    "S4036": [
-      426,
-      427
-    ],
-    "S1041": [
-      391
-    ],
-    "S2778": [
-      497
-    ],
-    "S6377": [
-      347
-    ],
-    "S2819": [
-      345
-    ],
-    "S6706": [
-      259,
-      798
-    ],
-    "S836": [
-      457
-    ],
-    "S2755": [
-      827,
-      611
-    ],
-    "S6333": [
-      284
-    ],
-    "S2087": [
-      261
-    ],
-    "S2774": [
-      615
-    ],
-    "S6639": [
-      789
-    ],
-    "S4639": [
-      20,
-      22
-    ],
-    "S6337": [
-      259,
-      798
-    ],
-    "S5314": [
-      367
-    ],
-    "S6732": [
-      259,
-      798
-    ],
-    "S5135": [
-      20,
-      502
-    ],
-    "S6507": [
-      412,
-      413
-    ],
-    "S2952": [
-      459
-    ],
-    "S6069": [
-      676,
-      119
-    ],
-    "S6437": [
-      259,
-      798
-    ],
-    "S5693": [
-      400,
-      770
-    ],
-    "S5542": [
-      780,
-      327
-    ],
-    "S4433": [
-      521
-    ],
-    "S6698": [
-      259,
-      798
-    ],
-    "S6771": [
-      259,
-      798
-    ],
-    "S6292": [
-      259,
-      798
-    ],
-    "S6474": [
-      345
-    ],
-    "S2083": [
-      20,
-      22
-    ],
-    "S5527": [
-      297
-    ],
-    "S5334": [
-      20,
-      95
-    ],
-    "S6694": [
-      259,
-      798
-    ],
-    "S6751": [
-      259,
-      798
-    ],
-    "S5750": [
-      525
-    ],
-    "S6680": [
-      606
-    ],
-    "S1854": [
-      563
-    ],
-    "S6753": [
-      259,
-      798
-    ],
-    "S2809": [
-      285,
-      862
-    ],
-    "S2486": [
-      390
-    ],
-    "S6376": [
-      776
-    ],
-    "S6270": [
-      732,
-      284
-    ],
-    "S2084": [
-      537
-    ],
-    "S3752": [
-      352
-    ],
-    "S3291": [
-      89
-    ],
-    "S1174": [
-      583
-    ],
-    "S6864": [
-      770
-    ],
-    "S6686": [
-      259,
-      798
-    ],
-    "S6722": [
-      259,
-      798
-    ],
-    "S5146": [
-      601,
-      20
-    ],
-    "S6704": [
-      259,
-      798
-    ],
-    "S6301": [
-      321,
-      311
-    ],
-    "S6705": [
-      259,
-      798
-    ],
-    "S2168": [
-      609
-    ],
-    "S5042": [
-      409
-    ],
-    "S6768": [
-      259,
-      798
-    ],
-    "S6287": [
-      20,
-      348
-    ],
-    "S4828": [
-      283
-    ],
-    "S3807": [
-      476
-    ],
-    "S5815": [
-      120
-    ],
-    "S6656": [
-      200,
-      532
-    ],
-    "S941": [
-      131,
-      788
-    ],
-    "S6404": [
-      284
-    ],
-    "S6760": [
-      259,
-      798
-    ],
-    "S2615": [
-      134
-    ],
-    "S1169": [
-      391
-    ],
-    "S6764": [
-      259,
-      798
-    ],
-    "S6731": [
-      259,
-      798
-    ],
-    "S3584": [
-      401
-    ],
-    "S6776": [
-      489,
-      209
-    ],
-    "S3274": [
-      829
-    ],
-    "S5766": [
-      502
-    ],
-    "S3520": [
-      415
-    ],
-    "S5738": [
-      477
-    ],
-    "S5813": [
-      120
-    ],
-    "S5832": [
-      304
-    ],
-    "S6418": [
-      798
-    ],
-    "S2091": [
-      643,
-      20
-    ],
-    "S6719": [
-      259,
-      798
-    ],
-    "S5852": [
-      400,
-      1333
-    ],
-    "S6472": [
-      522
-    ],
-    "S6723": [
-      259,
-      798
-    ],
-    "S5301": [
-      502
-    ],
-    "S6327": [
-      311
-    ],
-    "S5689": [
-      200
-    ],
-    "S6782": [
-      259,
-      798
-    ],
-    "S6281": [
-      284
-    ],
-    "S6374": [
-      827,
-      611
-    ],
-    "S6403": [
-      319,
-      311
-    ],
-    "S6359": [
-      732
-    ],
-    "S6265": [
-      732,
-      284
-    ],
-    "S5322": [
-      925,
-      926
-    ],
-    "S5696": [
-      79
-    ],
-    "S2210": [
-      123
-    ],
-    "S3135": [
-      467
-    ],
-    "S2215": [
-      467
-    ],
-    "S6363": [
-      79
-    ],
-    "S6373": [
-      827,
-      611
-    ],
-    "S5659": [
-      347
-    ],
-    "S6470": [
-      497,
-      668
-    ],
-    "S1967": [
-      704
-    ],
-    "S5808": [
-      285
-    ],
-    "S3334": [
-      16
-    ],
-    "S5332": [
-      200,
-      319
-    ],
-    "S2053": [
-      760,
-      759
-    ],
-    "S6688": [
-      259,
-      798
-    ],
-    "S6762": [
-      259,
-      798
-    ],
-    "S6506": [
-      757
-    ],
-    "S6547": [
-      20,
-      454
-    ],
-    "S2073": [
-      780
-    ],
-    "S1182": [
-      580
-    ],
-    "S6299": [
-      79
-    ],
-    "S5145": [
-      20,
-      117
-    ],
-    "S3318": [
-      501
-    ],
-    "S3529": [
-      416
-    ],
-    "S6332": [
-      311
-    ],
-    "S5324": [
-      312
-    ],
-    "S905": [
-      482
-    ],
-    "S6695": [
-      259,
-      798
-    ],
-    "S4347": [
-      336,
-      337,
-      330,
-      332
-    ],
-    "S6701": [
-      259,
-      798
-    ],
-    "S6321": [
-      284
-    ],
-    "S2015": [
-      457
-    ],
-    "S1523": [
-      470,
-      95
-    ],
-    "S5804": [
-      200
-    ],
-    "S6350": [
-      88
-    ],
-    "S5876": [
-      384
-    ],
-    "S5148": [
-      1022
-    ],
-    "S6109": [
-      1321
-    ],
-    "S6713": [
-      259,
-      798
-    ],
-    "S5725": [
-      353
-    ],
-    "S6689": [
-      259,
-      798
-    ],
-    "S6375": [
-      266
-    ],
-    "S6300": [
-      311
-    ],
-    "S2655": [
-      245
-    ],
-    "S2221": [
-      396
-    ],
-    "S3921": [
-      704
-    ],
-    "S2631": [
-      400,
-      20,
-      1333
-    ],
-    "S5753": [
-      79
-    ],
-    "S2384": [
-      374,
-      375
-    ],
-    "S6304": [
-      732,
-      284
-    ],
-    "S6381": [
-      266
-    ],
-    "S2608": [
-      807
-    ],
-    "COBOL.DisplayStatementUsageCheck": [
-      489
-    ],
-    "S6335": [
-      259,
-      798
-    ],
-    "S5443": [
-      377,
-      379
-    ],
-    "S1573": [
-      459
-    ],
-    "S2669": [
-      457
-    ],
-    "S6390": [
-      400,
-      20
-    ],
-    "S6105": [
-      601,
-      20
-    ],
-    "S6400": [
-      284
-    ],
-    "S6471": [
-      284
-    ],
-    "S5824": [
-      377
-    ],
-    "S2184": [
-      190
-    ],
-    "S6405": [
-      272,
-      266,
-      269
-    ],
-    "S1181": [
-      396
-    ],
-    "S2447": [
-      476
-    ],
-    "S6710": [
-      259,
-      798
-    ],
-    "AvoidHtmlCommentCheck": [
-      615
-    ],
-    "S5847": [
-      367
-    ],
-    "S6288": [
-      522
-    ],
-    "S3371": [
-      89,
-      20
-    ],
-    "S2257": [
-      327
-    ],
-    "S1145": [
-      489,
-      570,
-      571
-    ],
-    "S1698": [
-      595,
-      597
-    ],
-    "S6336": [
-      259,
-      798
-    ],
-    "S1079": [
-      120,
-      676
-    ],
-    "S6718": [
-      259,
-      798
-    ],
-    "S1966": [
-      704
-    ],
-    "S6641": [
-      15
-    ],
-    "S5798": [
-      14
-    ],
-    "S6388": [
-      311
-    ],
-    "S6755": [
-      259,
-      798
-    ],
-    "S6428": [
-      284
-    ],
-    "S6410": [
-      327
-    ],
-    "S3519": [
-      193,
-      131,
-      788,
-      119,
-      121,
-      122
-    ],
-    "S4502": [
-      352
-    ],
-    "S6293": [
-      287
-    ],
-    "S4973": [
-      595,
-      597
-    ],
-    "S4792": [
-      532,
-      117
-    ],
-    "S4487": [
-      563
-    ],
-    "S6345": [
-      918
-    ],
-    "S6406": [
-      284
-    ],
-    "S6703": [
-      259,
-      798
-    ],
-    "S1998": [
-      374
-    ],
-    "S930": [
-      628
-    ],
-    "S2142": [
-      391
-    ],
-    "S1696": [
-      395
-    ],
-    "S2613": [
-      131
-    ],
-    "S6173": [
-      470
-    ],
-    "S1444": [
-      500
-    ],
-    "S1493": [
-      89
-    ],
-    "S5273": [
-      121,
-      122,
-      676
-    ],
-    "S1725": [
-      459
-    ],
-    "S2095": [
-      459,
-      772
-    ],
-    "S5547": [
-      326,
-      327
-    ],
-    "S6348": [
-      79
-    ],
-    "S2930": [
-      459
-    ],
-    "S2077": [
-      89,
-      20
-    ],
-    "S6290": [
-      259,
-      798
-    ],
-    "S6338": [
-      259,
-      798
-    ],
-    "S3655": [
-      476
-    ],
-    "S1114": [
-      568
-    ],
-    "S2445": [
-      412,
-      413
-    ],
-    "S3275": [
-      329
-    ],
-    "S4790": [
-      1240
-    ],
-    "S4426": [
-      326
-    ],
-    "S2575": [
-      352,
-      80,
-      79
-    ],
-    "S2254": [
-      807
-    ],
-    "S6245": [
-      311
-    ],
-    "S5344": [
-      256,
-      916
-    ],
-    "S6777": [
-      259,
-      798
-    ],
-    "S5782": [
-      131,
-      788,
-      119
-    ],
-    "S2647": [
-      522
-    ],
-    "S6497": [
-      1329
-    ],
-    "S6096": [
-      20,
-      22
-    ],
-    "S864": [
-      783
-    ],
-    "S5732": [
-      451
-    ],
-    "S2068": [
-      259,
-      798
-    ],
-    "S6691": [
-      259,
-      798
-    ],
-    "S131": [
-      478
-    ],
-    "S6382": [
-      668
-    ],
-    "S2277": [
-      780,
-      327
-    ],
-    "S2278": [
-      326,
-      327
-    ],
-    "S6183": [
-      195
-    ],
-    "S6432": [
-      323
-    ],
-    "S5802": [
-      243
-    ],
-    "S6910": [
-      259,
-      798
-    ],
-    "S6708": [
-      259,
-      798
-    ],
-    "S2115": [
-      521
-    ],
-    "S6733": [
-      259,
-      798
-    ],
-    "S6784": [
-      259,
-      798
-    ],
-    "S6383": [
-      668
-    ],
-    "S5147": [
-      20,
-      943
-    ],
-    "S4425": [
-      704
-    ],
-    "S2657": [
-      578
-    ],
-    "S4830": [
-      295
-    ],
-    "S6329": [
-      668,
-      284
-    ],
-    "S2076": [
-      20,
-      78
-    ],
-    "S6308": [
-      311
-    ],
-    "S6379": [
-      284
-    ],
-    "S1480": [
-      459
-    ],
-    "S3333": [
-      36,
-      23
-    ],
-    "S1630": [
-      459
-    ],
-    "S6330": [
-      311
-    ],
-    "S1989": [
-      600
-    ],
-    "S5247": [
-      79
-    ],
-    "S2435": [
-      91
-    ],
-    "S6720": [
-      259,
-      798
-    ],
-    "S5144": [
-      20,
-      918
-    ],
-    "S6342": [
-      95,
-      94,
-      79
-    ],
-    "S6430": [
-      284
-    ],
-    "S6779": [
-      259,
-      798
-    ],
-    "S3884": [
-      648
-    ],
-    "S2441": [
-      579
-    ],
-    "S899": [
-      754
-    ],
-    "S2652": [
-      576
-    ],
-    "S6469": [
-      732
-    ],
-    "S5485": [
-      476
-    ],
-    "S6319": [
-      311
-    ],
-    "S6684": [
-      259,
-      798
-    ],
-    "S1763": [
-      561
-    ],
-    "S6504": [
-      522
-    ],
-    "S5691": [
-      538
-    ],
-    "S4601": [
-      285,
-      287
-    ],
-    "S6385": [
-      266
-    ],
-    "S5982": [
-      252
-    ],
-    "S2245": [
-      1241,
-      330,
-      338,
-      326
-    ],
-    "S6291": [
-      311
-    ],
-    "S2578": [
-      352,
-      79
-    ],
-    "S6693": [
-      259,
-      798
-    ],
-    "S6696": [
-      259,
-      798
-    ],
-    "S1944": [
-      704,
-      588
-    ],
-    "S6317": [
-      269
-    ],
-    "S2259": [
-      476
-    ],
-    "S6402": [
-      345,
-      353
-    ],
-    "S2654": [
-      574,
-      383
-    ],
-    "S2078": [
-      90,
-      20
-    ],
-    "S6739": [
-      259,
-      798
-    ],
-    "S1134": [
-      546
-    ],
-    "S6409": [
-      668
-    ],
-    "S6786": [
-      200
-    ],
-    "S6758": [
-      259,
-      798
-    ],
-    "S6865": [
-      306
-    ],
-    "S5801": [
-      120
-    ],
-    "S3518": [
-      369
-    ],
-    "S5486": [
-      764
-    ],
-    "S6108": [
-      1321
-    ],
-    "S6769": [
-      259,
-      798
-    ],
-    "S874": [
-      682
-    ],
-    "S6303": [
-      311
-    ],
-    "S6870": [
-      770
-    ],
-    "S6362": [
-      79
-    ],
-    "S2092": [
-      315,
-      614,
-      311
-    ],
-    "S6258": [
-      778
-    ],
-    "S935": [
-      394
-    ],
-    "S6700": [
-      259,
-      798
-    ],
-    "S5335": [
-      97,
-      98,
-      20,
-      829
-    ],
-    "S1135": [
-      546
-    ],
-    "S3335": [
-      305
-    ],
-    "S6358": [
-      922
-    ],
-    "S6302": [
-      732,
-      284
-    ],
-    "S6389": [
-      94
-    ],
-    "S1147": [
-      382
-    ],
-    "S6773": [
-      259,
-      798
-    ],
-    "S6384": [
-      20
-    ],
-    "S6473": [
-      284
-    ],
-    "S2656": [
-      577,
-      246
-    ],
-    "S5122": [
-      346,
-      942
-    ],
-    "S6702": [
-      259,
-      798
-    ],
-    "S6408": [
-      284
-    ],
-    "S1111": [
-      586
-    ],
-    "S5773": [
-      502
-    ],
-    "S2386": [
-      582,
-      607
-    ],
-    "S1217": [
-      572
-    ],
-    "S4544": [
-      502
-    ]
+    "S6507": {
+      "title": "Blocks should not be synchronized on local variables",
+      "cwe": [
+        412,
+        413
+      ]
+    },
+    "S1174": {
+      "title": "\"Object.finalize()\" should remain protected (versus public) when overriding",
+      "cwe": [
+        583
+      ]
+    },
+    "S1948": {
+      "title": "Fields in a \"Serializable\" class should either be transient or serializable",
+      "cwe": [
+        594
+      ]
+    },
+    "S5144": {
+      "title": "Server-side requests should not be vulnerable to forging attacks",
+      "cwe": [
+        20,
+        918
+      ]
+    },
+    "S5527": {
+      "title": "Server hostnames should be verified during SSL/TLS connections",
+      "cwe": [
+        297
+      ]
+    },
+    "S6732": {
+      "title": "Stripe Keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1725": {
+      "title": "Open files should be closed explicitly",
+      "cwe": [
+        459
+      ]
+    },
+    "S5982": {
+      "title": "Changing working directories without verifying the success is security-sensitive",
+      "cwe": [
+        252
+      ]
+    },
+    "S6704": {
+      "title": "Riot API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1145": {
+      "title": "Useless \"if(true) {...}\" and \"if(false){...}\" blocks should be removed",
+      "cwe": [
+        489,
+        570,
+        571
+      ]
+    },
+    "S6358": {
+      "title": "Allowing application backups is security-sensitive",
+      "cwe": [
+        922
+      ]
+    },
+    "S6703": {
+      "title": "Database passwords should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6333": {
+      "title": "Creating public APIs is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S5314": {
+      "title": "Blocking functions should not be called inside critical sections",
+      "cwe": [
+        367
+      ]
+    },
+    "S5542": {
+      "title": "Encryption algorithms should be used with secure mode and padding scheme",
+      "cwe": [
+        780,
+        327
+      ]
+    },
+    "S6768": {
+      "title": "Typeform tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1111": {
+      "title": "The \"Object.finalize()\" method should not be called",
+      "cwe": [
+        586
+      ]
+    },
+    "S6334": {
+      "title": "Google API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6302": {
+      "title": "Policies granting all privileges are security-sensitive",
+      "cwe": [
+        732,
+        284
+      ]
+    },
+    "S941": {
+      "title": "Pointer arithmetic should not be used",
+      "cwe": [
+        131,
+        788
+      ]
+    },
+    "S4036": {
+      "title": "Searching OS commands in PATH is security-sensitive",
+      "cwe": [
+        426,
+        427
+      ]
+    },
+    "S5322": {
+      "title": "Receiving intents is security-sensitive",
+      "cwe": [
+        925,
+        926
+      ]
+    },
+    "S6108": {
+      "title": "Recursively merging or assigning object properties is security-sensitive",
+      "cwe": [
+        1321
+      ]
+    },
+    "S6359": {
+      "title": "Custom permissions should not be defined in the \"android.permission\" namespace",
+      "cwe": [
+        732
+      ]
+    },
+    "S5725": {
+      "title": "Using remote artifacts without integrity checks is security-sensitive",
+      "cwe": [
+        353
+      ]
+    },
+    "S1143": {
+      "title": "Jump statements should not occur in \"finally\" blocks",
+      "cwe": [
+        584
+      ]
+    },
+    "S6702": {
+      "title": "SonarQube tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6705": {
+      "title": "OpenWeather API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6361": {
+      "title": "Defining a single permission for read and write access of content providers is security-sensitive",
+      "cwe": [
+        1220
+      ]
+    },
+    "S128": {
+      "title": "Switch cases should end with an unconditional \"break\" statement",
+      "cwe": [
+        484
+      ]
+    },
+    "S3884": {
+      "title": "\"CoSetProxyBlanket\" and \"CoInitializeSecurity\" should not be used",
+      "cwe": [
+        648
+      ]
+    },
+    "S6733": {
+      "title": "Airtable API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1181": {
+      "title": "Throwable and Error should not be caught",
+      "cwe": [
+        396
+      ]
+    },
+    "S5145": {
+      "title": "Logging should not be vulnerable to injection attacks",
+      "cwe": [
+        20,
+        117
+      ]
+    },
+    "S6506": {
+      "title": "Allowing downgrades to a clear-text protocol is security-sensitive",
+      "cwe": [
+        757
+      ]
+    },
+    "S6350": {
+      "title": "Constructing arguments of system commands from user input is security-sensitive",
+      "cwe": [
+        88
+      ]
+    },
+    "S6760": {
+      "title": "Yandex tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6304": {
+      "title": "Policies granting access to all resources of an account are security-sensitive",
+      "cwe": [
+        732,
+        284
+      ]
+    },
+    "S1121": {
+      "title": "Assignments should not be made from within sub-expressions",
+      "cwe": [
+        481
+      ]
+    },
+    "S6109": {
+      "title": "Objects should not be vulnerable to Prototype Pollution attacks",
+      "cwe": [
+        1321
+      ]
+    },
+    "S3649": {
+      "title": "Database queries should not be vulnerable to injection attacks",
+      "cwe": [
+        89,
+        20
+      ]
+    },
+    "S6303": {
+      "title": "Using unencrypted RDS DB resources is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S5324": {
+      "title": "Accessing Android external storage is security-sensitive",
+      "cwe": [
+        312
+      ]
+    },
+    "S6758": {
+      "title": "NPM access tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6751": {
+      "title": "PyPI tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5782": {
+      "title": "POSIX functions should not be called with arguments that trigger buffer overflows",
+      "cwe": [
+        131,
+        788,
+        119
+      ]
+    },
+    "S6335": {
+      "title": "Google Cloud service accounts keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2598": {
+      "title": "File uploads should be restricted",
+      "cwe": [
+        400,
+        434
+      ]
+    },
+    "S6332": {
+      "title": "Using unencrypted EFS file systems is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S1573": {
+      "title": "Explicitly opened cursors should be closed",
+      "cwe": [
+        459
+      ]
+    },
+    "S6769": {
+      "title": "Shopify tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6429": {
+      "title": "Exposing Docker sockets is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S2277": {
+      "title": "Cryptographic RSA algorithms should always incorporate OAEP (Optimal Asymmetric Encryption Padding)",
+      "cwe": [
+        780,
+        327
+      ]
+    },
+    "S5604": {
+      "title": "Using intrusive permissions is security-sensitive",
+      "cwe": [
+        250
+      ]
+    },
+    "S2613": {
+      "title": "Negative memory allocations should not be made",
+      "cwe": [
+        131
+      ]
+    },
+    "S6418": {
+      "title": "Hard-coded secrets are security-sensitive",
+      "cwe": [
+        798
+      ]
+    },
+    "S2073": {
+      "title": "RSA encryption should be used with Optimal Asymmetric Encryption Padding",
+      "cwe": [
+        780
+      ]
+    },
+    "S3367": {
+      "title": "\"ActionForm\" beans should extend validator classes",
+      "cwe": [
+        104
+      ]
+    },
+    "S2087": {
+      "title": "Weak encryption should not be used",
+      "cwe": [
+        261
+      ]
+    },
+    "S6249": {
+      "title": "Authorizing HTTP communications with S3 buckets is security-sensitive",
+      "cwe": [
+        319
+      ]
+    },
+    "S1053": {
+      "title": "The unbounded <cstring> functions should not be used",
+      "cwe": [
+        120
+      ]
+    },
+    "S3334": {
+      "title": "\"allow_url_fopen\" and \"allow_url_include\" should be disabled",
+      "cwe": [
+        16
+      ]
+    },
+    "S6474": {
+      "title": "Using remote artifacts without authenticity and integrity checks is security-sensitive",
+      "cwe": [
+        345
+      ]
+    },
+    "S2215": {
+      "title": "\"sizeof\" should not be used on a variable with pointer type",
+      "cwe": [
+        467
+      ]
+    },
+    "S6473": {
+      "title": "Exposing administration services is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S6641": {
+      "title": "Connection strings should not be vulnerable to injections attacks",
+      "cwe": [
+        15
+      ]
+    },
+    "S3333": {
+      "title": "\"open_basedir\" should limit file access",
+      "cwe": [
+        36,
+        23
+      ]
+    },
+    "S5659": {
+      "title": "JWT should be signed and verified with strong cipher algorithms",
+      "cwe": [
+        347
+      ]
+    },
+    "S2647": {
+      "title": "Basic authentication should not be used",
+      "cwe": [
+        522
+      ]
+    },
+    "S4544": {
+      "title": "Using unsafe Jackson deserialization configuration is security-sensitive",
+      "cwe": [
+        502
+      ]
+    },
+    "S5496": {
+      "title": "Server-side templates should not be vulnerable to injection attacks",
+      "cwe": [
+        77,
+        94
+      ]
+    },
+    "S6648": {
+      "title": "Secure strings and objects should not have default values",
+      "cwe": [
+        200,
+        532
+      ]
+    },
+    "S2486": {
+      "title": "Exceptions should not be ignored",
+      "cwe": [
+        390
+      ]
+    },
+    "S6684": {
+      "title": "Azure Subscription Keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5802": {
+      "title": "Changing directories improperly when using \"chroot\" is security-sensitive",
+      "cwe": [
+        243
+      ]
+    },
+    "S2278": {
+      "title": "Neither DES (Data Encryption Standard) nor DESede (3DES) should be used",
+      "cwe": [
+        326,
+        327
+      ]
+    },
+    "S6270": {
+      "title": "Policies authorizing public access to resources are security-sensitive",
+      "cwe": [
+        732,
+        284
+      ]
+    },
+    "S6410": {
+      "title": "Google Cloud load balancers SSL policies should not offer weak cipher suites",
+      "cwe": [
+        327
+      ]
+    },
+    "S4347": {
+      "title": "Secure random number generators should not output predictable values",
+      "cwe": [
+        336,
+        337,
+        330,
+        332
+      ]
+    },
+    "S2612": {
+      "title": "Setting loose POSIX file permissions is security-sensitive",
+      "cwe": [
+        266,
+        732
+      ]
+    },
+    "S6870": {
+      "title": "Storage limits should be enforced",
+      "cwe": [
+        770
+      ]
+    },
+    "S6428": {
+      "title": "Running containers in privileged mode is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S2615": {
+      "title": "Externally-provided format strings should be sanitized",
+      "cwe": [
+        134
+      ]
+    },
+    "S2225": {
+      "title": "\"toString()\" and \"clone()\" methods should not return null",
+      "cwe": [
+        476
+      ]
+    },
+    "S6444": {
+      "title": "Not specifying a timeout for regular expressions is security-sensitive",
+      "cwe": [
+        400,
+        1333
+      ]
+    },
+    "S2222": {
+      "title": "Locks should be released on all paths",
+      "cwe": [
+        459
+      ]
+    },
+    "S5804": {
+      "title": "Allowing user enumeration is security-sensitive",
+      "cwe": [
+        200
+      ]
+    },
+    "S6472": {
+      "title": "Using ENV or ARG to handle secrets is security-sensitive",
+      "cwe": [
+        522
+      ]
+    },
+    "S5693": {
+      "title": "Allowing requests with excessive content length is security-sensitive",
+      "cwe": [
+        400,
+        770
+      ]
+    },
+    "S5832": {
+      "title": "Account validity should be verified when authenticating users with PAM",
+      "cwe": [
+        304
+      ]
+    },
+    "S2445": {
+      "title": "Blocks should be synchronized on read-only fields",
+      "cwe": [
+        412,
+        413
+      ]
+    },
+    "S3335": {
+      "title": "\"cgi.force_redirect\" should be enabled",
+      "cwe": [
+        305
+      ]
+    },
+    "S5689": {
+      "title": "Disclosing fingerprints from web application technologies is security-sensitive",
+      "cwe": [
+        200
+      ]
+    },
+    "S4790": {
+      "title": "Using weak hashing algorithms is security-sensitive",
+      "cwe": [
+        1240
+      ]
+    },
+    "S2655": {
+      "title": "JEE applications should delegate connection management to the container",
+      "cwe": [
+        245
+      ]
+    },
+    "S6691": {
+      "title": "Google OAuth client secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S3921": {
+      "title": "Strings should only be moved to variables large enough to hold them without truncation",
+      "cwe": [
+        704
+      ]
+    },
+    "S6696": {
+      "title": "SendGrid keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2652": {
+      "title": "\"java.io\" should not be used from EJB's",
+      "cwe": [
+        576
+      ]
+    },
+    "S3584": {
+      "title": "Dynamically allocated memory should be released",
+      "cwe": [
+        401
+      ]
+    },
+    "S874": {
+      "title": "Bitwise operators should not be applied to signed operands",
+      "cwe": [
+        682
+      ]
+    },
+    "S6698": {
+      "title": "PostgreSQL database passwords should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2809": {
+      "title": "Using \"CALL TRANSACTION\" statements without an authority check is security-sensitive",
+      "cwe": [
+        285,
+        862
+      ]
+    },
+    "S6839": {
+      "title": "HTTP response headers should not be vulnerable to response splitting attacks",
+      "cwe": [
+        113,
+        20
+      ]
+    },
+    "S2637": {
+      "title": "\"@NonNull\" values should not be set to null",
+      "cwe": [
+        476
+      ]
+    },
+    "S2095": {
+      "title": "Resources should be closed",
+      "cwe": [
+        459,
+        772
+      ]
+    },
+    "S2608": {
+      "title": "Cookies and form values should not be relied on to make security decisions",
+      "cwe": [
+        807
+      ]
+    },
+    "S1079": {
+      "title": "\"scanf()\" and \"fscanf()\" format strings should specify a field width for the \"%s\" string placeholder",
+      "cwe": [
+        120,
+        676
+      ]
+    },
+    "S6432": {
+      "title": "Counter Mode initialization vectors should not be reused",
+      "cwe": [
+        323
+      ]
+    },
+    "S2092": {
+      "title": "Creating cookies without the \"secure\" flag is security-sensitive",
+      "cwe": [
+        315,
+        614,
+        311
+      ]
+    },
+    "S1041": {
+      "title": "There should be at least one exception handler to catch all otherwise unhandled exceptions",
+      "cwe": [
+        391
+      ]
+    },
+    "S6290": {
+      "title": "Amazon Web Services credentials should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2254": {
+      "title": "\"HttpServletRequest.getRequestedSessionId()\" should not be used",
+      "cwe": [
+        807
+      ]
+    },
+    "S6069": {
+      "title": "\"sprintf\" should not be used",
+      "cwe": [
+        676,
+        119
+      ]
+    },
+    "S6404": {
+      "title": "Granting public access to GCP resources is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S1874": {
+      "title": "\"@Deprecated\" code should not be used",
+      "cwe": [
+        477
+      ]
+    },
+    "S6299": {
+      "title": "Disabling Vue.js built-in escaping is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S6403": {
+      "title": "Creating GCP SQL instances without requiring TLS is security-sensitive",
+      "cwe": [
+        319,
+        311
+      ]
+    },
+    "S6255": {
+      "title": "Disabling S3 bucket MFA delete is security-sensitive",
+      "cwe": [
+        308
+      ]
+    },
+    "S4502": {
+      "title": "Disabling CSRF protections is security-sensitive",
+      "cwe": [
+        352
+      ]
+    },
+    "S2068": {
+      "title": "Hard-coded credentials are security-sensitive",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6864": {
+      "title": "Memory limits should be enforced",
+      "cwe": [
+        284
+      ]
+    },
+    "S6699": {
+      "title": "Spotify API secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6652": {
+      "title": "Sensitive secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S3318": {
+      "title": "Untrusted data should not be stored in sessions",
+      "cwe": [
+        501
+      ]
+    },
+    "S6697": {
+      "title": "MySQL database passwords should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S3329": {
+      "title": "Cipher Block Chaining IVs should be unpredictable",
+      "cwe": [
+        780,
+        327
+      ]
+    },
+    "S6469": {
+      "title": "Permissions of sensitive mount points should be restrictive",
+      "cwe": [
+        732
+      ]
+    },
+    "S5816": {
+      "title": "Using \"strncpy\" or \"wcsncpy\" is security-sensitive",
+      "cwe": [
+        120
+      ]
+    },
+    "S888": {
+      "title": "Equality operators should not be used in \"for\" loop termination conditions",
+      "cwe": [
+        835
+      ]
+    },
+    "S5485": {
+      "title": "Only valid arguments should be passed to stream functions",
+      "cwe": [
+        476
+      ]
+    },
+    "S1217": {
+      "title": "\"Thread.run()\" should not be called directly",
+      "cwe": [
+        572
+      ]
+    },
+    "S2654": {
+      "title": "JEE applications should not use threads or synchronization",
+      "cwe": [
+        574,
+        383
+      ]
+    },
+    "S6690": {
+      "title": "GitLab tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6402": {
+      "title": "Creating DNS zones without DNSSEC enabled is security-sensitive",
+      "cwe": [
+        345,
+        353
+      ]
+    },
+    "S5273": {
+      "title": "Appropriate size arguments should be passed to \"strncat\" and \"strlcpy\"",
+      "cwe": [
+        121,
+        122,
+        676
+      ]
+    },
+    "S1872": {
+      "title": "Classes should not be compared by name",
+      "cwe": [
+        486
+      ]
+    },
+    "S6865": {
+      "title": "Service account tokens should not be mounted in pods",
+      "cwe": [
+        306
+      ]
+    },
+    "S2435": {
+      "title": "Values passed to XML files should be sanitized",
+      "cwe": [
+        91
+      ]
+    },
+    "S6405": {
+      "title": "Enabling project-wide SSH keys to access VM instances is security-sensitive",
+      "cwe": [
+        272,
+        266,
+        269
+      ]
+    },
+    "S1049": {
+      "title": "Functions should not throw exceptions not included in their specifications",
+      "cwe": [
+        391
+      ]
+    },
+    "S2631": {
+      "title": "Regular expressions should not be vulnerable to Denial of Service attacks",
+      "cwe": [
+        400,
+        20,
+        1333
+      ]
+    },
+    "S6291": {
+      "title": "Using unencrypted databases in mobile applications is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S6433": {
+      "title": "Mounting sensitive file system paths is security-sensitive",
+      "cwe": [
+        668
+      ]
+    },
+    "S6265": {
+      "title": "Granting access to S3 buckets to all or authenticated users is security-sensitive",
+      "cwe": [
+        732,
+        284
+      ]
+    },
+    "S3374": {
+      "title": "Struts validation forms should have unique names",
+      "cwe": [
+        102
+      ]
+    },
+    "S6639": {
+      "title": "Memory allocations should not be vulnerable to Denial of Service attacks",
+      "cwe": [
+        789
+      ]
+    },
+    "S5308": {
+      "title": "Return value of \"setuid\" family of functions should always be checked",
+      "cwe": [
+        272,
+        252
+      ]
+    },
+    "S5798": {
+      "title": "\"memset\" should not be used to delete sensitive data",
+      "cwe": [
+        14
+      ]
+    },
+    "S5753": {
+      "title": "Disabling ASP.NET \"Request Validation\" feature is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S1763": {
+      "title": "All code should be reachable",
+      "cwe": [
+        561
+      ]
+    },
+    "S1135": {
+      "title": "Track uses of \"TODO\" tags",
+      "cwe": [
+        546
+      ]
+    },
+    "S6317": {
+      "title": "AWS IAM policies should limit the scope of permissions given",
+      "cwe": [
+        269
+      ]
+    },
+    "S6773": {
+      "title": "Hashicorp tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2115": {
+      "title": "A secure password should be used when connecting to a database",
+      "cwe": [
+        521
+      ]
+    },
+    "S6910": {
+      "title": "Postmark server token should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2578": {
+      "title": "Unescaped JSON data should not be written to the output",
+      "cwe": [
+        352,
+        79
+      ]
+    },
+    "S6321": {
+      "title": "Administration services access should be restricted to specific IP addresses",
+      "cwe": [
+        284
+      ]
+    },
+    "S1104": {
+      "title": "Class variable fields should not have public accessibility",
+      "cwe": [
+        493
+      ]
+    },
+    "S6319": {
+      "title": "Using unencrypted SageMaker notebook instances is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S5301": {
+      "title": "\"ActiveMQConnectionFactory\" should not be vulnerable to malicious code deserialization",
+      "cwe": [
+        502
+      ]
+    },
+    "S5167": {
+      "title": "HTTP response headers should not be vulnerable to injection attacks",
+      "cwe": [
+        113,
+        20
+      ]
+    },
+    "S6988": {
+      "title": "MapBox secret access tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S4425": {
+      "title": "\"Integer.toHexString\" should not be used to build hexadecimal strings",
+      "cwe": [
+        704
+      ]
+    },
+    "S2184": {
+      "title": "Math operands should be cast before assignment",
+      "cwe": [
+        190
+      ]
+    },
+    "S6375": {
+      "title": "Assigning high privileges Azure Active Directory built-in roles is security-sensitive",
+      "cwe": [
+        266
+      ]
+    },
+    "S5736": {
+      "title": "Disabling strict HTTP no-referrer policy is security-sensitive",
+      "cwe": [
+        200
+      ]
+    },
+    "S1998": {
+      "title": "References should not be passed to function calls",
+      "cwe": [
+        374
+      ]
+    },
+    "S6381": {
+      "title": "Assigning high privileges Azure Resource Manager built-in roles is security-sensitive",
+      "cwe": [
+        266
+      ]
+    },
+    "S1166": {
+      "title": "Exception handlers should preserve the original exceptions",
+      "cwe": [
+        778
+      ]
+    },
+    "S6718": {
+      "title": "Stripe endpoint secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6388": {
+      "title": "Using unencrypted cloud storages is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S6720": {
+      "title": "Zapier webhook URLs should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5738": {
+      "title": "\"@Deprecated\" code marked for removal should never be used",
+      "cwe": [
+        477
+      ]
+    },
+    "S3655": {
+      "title": "Empty nullable value should not be accessed",
+      "cwe": [
+        476
+      ]
+    },
+    "S6327": {
+      "title": "Using unencrypted SNS topics is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S4828": {
+      "title": "Signaling processes is security-sensitive",
+      "cwe": [
+        283
+      ]
+    },
+    "S3807": {
+      "title": "Parameter values should be appropriate",
+      "cwe": [
+        476
+      ]
+    },
+    "S6549": {
+      "title": "Accessing files should not lead to filesystem oracle attacks",
+      "cwe": [
+        20,
+        22
+      ]
+    },
+    "S2774": {
+      "title": "Comments should not contain passwords",
+      "cwe": [
+        615
+      ]
+    },
+    "S5135": {
+      "title": "Deserialization should not be vulnerable to injection attacks",
+      "cwe": [
+        20,
+        502
+      ]
+    },
+    "S6329": {
+      "title": "Allowing public network access to cloud resources is security-sensitive",
+      "cwe": [
+        668,
+        284
+      ]
+    },
+    "S6786": {
+      "title": "GraphQL introspection should be disabled in production",
+      "cwe": [
+        200
+      ]
+    },
+    "S6547": {
+      "title": "Environment variables should not be defined from untrusted input",
+      "cwe": [
+        20,
+        454
+      ]
+    },
+    "S5594": {
+      "title": "Exported component access should be restricted with appropriate permissions",
+      "cwe": [
+        926
+      ]
+    },
+    "S1134": {
+      "title": "Track uses of \"FIXME\" tags",
+      "cwe": [
+        546
+      ]
+    },
+    "S2583": {
+      "title": "Conditionally executed code should be reachable",
+      "cwe": [
+        489,
+        570,
+        571
+      ]
+    },
+    "S6781": {
+      "title": "JWT secret keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6721": {
+      "title": "Microsoft Teams webhook URLs should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6345": {
+      "title": "Allowing all external requests from a WordPress server is security-sensitive",
+      "cwe": [
+        918
+      ]
+    },
+    "S6183": {
+      "title": "\"std::cmp_*\" functions should be used to compare signed and unsigned values",
+      "cwe": [
+        195
+      ]
+    },
+    "S939": {
+      "title": "Pointers or iterators subtracted from each other should point into the same object",
+      "cwe": [
+        469
+      ]
+    },
+    "S6342": {
+      "title": "Allowing themes and plugins to be managed in WordPress admin area is security-sensitive",
+      "cwe": [
+        95,
+        94,
+        79
+      ]
+    },
+    "S2386": {
+      "title": "Mutable fields should not be \"public static\"",
+      "cwe": [
+        582,
+        607
+      ]
+    },
+    "S6389": {
+      "title": "Using bidirectional characters is security-sensitive",
+      "cwe": [
+        94
+      ]
+    },
+    "S6719": {
+      "title": "Alchemy API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6380": {
+      "title": "Authorizing anonymous access to Azure resources is security-sensitive",
+      "cwe": [
+        668
+      ]
+    },
+    "S6710": {
+      "title": "Legacy Firebase Cloud Messaging API Key should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S4423": {
+      "title": "Weak SSL/TLS protocols should not be used",
+      "cwe": [
+        295,
+        326,
+        327
+      ]
+    },
+    "S6374": {
+      "title": "XML parsers should not load external schemas",
+      "cwe": [
+        827,
+        611
+      ]
+    },
+    "S6373": {
+      "title": "XML parsers should not allow inclusion of arbitrary files",
+      "cwe": [
+        827,
+        611
+      ]
+    },
+    "S6717": {
+      "title": "Slack workflow webhook URLs should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S3291": {
+      "title": "PDO - Use Bind Parameters",
+      "cwe": [
+        89
+      ]
+    },
+    "S6989": {
+      "title": "Adafruit IO API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6387": {
+      "title": "Azure role assignments that grant access to all resources of a subscription are security-sensitive",
+      "cwe": [
+        266
+      ]
+    },
+    "S1169": {
+      "title": "At least one exception should be handled in an exception block",
+      "cwe": [
+        391
+      ]
+    },
+    "S930": {
+      "title": "The number of arguments passed to a function should match the number of parameters",
+      "cwe": [
+        628
+      ]
+    },
+    "S5122": {
+      "title": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive",
+      "cwe": [
+        346,
+        942
+      ]
+    },
+    "S6753": {
+      "title": "Zuplo API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6105": {
+      "title": "DOM updates should not lead to open redirect vulnerabilities",
+      "cwe": [
+        601,
+        20
+      ]
+    },
+    "S6337": {
+      "title": "IBM API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6308": {
+      "title": "Using unencrypted Elasticsearch domains is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S6330": {
+      "title": "Using unencrypted SQS queues is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S5773": {
+      "title": "Types allowed to be deserialized should be restricted",
+      "cwe": [
+        502
+      ]
+    },
+    "S5328": {
+      "title": "Manual generation of session ID is security-sensitive",
+      "cwe": [
+        330,
+        340
+      ]
+    },
+    "S2931": {
+      "title": "Classes with \"IDisposable\" members should implement \"IDisposable\"",
+      "cwe": [
+        459
+      ]
+    },
+    "S6762": {
+      "title": "Grafana tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2755": {
+      "title": "XML parsers should not be vulnerable to XXE attacks",
+      "cwe": [
+        827,
+        611
+      ]
+    },
+    "S6301": {
+      "title": "Mobile database encryption keys should not be disclosed",
+      "cwe": [
+        321,
+        311
+      ]
+    },
+    "S6765": {
+      "title": "Figma tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6990": {
+      "title": "Ubidots API secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2168": {
+      "title": "Double-checked locking should not be used",
+      "cwe": [
+        609
+      ]
+    },
+    "S6731": {
+      "title": "Slack bot tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6399": {
+      "title": "XML operations should not be vulnerable to injection attacks",
+      "cwe": [
+        91,
+        20
+      ]
+    },
+    "S6736": {
+      "title": "AMQP credentials should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6504": {
+      "title": "Allowing non-root users to modify resources copied to an image is security-sensitive",
+      "cwe": [
+        522
+      ]
+    },
+    "S5147": {
+      "title": "NoSQL operations should not be vulnerable to injection attacks",
+      "cwe": [
+        20,
+        943
+      ]
+    },
+    "S112": {
+      "title": "Generic exceptions should never be thrown",
+      "cwe": [
+        397
+      ]
+    },
+    "S4601": {
+      "title": "\"HttpSecurity\" URL patterns should be correctly ordered",
+      "cwe": [
+        285,
+        287
+      ]
+    },
+    "S4433": {
+      "title": "LDAP connections should be authenticated",
+      "cwe": [
+        521
+      ]
+    },
+    "S6700": {
+      "title": "RapidAPI keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6390": {
+      "title": "Thread suspensions should not be vulnerable to Denial of Service attacks",
+      "cwe": [
+        400,
+        20
+      ]
+    },
+    "S1989": {
+      "title": "Exceptions should not be thrown from servlet methods",
+      "cwe": [
+        600
+      ]
+    },
+    "S4639": {
+      "title": "Zip function calls should not be vulnerable to path traversal attacks",
+      "cwe": [
+        20,
+        22
+      ]
+    },
+    "S5344": {
+      "title": "Passwords should not be stored in plaintext or with a fast hashing algorithm",
+      "cwe": [
+        256,
+        916
+      ]
+    },
+    "S3275": {
+      "title": "IV's should be random and unique",
+      "cwe": [
+        329
+      ]
+    },
+    "S6363": {
+      "title": "Enabling file access for WebViews is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S4434": {
+      "title": "Allowing deserialization of LDAP objects is security-sensitive",
+      "cwe": [
+        502
+      ]
+    },
+    "S6300": {
+      "title": "Using unencrypted files in mobile applications is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S6764": {
+      "title": "WakaTime tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S4830": {
+      "title": "Server certificates should be verified during SSL/TLS connections",
+      "cwe": [
+        295
+      ]
+    },
+    "S5320": {
+      "title": "Broadcasting intents is security-sensitive",
+      "cwe": [
+        927
+      ]
+    },
+    "S6338": {
+      "title": "Azure Storage Account Keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1114": {
+      "title": "\"super.finalize()\" should be called at the end of \"Object.finalize()\" implementations",
+      "cwe": [
+        568
+      ]
+    },
+    "S6755": {
+      "title": "DigitalOcean tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2930": {
+      "title": "\"IDisposables\" should be disposed",
+      "cwe": [
+        459
+      ]
+    },
+    "S6752": {
+      "title": "Artifactory tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6336": {
+      "title": "Alibaba Cloud AccessKeys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5547": {
+      "title": "Cipher algorithms should be robust",
+      "cwe": [
+        326,
+        327
+      ]
+    },
+    "S1944": {
+      "title": "Inappropriate casts should not be made",
+      "cwe": [
+        704,
+        588
+      ]
+    },
+    "S6739": {
+      "title": "Redis credentials should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5148": {
+      "title": "Authorizing an opened window to access back to the originating window is security-sensitive",
+      "cwe": [
+        1022
+      ]
+    },
+    "S3274": {
+      "title": "\"iframes\" should be sandboxed",
+      "cwe": [
+        829
+      ]
+    },
+    "S6706": {
+      "title": "Cryptographic private keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1523": {
+      "title": "Dynamically executing code is security-sensitive",
+      "cwe": [
+        470,
+        95
+      ]
+    },
+    "S6362": {
+      "title": "Enabling JavaScript support for WebViews is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S1147": {
+      "title": "Exit methods should not be called",
+      "cwe": [
+        382
+      ]
+    },
+    "S6701": {
+      "title": "Telegram bot keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2952": {
+      "title": "Classes should \"Dispose\" of members from the classes' own \"Dispose\" methods",
+      "cwe": [
+        459
+      ]
+    },
+    "S6398": {
+      "title": "JSON operations should not be vulnerable to injection attacks",
+      "cwe": [
+        20,
+        76
+      ]
+    },
+    "S6708": {
+      "title": "Discord Webhook URLs should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S1182": {
+      "title": "Classes that override \"clone\" should be \"Cloneable\" and call \"super.clone()\"",
+      "cwe": [
+        580
+      ]
+    },
+    "S5146": {
+      "title": "HTTP request redirections should not be open to forging attacks",
+      "cwe": [
+        601,
+        20
+      ]
+    },
+    "S6505": {
+      "title": "Allowing shell scripts execution during package installation is security-sensitive",
+      "cwe": [
+        506,
+        829
+      ]
+    },
+    "S6502": {
+      "title": "Disabling builder sandboxes is security-sensitive",
+      "cwe": [
+        250,
+        284
+      ]
+    },
+    "S1493": {
+      "title": "Having dynamic clauses for SQL \"SELECT\" statements is security-sensitive",
+      "cwe": [
+        89
+      ]
+    },
+    "S3330": {
+      "title": "Creating cookies without the \"HttpOnly\" flag is security-sensitive",
+      "cwe": [
+        1004
+      ]
+    },
+    "S6470": {
+      "title": "Recursively copying context directories is security-sensitive",
+      "cwe": [
+        497,
+        668
+      ]
+    },
+    "S5691": {
+      "title": "Statically serving hidden files is security-sensitive",
+      "cwe": [
+        538
+      ]
+    },
+    "S6689": {
+      "title": "GitHub tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2681": {
+      "title": "Multiline blocks should be enclosed in curly braces",
+      "cwe": [
+        483
+      ]
+    },
+    "S5696": {
+      "title": "DOM updates should not lead to cross-site scripting (XSS) attacks",
+      "cwe": [
+        79
+      ]
+    },
+    "S5808": {
+      "title": "Authorizations should be based on strong decisions",
+      "cwe": [
+        285
+      ]
+    },
+    "S2447": {
+      "title": "\"null\" should not be returned from a \"Boolean\" method",
+      "cwe": [
+        476
+      ]
+    },
+    "S2015": {
+      "title": "Programs should not rely on default values of uninitialized variables",
+      "cwe": [
+        457
+      ]
+    },
+    "S6687": {
+      "title": "Django secret keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5801": {
+      "title": "Using \"strcpy\" or \"wcscpy\" is security-sensitive",
+      "cwe": [
+        120
+      ]
+    },
+    "S6680": {
+      "title": "Loop boundaries should not be vulnerable to injection attacks",
+      "cwe": [
+        606
+      ]
+    },
+    "S2220": {
+      "title": "\"Equals\" should test for null",
+      "cwe": [
+        476
+      ]
+    },
+    "S5852": {
+      "title": "Using slow regular expressions is security-sensitive",
+      "cwe": [
+        400,
+        1333
+      ]
+    },
+    "S4721": {
+      "title": "Using shell interpreter when executing OS commands is security-sensitive",
+      "cwe": [
+        78
+      ]
+    },
+    "S4973": {
+      "title": "Strings and Boxed types should be compared using \"equals()\"",
+      "cwe": [
+        595,
+        597
+      ]
+    },
+    "S6288": {
+      "title": "Authorizing non-authenticated users to use keys in the Android KeyStore is security-sensitive",
+      "cwe": [
+        522
+      ]
+    },
+    "S1630": {
+      "title": "All opened \"USROPN\" files should be explicitly closed",
+      "cwe": [
+        459
+      ]
+    },
+    "S836": {
+      "title": "Variables should be initialized before use",
+      "cwe": [
+        457
+      ]
+    },
+    "S6275": {
+      "title": "Using unencrypted EBS volumes is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S2083": {
+      "title": "I/O function calls should not be vulnerable to path injection attacks",
+      "cwe": [
+        20,
+        22
+      ]
+    },
+    "S2245": {
+      "title": "Using pseudorandom number generators (PRNGs) is security-sensitive",
+      "cwe": [
+        1241,
+        330,
+        338,
+        326
+      ]
+    },
+    "S2077": {
+      "title": "Formatting SQL queries is security-sensitive",
+      "cwe": [
+        89,
+        20
+      ]
+    },
+    "S6281": {
+      "title": "Allowing public ACLs or policies on a S3 bucket is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S1854": {
+      "title": "Unused assignments should be removed",
+      "cwe": [
+        563
+      ]
+    },
+    "S2084": {
+      "title": "Messages output from a servlet \"catch\" block should be invariable",
+      "cwe": [
+        537
+      ]
+    },
+    "SysOwnedFunctions": {
+      "title": "Sensitive \"SYS\" owned functions should not be used",
+      "cwe": [
+        269,
+        270
+      ]
+    },
+    "S1206": {
+      "title": "\"equals(Object obj)\" and \"hashCode()\" should be overridden in pairs",
+      "cwe": [
+        581
+      ]
+    },
+    "S3135": {
+      "title": "\"sizeof\" should not be called on pointers",
+      "cwe": [
+        467
+      ]
+    },
+    "S899": {
+      "title": "Return values should not be ignored when they contain the operation status code",
+      "cwe": [
+        754
+      ]
+    },
+    "S1696": {
+      "title": "\"NullPointerException\" should not be caught",
+      "cwe": [
+        395
+      ]
+    },
+    "S2221": {
+      "title": "\"Exception\" should not be caught when not required by called methods",
+      "cwe": [
+        396
+      ]
+    },
+    "S6686": {
+      "title": "Clarifai API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2210": {
+      "title": "Anntest dummy rule should asdf",
+      "cwe": [
+        123
+      ]
+    },
+    "S3752": {
+      "title": "Allowing both safe and unsafe HTTP methods is security-sensitive",
+      "cwe": [
+        352
+      ]
+    },
+    "S1698": {
+      "title": "\"==\" and \"!=\" should not be used when \"equals\" is overridden",
+      "cwe": [
+        595,
+        597
+      ]
+    },
+    "S6471": {
+      "title": "Running containers as a privileged user is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S2441": {
+      "title": "Non-serializable objects should not be stored in \"javax.servlet.http.HttpSession\" instances",
+      "cwe": [
+        579
+      ]
+    },
+    "S2819": {
+      "title": "Origins should be verified during cross-origin communications",
+      "cwe": [
+        345
+      ]
+    },
+    "S864": {
+      "title": "Limited dependence should be placed on operator precedence",
+      "cwe": [
+        783
+      ]
+    },
+    "S6688": {
+      "title": "Facebook app keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6287": {
+      "title": "Applications should not create session cookies from untrusted input",
+      "cwe": [
+        20,
+        348
+      ]
+    },
+    "S2076": {
+      "title": "OS commands should not be vulnerable to command injection attacks",
+      "cwe": [
+        20,
+        78
+      ]
+    },
+    "S2078": {
+      "title": "LDAP queries should not be vulnerable to injection attacks",
+      "cwe": [
+        90,
+        20
+      ]
+    },
+    "S4512": {
+      "title": "Setting JavaBean properties is security-sensitive",
+      "cwe": [
+        915
+      ]
+    },
+    "S6245": {
+      "title": "Disabling server-side encryption of S3 buckets is security-sensitive",
+      "cwe": [
+        311
+      ]
+    },
+    "S6431": {
+      "title": "Using host operating system namespaces is security-sensitive",
+      "cwe": [
+        653
+      ]
+    },
+    "S2091": {
+      "title": "XPath expressions should not be vulnerable to injection attacks",
+      "cwe": [
+        643,
+        20
+      ]
+    },
+    "S3371": {
+      "title": "PreparedStatements should be used",
+      "cwe": [
+        89,
+        20
+      ]
+    },
+    "S6869": {
+      "title": "CPU limits should be enforced",
+      "cwe": [
+        770
+      ]
+    },
+    "S6293": {
+      "title": "Using biometric authentication without a cryptographic solution is security-sensitive",
+      "cwe": [
+        287
+      ]
+    },
+    "S2257": {
+      "title": "Using non-standard cryptographic algorithms is security-sensitive",
+      "cwe": [
+        327
+      ]
+    },
+    "S3518": {
+      "title": "Zero should not be a possible denominator",
+      "cwe": [
+        369
+      ]
+    },
+    "S6258": {
+      "title": "Disabling logging is security-sensitive",
+      "cwe": [
+        778
+      ]
+    },
+    "S5849": {
+      "title": "Setting capabilities is security-sensitive",
+      "cwe": [
+        250,
+        266
+      ]
+    },
+    "S5247": {
+      "title": "Disabling auto-escaping in template engines is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S3520": {
+      "title": "Memory locations should not be released more than once",
+      "cwe": [
+        415
+      ]
+    },
+    "S5876": {
+      "title": "A new session should be created during user authentication",
+      "cwe": [
+        384
+      ]
+    },
+    "S6409": {
+      "title": "Enabling Attribute-Based Access Control for Kubernetes is security-sensitive",
+      "cwe": [
+        668
+      ]
+    },
+    "S6400": {
+      "title": "Granting highly privileged GCP resource rights is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S2259": {
+      "title": "Null pointers should not be dereferenced",
+      "cwe": [
+        476
+      ]
+    },
+    "S3529": {
+      "title": "Freed memory should not be used",
+      "cwe": [
+        416
+      ]
+    },
+    "S6407": {
+      "title": "Creating App Engine handlers without requiring TLS is security-sensitive",
+      "cwe": [
+        200,
+        319
+      ]
+    },
+    "S2053": {
+      "title": "Password hashing functions should use an unpredictable salt",
+      "cwe": [
+        760,
+        759
+      ]
+    },
+    "COBOL.DisplayStatementUsageCheck": {
+      "title": "\"DISPLAY\" should not be used",
+      "cwe": [
+        489
+      ]
+    },
+    "S5847": {
+      "title": "Accessing files should not introduce TOCTOU vulnerabilities",
+      "cwe": [
+        367
+      ]
+    },
+    "S5813": {
+      "title": "Using \"strlen\" or \"wcslen\" is security-sensitive",
+      "cwe": [
+        120
+      ]
+    },
+    "S1444": {
+      "title": "\"public static\" fields should be constant",
+      "cwe": [
+        500
+      ]
+    },
+    "S6695": {
+      "title": "WeChat app keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5814": {
+      "title": "Using \"strcat\" or \"wcscat\" is security-sensitive",
+      "cwe": [
+        120
+      ]
+    },
+    "S2669": {
+      "title": "Variables must be initialized before being used",
+      "cwe": [
+        457
+      ]
+    },
+    "S2656": {
+      "title": "JEE applications should not use sockets",
+      "cwe": [
+        577,
+        246
+      ]
+    },
+    "S6692": {
+      "title": "reCaptcha secret keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5445": {
+      "title": "Insecure temporary file creation methods should not be used",
+      "cwe": [
+        377,
+        379
+      ]
+    },
+    "S1486": {
+      "title": "\"BREAK-POINT\" statement should not be used in production",
+      "cwe": [
+        489
+      ]
+    },
+    "S6096": {
+      "title": "Extracting archives should not lead to zip slip vulnerabilities",
+      "cwe": [
+        20,
+        22
+      ]
+    },
+    "S1081": {
+      "title": "Insecure functions should not be used",
+      "cwe": [
+        676,
+        119
+      ]
+    },
+    "S4507": {
+      "title": "Delivering code in production with debug features activated is security-sensitive",
+      "cwe": [
+        489,
+        215
+      ]
+    },
+    "S6406": {
+      "title": "Excessive granting of GCP IAM permissions is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "AvoidHtmlCommentCheck": {
+      "title": "HTML comments should be removed",
+      "cwe": [
+        615
+      ]
+    },
+    "S5042": {
+      "title": "Expanding archive files without controlling resource consumption is security-sensitive",
+      "cwe": [
+        409
+      ]
+    },
+    "S6268": {
+      "title": "Disabling Angular built-in sanitization is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S6437": {
+      "title": "Credentials should not be hard-coded",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5883": {
+      "title": "OS commands should not be vulnerable to argument injection attacks",
+      "cwe": [
+        88,
+        20
+      ]
+    },
+    "S6408": {
+      "title": "Creating custom roles allowing privilege escalation is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S6292": {
+      "title": "Amazon MWS credentials should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6430": {
+      "title": "Allowing process privilege escalations is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S6868": {
+      "title": "Allowing command execution is security sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S3519": {
+      "title": "Memory access should be explicitly bounded to prevent buffer overflows",
+      "cwe": [
+        193,
+        131,
+        788,
+        119,
+        121,
+        122
+      ]
+    },
+    "S5824": {
+      "title": "Using \"tmpnam\", \"tmpnam_s\" or \"tmpnam_r\" is security-sensitive",
+      "cwe": [
+        377
+      ]
+    },
+    "S5443": {
+      "title": "Using publicly writable directories is security-sensitive",
+      "cwe": [
+        377,
+        379
+      ]
+    },
+    "S6656": {
+      "title": "Template evaluation should not expose secure values",
+      "cwe": [
+        200,
+        532
+      ]
+    },
+    "S6463": {
+      "title": "Allowing unrestricted outbound communications is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S1480": {
+      "title": "Locally opened cursors should be closed",
+      "cwe": [
+        459
+      ]
+    },
+    "S6497": {
+      "title": "Pulling an image based on its digest is security-sensitive",
+      "cwe": [
+        1329
+      ]
+    },
+    "S5815": {
+      "title": "Using \"strncat\" or \"wcsncat\" is security-sensitive",
+      "cwe": [
+        120
+      ]
+    },
+    "S5486": {
+      "title": "\"pthread_mutex_t\" should not be locked when already locked, or unlocked when already unlocked",
+      "cwe": [
+        764
+      ]
+    },
+    "S4792": {
+      "title": "Configuring loggers is security-sensitive",
+      "cwe": [
+        532,
+        117
+      ]
+    },
+    "S2657": {
+      "title": "EJB's should not use class loaders",
+      "cwe": [
+        578
+      ]
+    },
+    "S6693": {
+      "title": "SSH private keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6694": {
+      "title": "MongoDB database passwords should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6376": {
+      "title": "XML parsers should not be vulnerable to Denial of Service attacks",
+      "cwe": [
+        776
+      ]
+    },
+    "S6382": {
+      "title": "Disabling certificate-based authentication is security-sensitive",
+      "cwe": [
+        668
+      ]
+    },
+    "S935": {
+      "title": "Function exit paths should have appropriate return values",
+      "cwe": [
+        394
+      ]
+    },
+    "S131": {
+      "title": "\"switch\" statements should have \"default\" clauses",
+      "cwe": [
+        478
+      ]
+    },
+    "S5732": {
+      "title": "Disabling content security policy frame-ancestors directive is security-sensitive",
+      "cwe": [
+        451
+      ]
+    },
+    "S6385": {
+      "title": "Azure custom roles should not grant subscription Owner capabilities",
+      "cwe": [
+        266
+      ]
+    },
+    "S4426": {
+      "title": "Cryptographic keys should be robust",
+      "cwe": [
+        326
+      ]
+    },
+    "S6723": {
+      "title": "Mailgun API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S2384": {
+      "title": "Mutable members should not be stored or returned directly",
+      "cwe": [
+        374,
+        375
+      ]
+    },
+    "S2142": {
+      "title": "\"InterruptedException\" and \"ThreadDeath\" should not be ignored",
+      "cwe": [
+        391
+      ]
+    },
+    "S1966": {
+      "title": "Alphanumeric values should not be moved to numeric fields",
+      "cwe": [
+        704
+      ]
+    },
+    "S6784": {
+      "title": "User-specified secrets should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5757": {
+      "title": "Allowing confidential information to be logged is security-sensitive",
+      "cwe": [
+        532
+      ]
+    },
+    "S2778": {
+      "title": "CICS \"DUMP\" and \"DUMP TRANSACTION\" should not be used",
+      "cwe": [
+        497
+      ]
+    },
+    "S2575": {
+      "title": "Untrusted data should be escaped before being saved into \"HTTP\" or \"JSP\" classes ",
+      "cwe": [
+        352,
+        80,
+        79
+      ]
+    },
+    "S5750": {
+      "title": "Allowing HTTP responses caching is security-sensitive",
+      "cwe": [
+        525
+      ]
+    },
+    "S5334": {
+      "title": "Dynamic code execution should not be vulnerable to injection attacks",
+      "cwe": [
+        20,
+        95
+      ]
+    },
+    "S6783": {
+      "title": "Infura API keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6777": {
+      "title": "Shippo tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5766": {
+      "title": "Deserializing objects without performing data validation is security-sensitive",
+      "cwe": [
+        502
+      ]
+    },
+    "S6779": {
+      "title": "Flask secret keys should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S961": {
+      "title": "Function-like macros should not be invoked without all of their arguments",
+      "cwe": [
+        628
+      ]
+    },
+    "S6173": {
+      "title": "Reflection should not be vulnerable to injection attacks",
+      "cwe": [
+        470
+      ]
+    },
+    "S6341": {
+      "title": "WordPress theme and plugin editors are security-sensitive",
+      "cwe": [
+        95,
+        94,
+        79
+      ]
+    },
+    "S5392": {
+      "title": "Formatting SOQL queries is security-sensitive",
+      "cwe": [
+        89,
+        20
+      ]
+    },
+    "S1967": {
+      "title": "Numbers should only be moved to variables large enough to hold them without truncation",
+      "cwe": [
+        704
+      ]
+    },
+    "S6722": {
+      "title": "Planetscale database passwords should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6379": {
+      "title": "Enabling Azure resource-specific admin accounts is security-sensitive",
+      "cwe": [
+        284
+      ]
+    },
+    "S905": {
+      "title": "Non-empty statements should change control flow or have at least one side-effect",
+      "cwe": [
+        482
+      ]
+    },
+    "S6384": {
+      "title": "Components should not be vulnerable to intent redirection",
+      "cwe": [
+        20
+      ]
+    },
+    "S6383": {
+      "title": "Disabling Role-Based Access Control on Azure resources is security-sensitive",
+      "cwe": [
+        668
+      ]
+    },
+    "S6713": {
+      "title": "Slack incoming webhook URLs should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S6377": {
+      "title": "XML signatures should be validated securely",
+      "cwe": [
+        347
+      ]
+    },
+    "S6348": {
+      "title": "Allowing unfiltered HTML content in WordPress is security-sensitive",
+      "cwe": [
+        79
+      ]
+    },
+    "S2589": {
+      "title": "Boolean expressions should not be gratuitous",
+      "cwe": [
+        489,
+        570,
+        571
+      ]
+    },
+    "S5131": {
+      "title": "Endpoints should not be vulnerable to reflected cross-site scripting (XSS) attacks",
+      "cwe": [
+        79
+      ]
+    },
+    "S4487": {
+      "title": "Unread \"private\" fields should be removed",
+      "cwe": [
+        563
+      ]
+    },
+    "S6776": {
+      "title": "Stack-traces should not be disclosed",
+      "cwe": [
+        489,
+        209
+      ]
+    },
+    "S6782": {
+      "title": "Docker Hub tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    },
+    "S5335": {
+      "title": "Include expressions should not be vulnerable to injection attacks",
+      "cwe": [
+        97,
+        98,
+        20,
+        829
+      ]
+    },
+    "S5332": {
+      "title": "Using clear-text protocols is security-sensitive",
+      "cwe": [
+        200,
+        319
+      ]
+    },
+    "S6785": {
+      "title": "GraphQL queries should not be vulnerable to Denial of Service attacks",
+      "cwe": [
+        770
+      ]
+    },
+    "S4684": {
+      "title": "Persistent entities should not be used as arguments of \"@RequestMapping\" methods",
+      "cwe": [
+        915
+      ]
+    },
+    "S6771": {
+      "title": "Postman tokens should not be disclosed",
+      "cwe": [
+        259,
+        798
+      ]
+    }
   }
 }
