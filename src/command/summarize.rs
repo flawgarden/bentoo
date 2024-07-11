@@ -25,7 +25,7 @@ use crate::{
     util,
 };
 
-use super::compare::{MatchCard, MinimalMatchCard, ToolResultsCard};
+use super::compare::{MatchCard, MinimalMatchCard, ToolResultCard, ToolResultsCard};
 
 enum SummaryNode {
     Internal {
@@ -34,6 +34,15 @@ enum SummaryNode {
     Leaf {
         summary: Box<ToolSummaryCard>,
     },
+}
+
+impl SummaryNode {
+    fn try_internal_mut(&mut self) -> Option<&mut HashMap<String, SummaryNode>> {
+        match self {
+            SummaryNode::Internal { children } => Some(children),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize)]
@@ -122,7 +131,7 @@ pub struct SummaryCard {
 }
 
 impl SummaryCard {
-    pub fn union(&self, other: &Self) -> Self {
+    pub fn union<'a>(&'a self, other: &'a Self) -> Self {
         let ground_truth_positive_count =
             self.ground_truth_positive_count + other.ground_truth_positive_count;
         let ground_truth_negative_count =
@@ -131,44 +140,35 @@ impl SummaryCard {
             self.truth_positive_cwe_match_count + other.truth_positive_cwe_match_count;
         let truth_positive_cwe_1000_match_count =
             self.truth_positive_cwe_1000_match_count + other.truth_positive_cwe_1000_match_count;
+        macro_rules! union_ratios {
+            ($a_card:expr, $b_card:expr, $ratio:ident) => {
+                $a_card.$ratio.union(
+                    &$b_card.$ratio,
+                    ground_truth_positive_count,
+                    ground_truth_negative_count,
+                )
+            };
+        }
+        let at_least_one_file_with_cwe_match =
+            union_ratios!(self, other, at_least_one_file_with_cwe_match);
+        let at_least_one_file_with_cwe_1000_match =
+            union_ratios!(self, other, at_least_one_file_with_cwe_1000_match);
+        let at_least_one_file_without_cwe_match =
+            union_ratios!(self, other, at_least_one_file_without_cwe_match);
+        let at_least_one_region_with_cwe_match =
+            union_ratios!(self, other, at_least_one_region_with_cwe_match);
+        let at_least_one_region_with_cwe_1000_match =
+            union_ratios!(self, other, at_least_one_region_with_cwe_1000_match);
+        let at_least_one_region_without_cwe_match =
+            union_ratios!(self, other, at_least_one_region_without_cwe_match);
 
         Self {
-            at_least_one_file_with_cwe_match: self.at_least_one_file_with_cwe_match.union(
-                &other.at_least_one_file_with_cwe_match,
-                ground_truth_positive_count,
-                ground_truth_negative_count,
-            ),
-            at_least_one_file_with_cwe_1000_match: self
-                .at_least_one_file_with_cwe_1000_match
-                .union(
-                    &other.at_least_one_file_with_cwe_1000_match,
-                    ground_truth_positive_count,
-                    ground_truth_negative_count,
-                ),
-            at_least_one_file_without_cwe_match: self.at_least_one_file_without_cwe_match.union(
-                &other.at_least_one_file_without_cwe_match,
-                ground_truth_positive_count,
-                ground_truth_negative_count,
-            ),
-            at_least_one_region_with_cwe_match: self.at_least_one_region_with_cwe_match.union(
-                &other.at_least_one_region_with_cwe_match,
-                ground_truth_positive_count,
-                ground_truth_negative_count,
-            ),
-            at_least_one_region_with_cwe_1000_match: self
-                .at_least_one_region_with_cwe_1000_match
-                .union(
-                    &other.at_least_one_region_with_cwe_1000_match,
-                    ground_truth_positive_count,
-                    ground_truth_negative_count,
-                ),
-            at_least_one_region_without_cwe_match: self
-                .at_least_one_region_without_cwe_match
-                .union(
-                    &other.at_least_one_region_without_cwe_match,
-                    ground_truth_positive_count,
-                    ground_truth_negative_count,
-                ),
+            at_least_one_file_with_cwe_match,
+            at_least_one_file_with_cwe_1000_match,
+            at_least_one_file_without_cwe_match,
+            at_least_one_region_with_cwe_match,
+            at_least_one_region_with_cwe_1000_match,
+            at_least_one_region_without_cwe_match,
             ground_truth_positive_count,
             ground_truth_negative_count,
             truth_positive_cwe_match_count,
@@ -214,42 +214,37 @@ impl ToolSummaryCard {
         let mut cwes_map: HashMap<String, Vec<NamedSummaryCard>> = HashMap::new();
         let mut cwes_1000_map: HashMap<String, Vec<NamedSummaryCard>> = HashMap::new();
 
-        for summary in self.cwes_summary.iter() {
-            let vec = cwes_map.entry(summary.name.clone()).or_default();
-            vec.push(summary.clone());
+        fn collect_summaries(
+            summaries: &[NamedSummaryCard],
+            cwes_map: &mut HashMap<String, Vec<NamedSummaryCard>>,
+        ) {
+            for summary in summaries.iter() {
+                let vec = cwes_map.entry(summary.name.clone()).or_default();
+                vec.push(summary.clone());
+            }
         }
 
-        for summary in other.cwes_summary.iter() {
-            let vec = cwes_map.entry(summary.name.clone()).or_default();
-            vec.push(summary.clone());
-        }
-
-        for summary in self.cwes_1000_summary.iter() {
-            let vec = cwes_1000_map.entry(summary.name.clone()).or_default();
-            vec.push(summary.clone());
-        }
-
-        for summary in other.cwes_1000_summary.iter() {
-            let vec = cwes_1000_map.entry(summary.name.clone()).or_default();
-            vec.push(summary.clone());
-        }
+        collect_summaries(&self.cwes_summary, &mut cwes_map);
+        collect_summaries(&other.cwes_summary, &mut cwes_map);
+        collect_summaries(&self.cwes_1000_summary, &mut cwes_1000_map);
+        collect_summaries(&other.cwes_1000_summary, &mut cwes_1000_map);
 
         let mut cwes_summary = vec![];
         let mut cwes_1000_summary = vec![];
 
         for (_, summaries) in cwes_map {
-            let mut summary = summaries[0].clone();
-            for other in summaries.iter().skip(1) {
-                summary = summary.union(other);
-            }
+            let summary = summaries
+                .into_iter()
+                .reduce(|a_summary, b_summary| a_summary.union(&b_summary))
+                .unwrap();
             cwes_summary.push(summary);
         }
 
         for (_, summaries) in cwes_1000_map {
-            let mut summary = summaries[0].clone();
-            for other in summaries.iter().skip(1) {
-                summary = summary.union(other);
-            }
+            let summary = summaries
+                .into_iter()
+                .reduce(|a_summary, b_summary| a_summary.union(&b_summary))
+                .unwrap();
             cwes_1000_summary.push(summary);
         }
 
@@ -322,26 +317,23 @@ impl<'s> Summarizer<'s> {
 
         let metadata = metadata.unwrap();
 
-        let card = match metadata.evaluated {
-            true => {
-                let filename = self.make_file_name(root, tool, "json");
-                ToolResultsCard::try_from(Path::new(&filename))
-                    .ok()
-                    .unwrap()
-            }
-            false => {
-                println!(
-                    "Summarizer: {} on {} hasn't been evaluated, skipping",
-                    tool,
-                    root.display()
-                );
-                let truth = TruthResults::try_from(directory.truth_path().as_path()).unwrap();
-                let tool_result = ToolResults {
-                    name: String::new(),
-                    results: vec![],
-                };
-                evaluate_tool(&truth, &tool_result, None)
-            }
+        let card = if metadata.evaluated {
+            let filename = self.make_file_name(root, tool, "json");
+            ToolResultsCard::try_from(Path::new(&filename))
+                .ok()
+                .unwrap()
+        } else {
+            println!(
+                "Summarizer: {} on {} hasn't been evaluated, skipping",
+                tool,
+                root.display()
+            );
+            let truth = TruthResults::try_from(directory.truth_path().as_path()).unwrap();
+            let tool_result = ToolResults {
+                name: String::new(),
+                results: vec![],
+            };
+            evaluate_tool(&truth, &tool_result, None)
         };
 
         let summary = self.summarize_tool(tool, &metadata, &card);
@@ -349,16 +341,13 @@ impl<'s> Summarizer<'s> {
         let mut node = &mut self.summary_root;
         for component in root.components() {
             let component = String::from(component.as_os_str().to_str().unwrap());
-            if let SummaryNode::Internal { children } = node {
-                node = children.entry(component).or_insert(SummaryNode::Internal {
-                    children: HashMap::new(),
-                });
-            } else {
-                panic!("");
-            }
+            let children = node.try_internal_mut().expect("Node must be internal");
+            node = children.entry(component).or_insert(SummaryNode::Internal {
+                children: HashMap::new(),
+            });
         }
 
-        if let SummaryNode::Internal { children } = node {
+        if let Some(children) = node.try_internal_mut() {
             children.insert(
                 format!("{}_{}", tool.script, tool.config),
                 SummaryNode::Leaf {
@@ -441,38 +430,32 @@ impl<'s> Summarizer<'s> {
 
         let fail_stat = calc_stat(fail_results);
         let pass_stat = calc_stat(pass_results);
-        let calc_summary_ratio = |true_positive_count, false_positive_count| {
-            SummaryRatios::from_stats(
-                true_positive_count,
-                false_positive_count,
-                ground_truth_positive_count as i64,
-                ground_truth_negative_count as i64,
-            )
-        };
+        macro_rules! calc_summary_ratio {
+            ($ratio:ident) => {
+                SummaryRatios::from_stats(
+                    fail_stat.$ratio,
+                    pass_stat.$ratio,
+                    ground_truth_positive_count as i64,
+                    ground_truth_negative_count as i64,
+                )
+            };
+        }
         SummaryCard {
-            at_least_one_file_with_cwe_match: calc_summary_ratio(
-                fail_stat.at_least_one_file_with_cwe_match,
-                pass_stat.at_least_one_file_with_cwe_match,
+            at_least_one_file_with_cwe_match: calc_summary_ratio!(at_least_one_file_with_cwe_match),
+            at_least_one_file_with_cwe_1000_match: calc_summary_ratio!(
+                at_least_one_file_with_cwe_1000_match
             ),
-            at_least_one_file_with_cwe_1000_match: calc_summary_ratio(
-                fail_stat.at_least_one_file_with_cwe_1000_match,
-                pass_stat.at_least_one_file_with_cwe_1000_match,
+            at_least_one_file_without_cwe_match: calc_summary_ratio!(
+                at_least_one_file_without_cwe_match
             ),
-            at_least_one_file_without_cwe_match: calc_summary_ratio(
-                fail_stat.at_least_one_file_without_cwe_match,
-                pass_stat.at_least_one_file_without_cwe_match,
+            at_least_one_region_with_cwe_match: calc_summary_ratio!(
+                at_least_one_region_with_cwe_match
             ),
-            at_least_one_region_with_cwe_match: calc_summary_ratio(
-                fail_stat.at_least_one_region_with_cwe_match,
-                pass_stat.at_least_one_region_with_cwe_match,
+            at_least_one_region_with_cwe_1000_match: calc_summary_ratio!(
+                at_least_one_region_with_cwe_1000_match
             ),
-            at_least_one_region_with_cwe_1000_match: calc_summary_ratio(
-                fail_stat.at_least_one_region_with_cwe_1000_match,
-                pass_stat.at_least_one_region_with_cwe_1000_match,
-            ),
-            at_least_one_region_without_cwe_match: calc_summary_ratio(
-                fail_stat.at_least_one_region_without_cwe_match,
-                pass_stat.at_least_one_region_without_cwe_match,
+            at_least_one_region_without_cwe_match: calc_summary_ratio!(
+                at_least_one_region_without_cwe_match
             ),
             ground_truth_negative_count: ground_truth_negative_count as i64,
             ground_truth_positive_count: ground_truth_positive_count as i64,
@@ -482,50 +465,25 @@ impl<'s> Summarizer<'s> {
     }
 
     fn summarize_tool_results(tool_result: &ToolResultsCard) -> SummaryCard {
-        let (minimal_matches, matches) = tool_result
-            .result
-            .iter()
-            .map(|result| {
-                (
-                    MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
-                    result
-                        .max_match
-                        .iter()
-                        .map(|match_result| MatchCard(&result.expected_result, match_result))
-                        .collect(),
-                )
-            })
-            .unzip();
+        let (minimal_matches, matches) = unzip_match_cards(tool_result.result.iter().collect_vec());
         Summarizer::summarize_match_card_vec(minimal_matches, matches)
     }
 
     fn summarize_tool_results_by_cwe(tool_result: &ToolResultsCard) -> Vec<NamedSummaryCard> {
+        fn mk_named_summary_card(cwe: CWEs, results: Vec<&ToolResultCard>) -> NamedSummaryCard {
+            let (minimal_matches, matches) = unzip_match_cards(results);
+            NamedSummaryCard {
+                name: format!("{}", cwe),
+                summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
+            }
+        }
+
         tool_result
             .result
             .iter()
             .into_group_map_by(|result| result.expected_result.expected_cwe.clone())
             .into_iter()
-            .map(|(cwe, results)| {
-                let (minimal_matches, matches) = results
-                    .iter()
-                    .map(|result| {
-                        (
-                            MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
-                            result
-                                .max_match
-                                .iter()
-                                .map(|match_result| {
-                                    MatchCard(&result.expected_result, match_result)
-                                })
-                                .collect(),
-                        )
-                    })
-                    .unzip();
-                NamedSummaryCard {
-                    name: format!("{}", cwe),
-                    summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
-                }
-            })
+            .map(|(cwe, results)| mk_named_summary_card(cwe, results))
             .collect()
     }
 
@@ -571,21 +529,7 @@ impl<'s> Summarizer<'s> {
                 )
             })
             .map(|(cwe, results)| {
-                let (minimal_matches, matches) = results
-                    .iter()
-                    .map(|result| {
-                        (
-                            MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
-                            result
-                                .max_match
-                                .iter()
-                                .map(|match_result| {
-                                    MatchCard(&result.expected_result, match_result)
-                                })
-                                .collect(),
-                        )
-                    })
-                    .unzip();
+                let (minimal_matches, matches) = unzip_match_cards(results);
                 NamedSummaryCard {
                     name: format!("{}", CWEs(cwe.clone())),
                     summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
@@ -607,10 +551,10 @@ impl<'s> Summarizer<'s> {
                     }
                 }
                 for (_, summaries) in summary_map {
-                    let mut summary = summaries[0].clone();
-                    for other in summaries.iter().skip(1) {
-                        summary = summary.union(other);
-                    }
+                    let summary = summaries
+                        .into_iter()
+                        .reduce(|a_summary, b_summary| a_summary.union(&b_summary))
+                        .unwrap();
                     ret.summaries.push(summary);
                 }
                 let summary_file = File::create(path.join("summary.json")).unwrap();
@@ -636,6 +580,25 @@ impl<'s> Summarizer<'s> {
 
         Self::summarize_recursive(&self.summary_root, output);
     }
+}
+
+fn unzip_match_cards(
+    results: Vec<&ToolResultCard>,
+) -> (Vec<MinimalMatchCard<'_>>, Vec<Vec<MatchCard<'_>>>) {
+    let (minimal_matches, matches) = results
+        .iter()
+        .map(|result| {
+            (
+                MinimalMatchCard(&result.expected_result, &result.max_minimal_match),
+                result
+                    .max_match
+                    .iter()
+                    .map(|match_result| MatchCard(&result.expected_result, match_result))
+                    .collect(),
+            )
+        })
+        .unzip();
+    (minimal_matches, matches)
 }
 
 pub fn make_summary(runs: &RunsInfo, output: PathBuf) {
