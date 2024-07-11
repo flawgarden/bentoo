@@ -32,6 +32,7 @@ files_14=(
     "Bearer_Java.out"
     "Bearer_Java.metadata"
     "truth.sarif"
+    "summary.json"
 )
 
 files_16=(
@@ -61,6 +62,7 @@ files_16=(
     "Bearer_Java.out"
     "Bearer_Java.metadata"
     "truth.sarif"
+    "summary.json"
 )
 
 cd $root_dir
