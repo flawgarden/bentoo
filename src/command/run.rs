@@ -23,6 +23,7 @@ pub struct Runner<'a> {
     tools: &'a ToolsInfo,
     timeout: Option<Duration>,
     output: PathBuf,
+    isolate_root: bool,
 }
 
 impl<'a> Runner<'a> {
@@ -31,6 +32,7 @@ impl<'a> Runner<'a> {
         tools: &'a ToolsInfo,
         timeout: Option<Duration>,
         output: PathBuf,
+        isolate_root: bool,
     ) -> Self {
         fs::create_dir_all(home_dir().unwrap().join(".bentoo")).unwrap();
         Runner {
@@ -38,6 +40,7 @@ impl<'a> Runner<'a> {
             tools,
             timeout,
             output,
+            isolate_root,
         }
     }
 
@@ -74,13 +77,21 @@ impl<'a> Runner<'a> {
             );
         }
 
-        let benchmark_tmp = tempfile::TempDir::new_in(home_dir().unwrap().join(".bentoo")).unwrap();
-        copy_dir(&benchmark_path, benchmark_tmp.path()).unwrap();
+        let isolator_tmp = tempfile::TempDir::new_in(home_dir().unwrap().join(".bentoo")).unwrap();
+        let benchmark_tmp = if self.isolate_root {
+            copy_dir(&self.runs.root, isolator_tmp.path()).unwrap();
+            isolator_tmp
+                .path()
+                .join(benchmark_path.strip_prefix(&self.runs.root).unwrap())
+        } else {
+            copy_dir(&benchmark_path, isolator_tmp.path()).unwrap();
+            isolator_tmp.into_path()
+        };
 
         let script = self.tools.root.join(&script.script);
 
         let child = Command::new(script)
-            .arg(benchmark_tmp.path())
+            .arg(benchmark_tmp)
             .args(config.args.split_whitespace())
             .stdout(directory.out_file_write())
             .stderr(directory.err_file_write())
