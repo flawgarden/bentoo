@@ -8,6 +8,36 @@ use serde_sarif::sarif::{
 
 use crate::reference::truth::{CWEs, CWE};
 
+pub fn collect_tags_rules_map(
+    notifications: Option<&Vec<ReportingDescriptor>>,
+    tag_prefix: &str,
+) -> HashMap<String, HashSet<u64>> {
+    let mut rule_to_cwes: HashMap<String, HashSet<u64>> = HashMap::new();
+    if let Some(reporting_descriptors) = notifications {
+        for reporting_descriptor in reporting_descriptors {
+            reporting_descriptor
+                .properties
+                .as_ref()
+                .map(|property_bag| {
+                    property_bag.tags.as_ref().map(|tags_vect| {
+                        let cwes: HashSet<u64> = tags_vect
+                            .iter()
+                            .filter_map(|tag| tag.strip_prefix(tag_prefix))
+                            .map(|tag| {
+                                let cwe: u64 = tag.parse().unwrap();
+                                cwe
+                            })
+                            .collect();
+                        if !cwes.is_empty() {
+                            rule_to_cwes.insert(reporting_descriptor.id.to_string(), cwes);
+                        }
+                    })
+                });
+        }
+    };
+    rule_to_cwes
+}
+
 pub trait RuleMap {
     fn collect_rules_map(
         notifications: Option<&Vec<ReportingDescriptor>>,

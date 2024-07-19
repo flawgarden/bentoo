@@ -1,24 +1,20 @@
-use std::{
-    collections::{HashMap, HashSet},
-    fs,
-    path::Path,
-};
-
-use serde_sarif::sarif::{ReportingDescriptor, Sarif};
-
 use crate::convert::common::{collect_tags_rules_map, RuleMap, ToolName, ToolSarif};
+use serde_sarif::sarif::{ReportingDescriptor, Sarif};
+use std::collections::{HashMap, HashSet};
+use std::fs;
+use std::path::Path;
 
-struct CodeQLReport {
+struct BanditReport {
     pub sarif: Sarif,
 }
 
-impl From<CodeQLReport> for Sarif {
-    fn from(report: CodeQLReport) -> Self {
+impl From<BanditReport> for Sarif {
+    fn from(report: BanditReport) -> Self {
         report.sarif
     }
 }
 
-impl RuleMap for CodeQLReport {
+impl RuleMap for BanditReport {
     fn collect_rules_map(
         notifications: Option<&Vec<ReportingDescriptor>>,
     ) -> HashMap<String, HashSet<u64>> {
@@ -27,8 +23,8 @@ impl RuleMap for CodeQLReport {
     }
 }
 
-impl ToolName for CodeQLReport {
-    const TOOL_NAME: &'static str = "codeql";
+impl ToolName for BanditReport {
+    const TOOL_NAME: &'static str = "bandit";
 }
 
 pub fn from_file(path: &Path) -> Sarif {
@@ -38,5 +34,5 @@ pub fn from_file(path: &Path) -> Sarif {
 
 pub fn from_string(string: &str) -> Sarif {
     let report: Sarif = serde_json::from_str(string).unwrap();
-    CodeQLReport { sarif: report }.build_tool_sarif()
+    BanditReport { sarif: report }.build_tool_sarif()
 }
