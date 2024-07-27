@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 entry_point=$1
 cd $entry_point

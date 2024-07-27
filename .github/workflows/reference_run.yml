@@ -9,6 +9,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 jobs:
   reference_run:

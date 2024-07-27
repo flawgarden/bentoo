@@ -24,3 +24,12 @@ parse_command = { command = "bentoo", args = "convert semgrep" }
 [[tools.configs]]
 name = "C#"
 args = ""
+
+[[tools]]
+script = "snyk.sh"
+name = "Snyk"
+parse_command = { command = "bentoo", args = "convert snyk" }
+
+[[tools.configs]]
+name = "C#"
+args = ""
