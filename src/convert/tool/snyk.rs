@@ -22,32 +22,36 @@ impl RuleMap for SnykReport {
     fn collect_rules_map(
         notifications: Option<&Vec<ReportingDescriptor>>,
     ) -> HashMap<String, HashSet<u64>> {
-        const CWE_TAG_PREFIX: &str = "CWE-";
+        fn try_extract_cwes(
+            reporting_descriptor: &ReportingDescriptor,
+        ) -> Option<(String, HashSet<u64>)> {
+            const CWE_TAG_PREFIX: &str = "CWE-";
+            let property_bag = reporting_descriptor.properties.as_ref()?;
+            let cwes = property_bag.additional_properties.get("cwe")?;
+            let cwes = cwes
+                .as_array()
+                .expect("cwe additional property shold be an array");
+            let cwes: HashSet<_> = cwes
+                .iter()
+                .map(|value| {
+                    value
+                        .as_str()
+                        .expect("cwe additional property shold be an array of strings")
+                })
+                .filter_map(|tag| tag.strip_prefix(CWE_TAG_PREFIX))
+                .map(|tag| {
+                    let cwe: u64 = tag.parse().unwrap();
+                    cwe
+                })
+                .collect();
+            Some((reporting_descriptor.id.to_string(), cwes))
+        }
+
         let mut rule_to_cwes: HashMap<String, HashSet<u64>> = HashMap::new();
         if let Some(reporting_descriptors) = notifications {
             for reporting_descriptor in reporting_descriptors {
-                if let Some(property_bag) = reporting_descriptor.properties.as_ref() {
-                    let cwes = property_bag
-                        .additional_properties
-                        .get("cwe")
-                        .expect("a snyk report rule should have cwe addtional property");
-                    let cwes = cwes
-                        .as_array()
-                        .expect("cwe additional property shold be an array");
-                    let cwes: HashSet<_> = cwes
-                        .iter()
-                        .map(|value| {
-                            value
-                                .as_str()
-                                .expect("cwe additional property shold be an array of strings")
-                        })
-                        .filter_map(|tag| tag.strip_prefix(CWE_TAG_PREFIX))
-                        .map(|tag| {
-                            let cwe: u64 = tag.parse().unwrap();
-                            cwe
-                        })
-                        .collect();
-                    rule_to_cwes.insert(reporting_descriptor.id.to_string(), cwes);
+                if let Some((rule, cwes)) = try_extract_cwes(reporting_descriptor) {
+                    rule_to_cwes.insert(rule, cwes);
                 }
             }
         };
