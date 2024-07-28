@@ -33,3 +33,12 @@ parse_command = { command = "bentoo", args = "convert bandit" }
 [[tools.configs]]
 name = "Python"
 args = ""
+
+[[tools]]
+script = "snyk.sh"
+name = "Snyk"
+parse_command = { command = "bentoo", args = "convert snyk" }
+
+[[tools.configs]]
+name = "Python"
+args = ""

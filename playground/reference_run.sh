@@ -31,6 +31,11 @@ files_14=(
     "Bearer_Java.err"
     "Bearer_Java.out"
     "Bearer_Java.metadata"
+    "Snyk_Java.json"
+    "Snyk_Java.sarif"
+    "Snyk_Java.err"
+    "Snyk_Java.out"
+    "Snyk_Java.metadata"
     "truth.sarif"
     "summary.json"
 )
@@ -61,6 +66,11 @@ files_16=(
     "Bearer_Java.err"
     "Bearer_Java.out"
     "Bearer_Java.metadata"
+    "Snyk_Java.json"
+    "Snyk_Java.sarif"
+    "Snyk_Java.err"
+    "Snyk_Java.out"
+    "Snyk_Java.metadata"
     "truth.sarif"
     "summary.json"
 )
