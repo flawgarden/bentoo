@@ -18,6 +18,7 @@ pub fn bench_all(
     output: PathBuf,
     timeout: Option<u64>,
     isolate_root: bool,
+    detailed: bool,
 ) {
     let runner = run::Runner::new(
         &runs,
@@ -54,7 +55,7 @@ pub fn bench_all(
         let directory = Directory::new(&output, benchmark, tool);
         runner.run_one(&directory);
         parser.parse_one(&directory);
-        evaluator.evaluate_one(&directory);
+        evaluator.evaluate_one(&directory, detailed);
     }
 
     println!("Evaluation done");
