@@ -1,5 +1,5 @@
 use std::{
-    collections::{HashMap, HashSet},
+    collections::{BTreeMap, HashSet},
     fs::{self, File},
     path::{Path, PathBuf},
     time::Duration,
@@ -29,7 +29,7 @@ use super::compare::{MatchCard, MinimalMatchCard, ToolResultCard, ToolResultsCar
 
 enum SummaryNode {
     Internal {
-        children: HashMap<String, SummaryNode>,
+        children: BTreeMap<String, SummaryNode>,
     },
     Leaf {
         summary: Box<ToolSummaryCard>,
@@ -37,7 +37,7 @@ enum SummaryNode {
 }
 
 impl SummaryNode {
-    fn try_internal_mut(&mut self) -> Option<&mut HashMap<String, SummaryNode>> {
+    fn try_internal_mut(&mut self) -> Option<&mut BTreeMap<String, SummaryNode>> {
         match self {
             SummaryNode::Internal { children } => Some(children),
             _ => None,
@@ -211,12 +211,12 @@ impl ToolSummaryCard {
     fn union(&self, other: &Self) -> Self {
         assert!(self.tool == other.tool);
 
-        let mut cwes_map: HashMap<String, Vec<NamedSummaryCard>> = HashMap::new();
-        let mut cwes_1000_map: HashMap<String, Vec<NamedSummaryCard>> = HashMap::new();
+        let mut cwes_map: BTreeMap<String, Vec<NamedSummaryCard>> = BTreeMap::new();
+        let mut cwes_1000_map: BTreeMap<String, Vec<NamedSummaryCard>> = BTreeMap::new();
 
         fn collect_summaries(
             summaries: &[NamedSummaryCard],
-            cwes_map: &mut HashMap<String, Vec<NamedSummaryCard>>,
+            cwes_map: &mut BTreeMap<String, Vec<NamedSummaryCard>>,
         ) {
             for summary in summaries.iter() {
                 let vec = cwes_map.entry(summary.name.clone()).or_default();
@@ -280,7 +280,7 @@ impl<'s> Summarizer<'s> {
             results_root,
             taxonomy: Taxonomy::from_known_version(&TaxonomyVersion::default()),
             summary_root: SummaryNode::Internal {
-                children: HashMap::new(),
+                children: BTreeMap::new(),
             },
         }
     }
@@ -343,7 +343,7 @@ impl<'s> Summarizer<'s> {
             let component = String::from(component.as_os_str().to_str().unwrap());
             let children = node.try_internal_mut().expect("Node must be internal");
             node = children.entry(component).or_insert(SummaryNode::Internal {
-                children: HashMap::new(),
+                children: BTreeMap::new(),
             });
         }
 
@@ -542,7 +542,7 @@ impl<'s> Summarizer<'s> {
         match node {
             SummaryNode::Internal { children } => {
                 let mut ret: ToolsSummaryCard = ToolsSummaryCard { summaries: vec![] };
-                let mut summary_map: HashMap<Tool, Vec<ToolSummaryCard>> = HashMap::new();
+                let mut summary_map: BTreeMap<Tool, Vec<ToolSummaryCard>> = BTreeMap::new();
                 for child in children {
                     let summary = Summarizer::summarize_recursive(child.1, path.join(child.0));
                     for summary in summary.summaries {
