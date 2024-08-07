@@ -27,7 +27,7 @@ pub struct Tools {
     pub tools: Vec<Script>,
 }
 
-#[derive(Clone, Hash, PartialEq, Eq, Debug, Serialize, Deserialize)]
+#[derive(Clone, PartialOrd, Ord, Hash, PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Tool {
     pub script: String,
     pub config: String,
