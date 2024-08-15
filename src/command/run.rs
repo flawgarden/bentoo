@@ -45,19 +45,6 @@ impl<'a> Runner<'a> {
     }
 
     pub fn run_one(&self, directory: &Directory) {
-        if let Some(metadata) = directory.metadata_read() {
-            if metadata.status == Status::ScriptError {
-                println!("Runner: Run script failed to run during previous run, retrying");
-            } else if metadata.exit_code != 0 {
-                println!("Runner: Previous run exited with non-zero exit code, retrying");
-            } else {
-                println!("Runner: Previous run was OK, skipping");
-                return;
-            }
-        } else {
-            println!("Runner: No metadata found for the run, running");
-        }
-
         let (script, config) = self.tools.tools.get(directory.tool);
 
         let benchmark_path = self.runs.root.join(directory.benchmark);
@@ -75,6 +62,19 @@ impl<'a> Runner<'a> {
                 "Runner: Warning: Could not find truth.sarif in {}",
                 benchmark_path.display()
             );
+        }
+
+        if let Some(metadata) = directory.metadata_read() {
+            if metadata.status == Status::ScriptError {
+                println!("Runner: Run script failed to run during previous run, retrying");
+            } else if metadata.exit_code != 0 {
+                println!("Runner: Previous run exited with non-zero exit code, retrying");
+            } else {
+                println!("Runner: Previous run was OK, skipping");
+                return;
+            }
+        } else {
+            println!("Runner: No metadata found for the run, running");
         }
 
         let isolator_tmp = tempfile::TempDir::new_in(home_dir().unwrap().join(".bentoo")).unwrap();
