@@ -279,10 +279,17 @@ impl TryFrom<&Region> for sarif::Region {
     }
 }
 
-impl TryFrom<&sarif::PhysicalLocation> for Location {
+impl TryFrom<&sarif::Location> for Location {
     type Error = ParseError;
-    fn try_from(location: &sarif::PhysicalLocation) -> result::Result<Self, ParseError> {
-        let path = location
+    fn try_from(location: &sarif::Location) -> result::Result<Self, ParseError> {
+        let physical_location = location
+            .physical_location
+            .as_ref()
+            .ok_or(ParseError::new("Location should have a physical location"))?;
+        let id = location
+            .id
+            .ok_or(ParseError::new("Location should have an id"))?;
+        let path = physical_location
             .artifact_location
             .as_ref()
             .ok_or(ParseError::new("Location should have an artifact location"))?
@@ -290,7 +297,7 @@ impl TryFrom<&sarif::PhysicalLocation> for Location {
             .as_ref()
             .ok_or(ParseError::new("Artifact should have an uri"))?
             .clone();
-        let region = location.region.as_ref();
+        let region = physical_location.region.as_ref();
         let region = match region {
             None => None,
             Some(region) => Some(Region::try_from(region)?),
@@ -298,13 +305,13 @@ impl TryFrom<&sarif::PhysicalLocation> for Location {
         Ok(Self {
             path,
             region,
-            id: 0,
+            id,
             relationship: None,
         })
     }
 }
 
-impl TryFrom<&Location> for sarif::PhysicalLocation {
+impl TryFrom<&Location> for sarif::Location {
     type Error = ParseError;
     fn try_from(location: &Location) -> result::Result<Self, ParseError> {
         let uri = location.path.clone();
@@ -319,7 +326,12 @@ impl TryFrom<&Location> for sarif::PhysicalLocation {
         if let Some(region) = region {
             builder.region(region);
         }
-        builder
+        let physical_location = builder
+            .build()
+            .map_err(|_| ParseError::new("Location build failed"))?;
+        LocationBuilder::default()
+            .id(location.id)
+            .physical_location(physical_location)
             .build()
             .map_err(|_| ParseError::new("Location build failed"))
     }
@@ -331,15 +343,8 @@ impl TryFrom<&Vec<sarif::Location>> for Locations {
     fn try_from(locations: &Vec<sarif::Location>) -> result::Result<Self, ParseError> {
         let mut parsed = vec![];
         for location in locations {
-            let physical_location = location
-                .physical_location
-                .as_ref()
-                .ok_or(ParseError::new("Location should have a physical location"))?;
-            let id = location
-                .id
-                .ok_or(ParseError::new("Location should have an id"))?;
-            let location = Location::try_from(physical_location)?;
-            parsed.push(Location { id, ..location });
+            let location = Location::try_from(location)?;
+            parsed.push(location);
         }
         Ok(Self(parsed))
     }
@@ -351,12 +356,8 @@ impl TryFrom<&Locations> for Vec<sarif::Location> {
     fn try_from(locations: &Locations) -> result::Result<Self, ParseError> {
         let mut parsed = vec![];
         for location in &locations.0 {
-            let physical_location = sarif::PhysicalLocation::try_from(location)?;
-            let loc = LocationBuilder::default()
-                .physical_location(physical_location)
-                .build()
-                .map_err(|_| ParseError::new("Location build failed"))?;
-            parsed.push(loc);
+            let location = sarif::Location::try_from(location)?;
+            parsed.push(location);
         }
         Ok(parsed)
     }
