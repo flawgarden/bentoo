@@ -55,6 +55,7 @@ mod tool_sarif_impl {
         ) -> Option<serde_sarif::sarif::Result>;
         fn build_locations(
             locations: &[serde_sarif::sarif::Location],
+            init_id: i64,
         ) -> Vec<serde_sarif::sarif::Location>;
     }
 }
@@ -91,7 +92,7 @@ where
                     let mut result_builder = ResultBuilder::default();
                     assert!(rule_to_cwes.contains_key(rule_id));
                     result_builder.rule_id(format!("{}", cwes));
-                    let locations_out = Self::build_locations(locations);
+                    let locations_out = Self::build_locations(locations, 0);
                     result_builder.locations(locations_out);
                     let empty_text = "".to_string();
                     let message = result.message.text.as_ref().unwrap_or(&empty_text);
@@ -109,9 +110,10 @@ where
 
     fn build_locations(
         locations: &[serde_sarif::sarif::Location],
+        init_id: i64,
     ) -> Vec<serde_sarif::sarif::Location> {
         let mut locations_out: Vec<serde_sarif::sarif::Location> = vec![];
-        for location in locations {
+        for (pos, location) in locations.iter().enumerate() {
             if let Some(physical_location) = location.physical_location.as_ref() {
                 let mut physical_location_builder = PhysicalLocationBuilder::default();
                 let uri = physical_location
@@ -141,7 +143,9 @@ where
                 }
 
                 let physical_location = physical_location_builder.build().unwrap();
+                let id = init_id + pos as i64;
                 let location = LocationBuilder::default()
+                    .id(id)
                     .physical_location(physical_location)
                     .build()
                     .unwrap();

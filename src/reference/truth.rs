@@ -127,9 +127,23 @@ impl PartialOrd for Region {
 }
 
 #[derive(PartialEq, Eq, Hash)]
+pub enum RelationshipKind {
+    Flows,
+    IsSourcedFrom,
+}
+
+#[derive(PartialEq, Eq, Hash)]
+pub struct LocationRelationship {
+    pub target: u64,
+    pub kinds: Vec<RelationshipKind>,
+}
+
+#[derive(PartialEq, Eq, Hash)]
 pub struct Location {
+    pub id: i64,
     pub path: String,
     pub region: Option<Region>,
+    pub relationship: Option<()>,
 }
 
 #[derive(PartialEq, Eq, Hash)]
@@ -166,6 +180,7 @@ pub struct Result {
     pub cwes: CWEs,
     pub message: Option<String>,
     pub locations: Locations,
+    pub related_locations: Option<Locations>,
 }
 
 #[derive(PartialEq, Eq, Hash)]
@@ -280,7 +295,12 @@ impl TryFrom<&sarif::PhysicalLocation> for Location {
             None => None,
             Some(region) => Some(Region::try_from(region)?),
         };
-        Ok(Self { path, region })
+        Ok(Self {
+            path,
+            region,
+            id: 0,
+            relationship: None,
+        })
     }
 }
 
@@ -315,8 +335,11 @@ impl TryFrom<&Vec<sarif::Location>> for Locations {
                 .physical_location
                 .as_ref()
                 .ok_or(ParseError::new("Location should have a physical location"))?;
+            let id = location
+                .id
+                .ok_or(ParseError::new("Location should have an id"))?;
             let location = Location::try_from(physical_location)?;
-            parsed.push(location);
+            parsed.push(Location { id, ..location });
         }
         Ok(Self(parsed))
     }
@@ -371,6 +394,7 @@ impl TryFrom<&sarif::Result> for Result {
             locations,
             message,
             cwes,
+            related_locations: None,
         })
     }
 }
