@@ -387,15 +387,20 @@ impl TryFrom<&sarif::Result> for Result {
         let cwes = CWEs(cwes);
         let message = result.message.text.clone();
         let locations = result.locations.as_ref();
+        let related_locations = result.related_locations.as_ref();
         let locations = match locations {
             None => Locations(vec![]),
             Some(locations) => Locations::try_from(locations)?,
+        };
+        let related_locations = match related_locations {
+            None => None,
+            Some(locations) => Some(Locations::try_from(locations)?),
         };
         Ok(Self {
             locations,
             message,
             cwes,
-            related_locations: None,
+            related_locations,
         })
     }
 }
@@ -414,6 +419,10 @@ impl TryFrom<&Result> for sarif::Result {
                 .build()
                 .map_err(|_| ParseError::new("Message build failed"))?;
             result_builder.message(message);
+        }
+        if let Some(locations) = result.related_locations.as_ref() {
+            let locations = Vec::try_from(locations)?;
+            result_builder.related_locations(locations);
         }
         result_builder
             .build()
