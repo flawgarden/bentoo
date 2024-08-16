@@ -21,11 +21,20 @@ use serde_sarif::{
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-pub struct ParseError;
+pub struct ParseError {
+    pub message: String,
+}
+
+impl ParseError {
+    fn new<S: AsRef<str>>(message: S) -> Self {
+        let message = message.as_ref().to_string();
+        Self { message }
+    }
+}
 
 impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Truth/Tool Parse error")
+        write!(f, "Truth/Tool Parse error: {}", self.message)
     }
 }
 
@@ -195,7 +204,7 @@ fn resolve_kind(result: &sarif::Result) -> result::Result<sarif::ResultKind, Par
         "review" => Ok(sarif::ResultKind::Review),
         "open" => Ok(sarif::ResultKind::Open),
         "informational" => Ok(sarif::ResultKind::Informational),
-        _ => Err(ParseError),
+        _ => Err(ParseError::new(format!("Unexpected kind: {}", kind_str))),
     }
 }
 
@@ -205,7 +214,7 @@ impl TryFrom<&sarif::ResultKind> for Kind {
         match kind {
             sarif::ResultKind::Pass => Ok(Kind::Pass),
             sarif::ResultKind::Fail => Ok(Kind::Fail),
-            _ => Err(ParseError),
+            _ => Err(ParseError::new(format!("Unexpected kind: {}", kind))),
         }
     }
 }
@@ -230,7 +239,7 @@ impl TryFrom<&sarif::Region> for Region {
                 end_column: region.end_column,
             })
         } else {
-            Err(ParseError)
+            Err(ParseError::new("Region should have a start line"))
         }
     }
 }
@@ -249,7 +258,9 @@ impl TryFrom<&Region> for sarif::Region {
         if let Some(end_column) = region.end_column {
             builder.end_column(end_column);
         }
-        builder.build().map_err(|_| ParseError)
+        builder
+            .build()
+            .map_err(|_| ParseError::new("Region build failed"))
     }
 }
 
@@ -259,10 +270,10 @@ impl TryFrom<&sarif::PhysicalLocation> for Location {
         let path = location
             .artifact_location
             .as_ref()
-            .ok_or(ParseError)?
+            .ok_or(ParseError::new("Location should have an artifact location"))?
             .uri
             .as_ref()
-            .ok_or(ParseError)?
+            .ok_or(ParseError::new("Artifact should have an uri"))?
             .clone();
         let region = location.region.as_ref();
         let region = match region {
@@ -288,7 +299,9 @@ impl TryFrom<&Location> for sarif::PhysicalLocation {
         if let Some(region) = region {
             builder.region(region);
         }
-        builder.build().map_err(|_| ParseError)
+        builder
+            .build()
+            .map_err(|_| ParseError::new("Location build failed"))
     }
 }
 
@@ -298,7 +311,10 @@ impl TryFrom<&Vec<sarif::Location>> for Locations {
     fn try_from(locations: &Vec<sarif::Location>) -> result::Result<Self, ParseError> {
         let mut parsed = vec![];
         for location in locations {
-            let physical_location = location.physical_location.as_ref().ok_or(ParseError)?;
+            let physical_location = location
+                .physical_location
+                .as_ref()
+                .ok_or(ParseError::new("Location should have a physical location"))?;
             let location = Location::try_from(physical_location)?;
             parsed.push(location);
         }
@@ -316,7 +332,7 @@ impl TryFrom<&Locations> for Vec<sarif::Location> {
             let loc = LocationBuilder::default()
                 .physical_location(physical_location)
                 .build()
-                .map_err(|_| ParseError)?;
+                .map_err(|_| ParseError::new("Location build failed"))?;
             parsed.push(loc);
         }
         Ok(parsed)
@@ -330,15 +346,17 @@ impl TryFrom<&sarif::Result> for Result {
         let cwes: Vec<CWE> = result
             .rule_id
             .as_ref()
-            .ok_or(ParseError)?
+            .ok_or(ParseError::new("Result should have a rule id"))?
             .split(',')
             .map(|cwe| {
                 let cwe = cwe
                     .trim()
                     .strip_prefix("CWE-")
-                    .ok_or(ParseError)?
+                    .ok_or(ParseError::new(
+                        "Every part of rule id should start with 'CWE-'",
+                    ))?
                     .parse()
-                    .map_err(|_| ParseError)?;
+                    .map_err(|_| ParseError::new("CWE parsing failed"))?;
                 result::Result::<CWE, ParseError>::Ok(CWE(cwe))
             })
             .collect::<result::Result<Vec<CWE>, ParseError>>()?;
@@ -369,10 +387,12 @@ impl TryFrom<&Result> for sarif::Result {
             let message = MessageBuilder::default()
                 .text(text)
                 .build()
-                .map_err(|_| ParseError)?;
+                .map_err(|_| ParseError::new("Message build failed"))?;
             result_builder.message(message);
         }
-        result_builder.build().map_err(|_| ParseError)
+        result_builder
+            .build()
+            .map_err(|_| ParseError::new("Result build failed"))
     }
 }
 
@@ -415,9 +435,13 @@ impl TryFrom<&sarif::Sarif> for TruthResults {
 
     fn try_from(sarif: &sarif::Sarif) -> result::Result<Self, ParseError> {
         assert_eq!(sarif.runs.len(), 1);
-        let run = sarif.runs.first().ok_or(ParseError)?;
+        let run = sarif.runs.first().unwrap();
         let mut results = vec![];
-        for result in run.results.as_ref().ok_or(ParseError)? {
+        for result in run
+            .results
+            .as_ref()
+            .ok_or(ParseError::new("Run should have results"))?
+        {
             results.push(TruthResult::try_from(result)?);
         }
         let name = run.tool.driver.name.clone();
@@ -429,9 +453,13 @@ impl TryFrom<&sarif::Sarif> for ToolResults {
     type Error = ParseError;
     fn try_from(sarif: &sarif::Sarif) -> result::Result<Self, ParseError> {
         assert_eq!(sarif.runs.len(), 1);
-        let run = sarif.runs.first().ok_or(ParseError)?;
+        let run = sarif.runs.first().unwrap();
         let mut results = vec![];
-        for result in run.results.as_ref().ok_or(ParseError)? {
+        for result in run
+            .results
+            .as_ref()
+            .ok_or(ParseError::new("Run should have results"))?
+        {
             results.push(ToolResult::try_from(result)?)
         }
         let name = run.tool.driver.name.clone();
@@ -448,22 +476,25 @@ impl TryFrom<&ToolResults> for sarif::Sarif {
             results.push(sarif::Result::try_from(result)?);
         }
 
-        let tool = ToolBuilder::default()
-            .driver(ToolComponentBuilder::default().name(name).build().unwrap())
+        let tool_component = ToolComponentBuilder::default()
+            .name(name)
             .build()
-            .map_err(|_| ParseError)?;
-
+            .map_err(|_| ParseError::new("Tool component build failed"))?;
+        let tool = ToolBuilder::default()
+            .driver(tool_component)
+            .build()
+            .map_err(|_| ParseError::new("Tool build failed"))?;
         let run = RunBuilder::default()
             .tool(tool)
             .results(results)
             .build()
-            .map_err(|_| ParseError)?;
+            .map_err(|_| ParseError::new("Run build failed"))?;
 
         SarifBuilder::default()
             .version("2.1.0")
             .runs(vec![run])
             .build()
-            .map_err(|_| ParseError)
+            .map_err(|_| ParseError::new("Sarif build failed"))
     }
 }
 
@@ -476,7 +507,7 @@ impl TryFrom<&Path> for TruthResults {
             let mut buf_reader = BufReader::new(file);
             buf_reader
                 .read_to_string(&mut file_str)
-                .map_err(|_| ParseError {})?;
+                .map_err(|_| ParseError::new("Read from buffer to string failed"))?;
             let report: Option<Sarif> = serde_json::from_str(&file_str).ok();
             if let Some(report) = report {
                 return TruthResults::try_from(&report);
@@ -498,7 +529,7 @@ impl TryFrom<&Path> for ToolResults {
             let mut buf_reader = BufReader::new(file);
             buf_reader
                 .read_to_string(&mut file_str)
-                .map_err(|_| ParseError {})?;
+                .map_err(|_| ParseError::new("Read from buffer to string failed"))?;
             let report: Option<Sarif> = serde_json::from_str(&file_str).ok();
             if let Some(report) = report {
                 return ToolResults::try_from(&report);
