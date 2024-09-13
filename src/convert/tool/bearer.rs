@@ -31,14 +31,14 @@ struct Finding {
 
 #[derive(Debug, Deserialize)]
 struct BearerReport {
-    pub findings: Vec<Finding>,
+    pub findings: Option<Vec<Finding>>,
 }
 
 fn from_json(json: Value) -> Sarif {
     let report: BearerReport = serde_json::from_value(json).unwrap();
     let mut results = vec![];
 
-    for finding in report.findings {
+    for finding in report.findings.unwrap_or_default() {
         let mut result_builder = ResultBuilder::default();
         let prefixed: Vec<String> = finding
             .cwe_ids
