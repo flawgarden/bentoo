@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 
 entry_point=$1
-cd $entry_point
+cd "$entry_point" || exit
 
 result_filename="snyk_output.json"
 
 AUTHORIZED="true"
 
-for OPT in $@; do
+for OPT in "$@"; do
   if [[ "$OPT" = *"--not-authorized"* ]]; then
-      AUTHORIZED="false"
-      shift 1
+    AUTHORIZED="false"
+    shift 1
   fi
 done
-
 
 if [[ "$AUTHORIZED" = "false" ]]; then
   if [[ ! -v SNYK_TOKEN ]]; then
@@ -29,4 +28,4 @@ chmod +x ./snyk >&2
 
 result_file="$entry_point/$result_filename"
 
-cat $result_file
+cat "$result_file"
