@@ -1,0 +1,244 @@
+{
+  "rule_mapping": {
+    "G101": {
+      "title": "Look for hard coded credentials",
+      "cwe": [
+        798
+      ]
+    },
+    "G102": {
+      "title": "Bind to all interfaces",
+      "cwe": [
+        200
+      ]
+    },
+    "G103": {
+      "title": "Audit the use of unsafe block",
+      "cwe": [
+        242
+      ]
+    },
+    "G104": {
+      "title": "Audit errors not checked",
+      "cwe": [
+        703
+      ]
+    },
+    "G106": {
+      "title": "Audit the use of ssh.InsecureIgnoreHostKey",
+      "cwe": [
+        322
+      ]
+    },
+    "G107": {
+      "title": "Url provided to HTTP request as taint input",
+      "cwe": [
+        88
+      ]
+    },
+    "G108": {
+      "title": "Profiling endpoint automatically exposed on /debug/pprof",
+      "cwe": [
+        200
+      ]
+    },
+    "G109": {
+      "title": "Potential Integer overflow made by strconv.Atoi result conversion to int16/32",
+      "cwe": [
+        190
+      ]
+    },
+    "G110": {
+      "title": "Potential DoS vulnerability via decompression bomb",
+      "cwe": [
+        409
+      ]
+    },
+    "G111": {
+      "title": "Potential directory traversal",
+      "cwe": [
+        22
+      ]
+    },
+    "G112": {
+      "title": "Potential slowloris attack",
+      "cwe": [
+        400
+      ]
+    },
+    "G113": {
+      "title": "Usage of Rat.SetString in math/big with an overflow (CVE-2022-23772)",
+      "cwe": [
+        190
+      ]
+    },
+    "G114": {
+      "title": "Use of net/http serve function that has no support for setting timeouts",
+      "cwe": [
+        676
+      ]
+    },
+    "G115": {
+      "title": "Potential integer overflow when converting between integer types",
+      "cwe": [
+        190
+      ]
+    },
+    "G201": {
+      "title": "SQL query construction using format string",
+      "cwe": [
+        89
+      ]
+    },
+    "G202": {
+      "title": "SQL query construction using string concatenation",
+      "cwe": [
+        89
+      ]
+    },
+    "G203": {
+      "title": "Use of unescaped data in HTML templates",
+      "cwe": [
+        79
+      ]
+    },
+    "G204": {
+      "title": "Audit use of command execution",
+      "cwe": [
+        78
+      ]
+    },
+    "G301": {
+      "title": "Poor file permissions used when creating a directory",
+      "cwe": [
+        276
+      ]
+    },
+    "G302": {
+      "title": "Poor file permissions used with chmod",
+      "cwe": [
+        276
+      ]
+    },
+    "G303": {
+      "title": "Creating tempfile using a predictable path",
+      "cwe": [
+        377
+      ]
+    },
+    "G304": {
+      "title": "File path provided as taint input",
+      "cwe": [
+        22
+      ]
+    },
+    "G305": {
+      "title": "File traversal when extracting zip/tar archive",
+      "cwe": [
+        22
+      ]
+    },
+    "G306": {
+      "title": "Poor file permissions used when writing to a new file",
+      "cwe": [
+        276
+      ]
+    },
+    "G401": {
+      "title": "Detect the usage of MD5 or SHA1",
+      "cwe": [
+        328
+      ]
+    },
+    "G402": {
+      "title": "Look for bad TLS connection settings",
+      "cwe": [
+        295
+      ]
+    },
+    "G403": {
+      "title": "Ensure minimum RSA key length of 2048 bits",
+      "cwe": [
+        310
+      ]
+    },
+    "G404": {
+      "title": "Insecure random number source (rand)",
+      "cwe": [
+        338
+      ]
+    },
+    "G405": {
+      "title": "Detect the usage of DES or RC4",
+      "cwe": [
+        327
+      ]
+    },
+    "G406": {
+      "title": "Detect the usage of MD4 or RIPEMD160",
+      "cwe": [
+        328
+      ]
+    },
+    "G407": {
+      "title": "Detect the usage of hardcoded Initialization Vector(IV)/Nonce",
+      "cwe": [
+        1204
+      ]
+    },
+    "G501": {
+      "title": "Import blocklist: crypto/md5",
+      "cwe": [
+        327
+      ]
+    },
+    "G502": {
+      "title": "Import blocklist: crypto/des",
+      "cwe": [
+        327
+      ]
+    },
+    "G503": {
+      "title": "Import blocklist: crypto/rc4",
+      "cwe": [
+        327
+      ]
+    },
+    "G504": {
+      "title": "Import blocklist: net/http/cgi",
+      "cwe": [
+        327
+      ]
+    },
+    "G505": {
+      "title": "Import blocklist: crypto/sha1",
+      "cwe": [
+        327
+      ]
+    },
+    "G506": {
+      "title": "Import blocklist: golang.org/x/crypto/md4",
+      "cwe": [
+        327
+      ]
+    },
+    "G507": {
+      "title": "Import blocklist: golang.org/x/crypto/ripemd160",
+      "cwe": [
+        327
+      ]
+    },
+    "G601": {
+      "title": "Implicit memory aliasing of items from a range statement (only for Go 1.21 or lower)",
+      "cwe": [
+        118
+      ]
+    },
+    "G602": {
+      "title": "Slice access out of bounds",
+      "cwe": [
+        118
+      ]
+    }
+  }
+}

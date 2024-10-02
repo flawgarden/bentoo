@@ -16,11 +16,11 @@ struct RuleInfo {
 }
 
 #[derive(Debug, Deserialize)]
-struct RuleMap {
+struct SonarQubeRuleMap {
     pub rule_mapping: HashMap<String, RuleInfo>,
 }
 
-impl RuleMap {
+impl SonarQubeRuleMap {
     pub fn from_json(json: Value) -> Self {
         serde_json::from_value(json).expect("Rule mapping parsing failed")
     }
@@ -81,7 +81,7 @@ struct SonarQubeReport {
 }
 
 fn from_json(json: Value) -> Sarif {
-    let rules = RuleMap::new();
+    let rules = SonarQubeRuleMap::new();
     let sonarqube_report: SonarQubeReport = serde_json::from_value(json).unwrap();
     let mut results = vec![];
     let report: Vec<Issue> = sonarqube_report
