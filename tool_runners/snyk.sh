@@ -9,11 +9,10 @@ AUTHORIZED="true"
 
 for OPT in "$@"; do
   if [[ "$OPT" = *"--not-authorized"* ]]; then
-      AUTHORIZED="false"
-      shift 1
+    AUTHORIZED="false"
+    shift 1
   fi
 done
-
 
 if [[ "$AUTHORIZED" = "false" ]]; then
   if [[ ! -v SNYK_TOKEN ]]; then

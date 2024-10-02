@@ -9,27 +9,27 @@ POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --tech)
-      TECH="$2"
-      shift # past argument
-      shift # past value
-      ;;
-    --*|-*)
-      echo "Unknown option $1"
-      exit 1
-      ;;
-    *)
-      POSITIONAL_ARGS+=("$1") # save positional arg
-      shift # past argument
-      ;;
+  --tech)
+    TECH="$2"
+    shift # past argument
+    shift # past value
+    ;;
+  --* | -*)
+    echo "Unknown option $1"
+    exit 1
+    ;;
+  *)
+    POSITIONAL_ARGS+=("$1") # save positional arg
+    shift                   # past argument
+    ;;
   esac
 done
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
-if ! { [ "$TECH" = "java" ] || [ "$TECH" = "csharp" ]; } then
-    echo "TECH can only be java or csharp (was $TECH)" >&2
-    exit 1
+if ! { [ "$TECH" = "java" ] || [ "$TECH" = "csharp" ]; }; then
+  echo "TECH can only be java or csharp (was $TECH)" >&2
+  exit 1
 fi
 
 entry_point=$1

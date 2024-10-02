@@ -1,78 +1,78 @@
 #!/usr/bin/env bash
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-root_dir="$( cd "$script_dir"/.. && pwd )"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+root_dir="$(cd "$script_dir"/.. && pwd)"
 
 files=(
-    "summary.json"
+  "summary.json"
 )
 
 files_14=(
-    "CodeQL_Java.err"
-    "CodeQL_Java.out"
-    "CodeQL_Java.metadata"
-    "Insider_Java.json"
-    "Insider_Java.sarif"
-    "Insider_Java.err"
-    "Insider_Java.out"
-    "Insider_Java.metadata"
-    "Semgrep_Java.json"
-    "Semgrep_Java.sarif"
-    "Semgrep_Java.err"
-    "Semgrep_Java.out"
-    "Semgrep_Java.metadata"
-    "SonarQube_Java.json"
-    "SonarQube_Java.sarif"
-    "SonarQube_Java.err"
-    "SonarQube_Java.out"
-    "SonarQube_Java.metadata"
-    "Bearer_Java.json"
-    "Bearer_Java.sarif"
-    "Bearer_Java.err"
-    "Bearer_Java.out"
-    "Bearer_Java.metadata"
-    "Snyk_Java.json"
-    "Snyk_Java.sarif"
-    "Snyk_Java.err"
-    "Snyk_Java.out"
-    "Snyk_Java.metadata"
-    "truth.sarif"
-    "summary.json"
+  "CodeQL_Java.err"
+  "CodeQL_Java.out"
+  "CodeQL_Java.metadata"
+  "Insider_Java.json"
+  "Insider_Java.sarif"
+  "Insider_Java.err"
+  "Insider_Java.out"
+  "Insider_Java.metadata"
+  "Semgrep_Java.json"
+  "Semgrep_Java.sarif"
+  "Semgrep_Java.err"
+  "Semgrep_Java.out"
+  "Semgrep_Java.metadata"
+  "SonarQube_Java.json"
+  "SonarQube_Java.sarif"
+  "SonarQube_Java.err"
+  "SonarQube_Java.out"
+  "SonarQube_Java.metadata"
+  "Bearer_Java.json"
+  "Bearer_Java.sarif"
+  "Bearer_Java.err"
+  "Bearer_Java.out"
+  "Bearer_Java.metadata"
+  "Snyk_Java.json"
+  "Snyk_Java.sarif"
+  "Snyk_Java.err"
+  "Snyk_Java.out"
+  "Snyk_Java.metadata"
+  "truth.sarif"
+  "summary.json"
 )
 
 files_16=(
-    "CodeQL_Java.json"
-    "CodeQL_Java.sarif"
-    "CodeQL_Java.err"
-    "CodeQL_Java.out"
-    "CodeQL_Java.metadata"
-    "Insider_Java.json"
-    "Insider_Java.sarif"
-    "Insider_Java.err"
-    "Insider_Java.out"
-    "Insider_Java.metadata"
-    "Semgrep_Java.json"
-    "Semgrep_Java.sarif"
-    "Semgrep_Java.err"
-    "Semgrep_Java.out"
-    "Semgrep_Java.metadata"
-    "SonarQube_Java.json"
-    "SonarQube_Java.sarif"
-    "SonarQube_Java.err"
-    "SonarQube_Java.out"
-    "SonarQube_Java.metadata"
-    "Bearer_Java.json"
-    "Bearer_Java.sarif"
-    "Bearer_Java.err"
-    "Bearer_Java.out"
-    "Bearer_Java.metadata"
-    "Snyk_Java.json"
-    "Snyk_Java.sarif"
-    "Snyk_Java.err"
-    "Snyk_Java.out"
-    "Snyk_Java.metadata"
-    "truth.sarif"
-    "summary.json"
+  "CodeQL_Java.json"
+  "CodeQL_Java.sarif"
+  "CodeQL_Java.err"
+  "CodeQL_Java.out"
+  "CodeQL_Java.metadata"
+  "Insider_Java.json"
+  "Insider_Java.sarif"
+  "Insider_Java.err"
+  "Insider_Java.out"
+  "Insider_Java.metadata"
+  "Semgrep_Java.json"
+  "Semgrep_Java.sarif"
+  "Semgrep_Java.err"
+  "Semgrep_Java.out"
+  "Semgrep_Java.metadata"
+  "SonarQube_Java.json"
+  "SonarQube_Java.sarif"
+  "SonarQube_Java.err"
+  "SonarQube_Java.out"
+  "SonarQube_Java.metadata"
+  "Bearer_Java.json"
+  "Bearer_Java.sarif"
+  "Bearer_Java.err"
+  "Bearer_Java.out"
+  "Bearer_Java.metadata"
+  "Snyk_Java.json"
+  "Snyk_Java.sarif"
+  "Snyk_Java.err"
+  "Snyk_Java.out"
+  "Snyk_Java.metadata"
+  "truth.sarif"
+  "summary.json"
 )
 
 cd "$root_dir" || exit
@@ -108,35 +108,35 @@ cargo build
 PATH="$(pwd)/target/debug:$PATH"
 export PATH
 
-bentoo template --tools tool_runners/tools_java.toml playground/play/benchmark > playground/play/benchmark/runs.toml
+bentoo template --tools tool_runners/tools_java.toml playground/play/benchmark >playground/play/benchmark/runs.toml
 bentoo bench --tools tool_runners/tools_java.toml --runs playground/play/benchmark/runs.toml playground/play/output
 
 cd "$root_dir" || exit
 cd playground/play/output || exit
 
 for file in "${files[@]}"; do
-    if [[ ! -f $file ]]; then
-        echo "File $(pwd)/$file not found";
-        exit 1
-    fi
+  if [[ ! -f $file ]]; then
+    echo "File $(pwd)/$file not found"
+    exit 1
+  fi
 done
 
 cd "$root_dir" || exit
 cd playground/play/output/plexus-utils-3.0.14 || exit
 
 for file in "${files_14[@]}"; do
-    if [[ ! -f $file ]]; then
-        echo "File $(pwd)/$file not found";
-        exit 1
-    fi
+  if [[ ! -f $file ]]; then
+    echo "File $(pwd)/$file not found"
+    exit 1
+  fi
 done
 
 cd "$root_dir" || exit
 cd playground/play/output/plexus-utils-3.0.16 || exit
 
 for file in "${files_16[@]}"; do
-    if [[ ! -f $file ]]; then
-        echo "File $(pwd)/$file not found";
-        exit 1
-    fi
+  if [[ ! -f $file ]]; then
+    echo "File $(pwd)/$file not found"
+    exit 1
+  fi
 done
