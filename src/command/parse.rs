@@ -73,6 +73,8 @@ impl<'a> Parser<'a> {
                     metadata.parsed = ParseStatus::Yes;
                     directory.metadata_write(&metadata);
                     return;
+                } else {
+                    println!("{}", result.err().unwrap());
                 }
             }
         }
