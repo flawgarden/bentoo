@@ -2,7 +2,9 @@ use std::path::PathBuf;
 
 use serde_sarif::sarif::Sarif;
 
-use crate::convert::tool::{bandit, bearer, codeql, gosec, insider, semgrep, snyk, sonarqube};
+use crate::convert::tool::{
+    bandit, bearer, codeql, cppcheck, gosec, insider, semgrep, snyk, sonarqube,
+};
 
 pub fn convert_from(format: String, file: PathBuf) -> Sarif {
     match format.as_str() {
@@ -14,6 +16,7 @@ pub fn convert_from(format: String, file: PathBuf) -> Sarif {
         "bearer" => bearer::from_file(file.as_path()),
         "bandit" => bandit::from_file(file.as_path()),
         "gosec" => gosec::from_file(file.as_path()),
+        "cppcheck" => cppcheck::from_file(file.as_path()),
         _ => {
             panic!("Error: unknown tool");
         }
