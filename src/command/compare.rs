@@ -100,7 +100,7 @@ pub struct ToolResultCard {
     pub max_minimal_match: MinimalResultMatch,
 }
 
-impl<'a> PartialOrd for MinimalMatchCard<'a> {
+impl PartialOrd for MinimalMatchCard<'_> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         if self.0.expected_kind != other.0.expected_kind {
             return None;
@@ -132,7 +132,7 @@ impl<'a> PartialOrd for MinimalMatchCard<'a> {
     }
 }
 
-impl<'a> PartialOrd for MatchCard<'a> {
+impl PartialOrd for MatchCard<'_> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         let self_expected_result = &self.0;
         let other_expected_result = &other.0;

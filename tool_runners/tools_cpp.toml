@@ -1,0 +1,44 @@
+[[tools]]
+script = "codeql-nodocker.sh"
+name = "CodeQL"
+parse_command = { command = "bentoo", args = "convert codeql" }
+
+[[tools.configs]]
+name = "Cpp"
+args = "--tech cpp"
+
+[[tools]]
+script = "semgrep.sh"
+name = "Semgrep"
+parse_command = { command = "bentoo", args = "convert semgrep" }
+
+[[tools.configs]]
+name = "Cpp"
+args = ""
+
+[[tools]]
+script = "snyk.sh"
+name = "Snyk"
+parse_command = { command = "bentoo", args = "convert snyk" }
+
+[[tools.configs]]
+name = "Cpp"
+args = ""
+
+[[tools]]
+script = "sonarqube.sh"
+name = "SonarQube"
+parse_command = { command = "bentoo", args = "convert sonarqube" }
+
+[[tools.configs]]
+name = "Cpp"
+args = ""
+
+[[tools]]
+script = "cppcheck.sh"
+name = "CPPCheck"
+parse_command = { command = "bentoo", args = "convert cppcheck" }
+
+[[tools.configs]]
+name = "Cpp"
+args = ""
