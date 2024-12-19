@@ -114,38 +114,35 @@ where
         for location in locations {
             if let Some(physical_location) = location.physical_location.as_ref() {
                 let mut physical_location_builder = PhysicalLocationBuilder::default();
-                let uri = physical_location
-                    .artifact_location
-                    .as_ref()
-                    .unwrap()
-                    .uri
-                    .as_ref()
-                    .unwrap();
-                let artifact = ArtifactLocationBuilder::default().uri(uri).build().unwrap();
-                physical_location_builder.artifact_location(artifact);
+                if let Some(artifact_location) = physical_location.artifact_location.as_ref() {
+                    if let Some(uri) = artifact_location.uri.as_ref() {
+                        let artifact = ArtifactLocationBuilder::default().uri(uri).build().unwrap();
+                        physical_location_builder.artifact_location(artifact);
 
-                if let Some(region) = physical_location.region.as_ref() {
-                    let mut region_builder = RegionBuilder::default();
-                    let start_line = region.start_line.unwrap();
-                    region_builder.start_line(start_line);
-                    if let Some(end_line) = region.end_line {
-                        region_builder.end_line(end_line);
+                        if let Some(region) = physical_location.region.as_ref() {
+                            let mut region_builder = RegionBuilder::default();
+                            let start_line = region.start_line.unwrap();
+                            region_builder.start_line(start_line);
+                            if let Some(end_line) = region.end_line {
+                                region_builder.end_line(end_line);
+                            }
+                            if let Some(start_column) = region.start_column {
+                                region_builder.start_column(start_column);
+                            }
+                            if let Some(end_column) = region.end_column {
+                                region_builder.end_column(end_column);
+                            }
+                            physical_location_builder.region(region_builder.build().unwrap());
+                        }
+
+                        let physical_location = physical_location_builder.build().unwrap();
+                        let location = LocationBuilder::default()
+                            .physical_location(physical_location)
+                            .build()
+                            .unwrap();
+                        locations_out.push(location);
                     }
-                    if let Some(start_column) = region.start_column {
-                        region_builder.start_column(start_column);
-                    }
-                    if let Some(end_column) = region.end_column {
-                        region_builder.end_column(end_column);
-                    }
-                    physical_location_builder.region(region_builder.build().unwrap());
                 }
-
-                let physical_location = physical_location_builder.build().unwrap();
-                let location = LocationBuilder::default()
-                    .physical_location(physical_location)
-                    .build()
-                    .unwrap();
-                locations_out.push(location);
             }
         }
         locations_out
