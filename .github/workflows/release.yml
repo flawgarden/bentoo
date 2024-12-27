@@ -3,6 +3,12 @@ name: Release
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name'
+        required: true
+        default: 'latest'
 
 permissions:
   contents: write
@@ -44,7 +50,7 @@ jobs:
       - name: Publish Pre-Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "latest"
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || 'latest'}}
           prerelease: true
           generate_release_notes: true
           fail_on_unmatched_files: true
