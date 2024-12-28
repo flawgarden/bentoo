@@ -19,9 +19,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Java
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y -q --no-install-recommends \
+          git \
+          openjdk-11-jdk \
+          openjdk-11-jre-headless \
+          maven
+
     - name: Reference run
       shell: bash
-      run: ./playground/reference_run.sh
+      run: |
+        export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+        ./playground/reference_run.sh
 
     - name: Archive output
       uses: actions/upload-artifact@v4
