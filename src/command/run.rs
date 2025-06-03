@@ -85,7 +85,7 @@ impl<'a> Runner<'a> {
                 .join(benchmark_path.strip_prefix(&self.runs.root).unwrap())
         } else {
             copy_dir(&benchmark_path, isolator_tmp.path()).unwrap();
-            isolator_tmp.into_path()
+            isolator_tmp.keep()
         };
 
         let script = self.tools.root.join(&script.script);
