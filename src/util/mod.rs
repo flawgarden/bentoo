@@ -47,7 +47,7 @@ fn find_files_generic<P: Fn(&Path) -> bool>(
         walker = walker.max_depth(0);
     }
     for entry in walker.into_iter().filter_entry(|entry| {
-        entry.metadata().map_or(false, |metadata| metadata.is_dir())
+        entry.metadata().is_ok_and(|metadata| metadata.is_dir())
             || file_name_predicate(entry.path())
     }) {
         let entry = entry.unwrap();
