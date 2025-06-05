@@ -3,9 +3,8 @@ use bentoo::reference::truth;
 use bentoo::run::description::{runs::RunsInfo, tools::ToolsInfo};
 
 use clap::{arg, Parser, Subcommand};
-
+use duration_str::parse;
 use std::path::{Path, PathBuf};
-
 use std::time::Duration;
 
 #[derive(Parser)]
@@ -100,9 +99,9 @@ enum Command {
         runs: PathBuf,
         /// Directory to use for output
         output: PathBuf,
-        #[arg(long)]
+        #[arg(value_parser = parse_duration)]
         /// Timeout for each run of each tool in seconds
-        timeout: Option<u64>,
+        timeout: Option<Duration>,
         #[arg(long)]
         /// Isolate the whole root directory instead of the project one
         isolate_root: bool,
@@ -110,6 +109,11 @@ enum Command {
         /// Produce a detailed report
         detailed: bool,
     },
+}
+
+fn parse_duration(arg: &str) -> Result<std::time::Duration, String> {
+    let duration: Duration = parse(arg)?;
+    Ok(duration)
 }
 
 fn main() {
