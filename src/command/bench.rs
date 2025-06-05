@@ -16,17 +16,11 @@ pub fn bench_all(
     runs: RunsInfo,
     tools: ToolsInfo,
     output: PathBuf,
-    timeout: Option<u64>,
+    timeout: Option<Duration>,
     isolate_root: bool,
     detailed: bool,
 ) {
-    let runner = run::Runner::new(
-        &runs,
-        &tools,
-        timeout.map(Duration::from_secs),
-        output.clone(),
-        isolate_root,
-    );
+    let runner = run::Runner::new(&runs, &tools, timeout, output.clone(), isolate_root);
     let parser = parse::Parser::new(&runs, &tools, output.clone());
     let evaluator = evaluate::Evaluator::new(&runs, output.clone());
 
