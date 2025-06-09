@@ -52,9 +52,9 @@ enum Command {
         runs: PathBuf,
         /// Directory to use for output
         output: PathBuf,
-        #[arg(long)]
+        #[arg(long, value_parser = parse_duration)]
         /// Timeout for each run of each tool in seconds
-        timeout: Option<u64>,
+        timeout: Option<Duration>,
         #[arg(long)]
         /// Isolate the whole root directory instead of the project one
         isolate_root: bool,
@@ -99,7 +99,7 @@ enum Command {
         runs: PathBuf,
         /// Directory to use for output
         output: PathBuf,
-        #[arg(value_parser = parse_duration)]
+        #[arg(long, value_parser = parse_duration)]
         /// Timeout for each run of each tool in seconds
         timeout: Option<Duration>,
         #[arg(long)]
@@ -149,14 +149,7 @@ fn main() {
         } => {
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            run::Runner::new(
-                &runs,
-                &tools,
-                timeout.map(Duration::from_secs),
-                output,
-                isolate_root,
-            )
-            .run_all();
+            run::Runner::new(&runs, &tools, timeout, output, isolate_root).run_all();
         }
         Command::Parse {
             tools,
