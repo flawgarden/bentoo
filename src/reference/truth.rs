@@ -154,6 +154,36 @@ impl fmt::Display for CWE {
     }
 }
 
+impl TryFrom<String> for Rule {
+    type Error = ParseError;
+
+    fn try_from(value: String) -> result::Result<Self, Self::Error> {
+        let rule_id = value;
+        let cwes: Vec<CWE> = rule_id
+            .split_once(":")
+            .map_or(rule_id.as_str(), |x| x.0)
+            .split(',')
+            .map(|cwe| {
+                let cwe = cwe
+                    .trim()
+                    .strip_prefix("CWE-")
+                    .ok_or(ParseError::new("ruleId should have CWE- prefix"))?
+                    .parse()
+                    .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
+                result::Result::<CWE, ParseError>::Ok(CWE(cwe))
+            })
+            .collect::<result::Result<Vec<CWE>, ParseError>>()?;
+        let rule_id: String = rule_id
+            .split_once(":")
+            .map_or(rule_id.as_str(), |x| x.1)
+            .to_string();
+        Ok(Self {
+            rule_id,
+            cwes: CWEs(cwes),
+        })
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, PartialOrd, Ord, PartialEq, Eq, Hash, Clone)]
 pub struct CWEs(pub Vec<CWE>);
 
@@ -179,7 +209,7 @@ pub struct Rule {
 
 impl fmt::Display for Rule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}:{}", self.rule_id, self.cwes)?;
+        write!(f, "{}:{}", self.cwes, self.rule_id)?;
         Ok(())
     }
 }
@@ -367,31 +397,13 @@ impl TryFrom<&sarif::Result> for Result {
             .as_ref()
             .ok_or(ParseError::new("result should have ruleId"))?
             .clone();
-        let cwes: Vec<CWE> = rule_id
-            .split_once(":")
-            .ok_or(ParseError::new(
-                "ruleId should have ':' symbol splitting the origin name and the CWEs part",
-            ))?
-            .1
-            .split(',')
-            .map(|cwe| {
-                let cwe = cwe
-                    .trim()
-                    .strip_prefix("CWE-")
-                    .ok_or(ParseError::new("ruleId should have CWE- prefix"))?
-                    .parse()
-                    .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
-                result::Result::<CWE, ParseError>::Ok(CWE(cwe))
-            })
-            .collect::<result::Result<Vec<CWE>, ParseError>>()?;
-        let cwes = CWEs(cwes);
+        let rule = Rule::try_from(rule_id)?;
         let message = result.message.text.clone();
         let locations = result.locations.as_ref();
         let locations = match locations {
             None => Locations(vec![]),
             Some(locations) => Locations::try_from(locations)?,
         };
-        let rule = Rule { rule_id, cwes };
         Ok(Self {
             rule,
             locations,

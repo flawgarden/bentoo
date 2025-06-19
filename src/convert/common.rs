@@ -6,7 +6,7 @@ use serde_sarif::sarif::{
     ToolBuilder, ToolComponentBuilder,
 };
 
-use crate::reference::truth::{CWEs, CWE};
+use crate::reference::truth::{CWEs, Rule, CWE};
 
 pub fn collect_tags_rules_map(
     notifications: Option<&Vec<ReportingDescriptor>>,
@@ -90,7 +90,13 @@ where
                 result.locations.as_ref().map(|locations| {
                     let mut result_builder = ResultBuilder::default();
                     assert!(rule_to_cwes.contains_key(rule_id));
-                    result_builder.rule_id(format!("{}:{}", rule_id, cwes));
+                    result_builder.rule_id(format!(
+                        "{}",
+                        Rule {
+                            rule_id: rule_id.clone(),
+                            cwes,
+                        }
+                    ));
                     let locations_out = Self::build_locations(locations);
                     result_builder.locations(locations_out);
                     let empty_text = "".to_string();
