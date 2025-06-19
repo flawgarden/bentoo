@@ -37,6 +37,7 @@ pub struct MinimalResultMatch {
     pub cwe_1000_match: bool,
     pub at_least_one_file_match: bool,
     pub cwe_match: bool,
+    pub rule_id_match: bool,
     pub at_least_one_region_match: bool,
     pub reported_cwe: Option<CWEs>,
 }
@@ -60,6 +61,7 @@ impl ResultMatch {
                 cwe_match: false,
                 at_least_one_region_match: false,
                 reported_cwe: None,
+                rule_id_match: false,
             },
             all_files_match: false,
             all_regions_match: false,
@@ -109,12 +111,14 @@ impl PartialOrd for MinimalMatchCard<'_> {
             return None;
         }
         let self_vector = (
+            self.1.rule_id_match,
             self.1.cwe_1000_match,
             self.1.at_least_one_file_match,
             self.1.cwe_match,
             self.1.at_least_one_region_match,
         );
         let other_vector = (
+            other.1.rule_id_match,
             other.1.cwe_1000_match,
             other.1.at_least_one_file_match,
             other.1.cwe_match,
@@ -149,10 +153,12 @@ impl PartialOrd for MatchCard<'_> {
         }
 
         let cwe_match_ord = (
+            self_minimal_match.rule_id_match,
             self_minimal_match.cwe_1000_match,
             self_minimal_match.cwe_match,
         )
             .cmp(&(
+                other_minimal_match.rule_id_match,
                 other_minimal_match.cwe_1000_match,
                 other_minimal_match.cwe_match,
             ));
@@ -260,6 +266,12 @@ fn evaluate_tool_result(
         at_least_one_region_match |= curr_region_match;
     }
 
+    let rule_id_match = truth_result
+        .result
+        .rule
+        .rule_id
+        .eq(&tool_result.result.rule.rule_id);
+
     let cwe_match = truth_result
         .result
         .rule
@@ -310,6 +322,7 @@ fn evaluate_tool_result(
         },
         ResultMatch {
             minimal_match: MinimalResultMatch {
+                rule_id_match,
                 cwe_1000_match,
                 at_least_one_file_match,
                 cwe_match,
