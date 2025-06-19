@@ -179,7 +179,7 @@ pub struct Rule {
 
 impl fmt::Display for Rule {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}:{}", self.rule_id, self.cwes.to_string())?;
+        write!(f, "{}:{}", self.rule_id, self.cwes)?;
         Ok(())
     }
 }
