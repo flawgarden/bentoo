@@ -27,7 +27,7 @@ impl From<&TruthResult> for ExpectedResult {
     fn from(result: &TruthResult) -> Self {
         Self {
             expected_kind: result.kind,
-            expected_cwe: result.result.cwes.clone(),
+            expected_cwe: result.result.rule.cwes.clone(),
         }
     }
 }
@@ -218,7 +218,7 @@ fn evaluate_tool_result(
     taxonomy: &Taxonomy,
 ) -> (ExpectedResult, ResultMatch) {
     let expected_kind = truth_result.kind;
-    let expected_cwe = &truth_result.result.cwes;
+    let expected_cwe = &truth_result.result.rule.cwes;
     let mut at_least_one_file_match = false;
     let mut all_files_match = true;
     let mut at_least_one_region_match = false;
@@ -262,10 +262,11 @@ fn evaluate_tool_result(
 
     let cwe_match = truth_result
         .result
+        .rule
         .cwes
         .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.0.iter())
+        .cartesian_product(tool_result.result.rule.cwes.0.iter())
         .any(
             |(truth_cwe, tool_cwe)| match taxonomy.cwe_partial_cmp(truth_cwe, tool_cwe) {
                 Some(ord) => match ord {
@@ -278,10 +279,11 @@ fn evaluate_tool_result(
 
     let cwe_1000_match = truth_result
         .result
+        .rule
         .cwes
         .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.0.iter())
+        .cartesian_product(tool_result.result.rule.cwes.0.iter())
         .any(|(truth_cwe, tool_cwe)| {
             if let Some(cwe_classes) = taxonomy.to_cwe_1000(truth_cwe) {
                 cwe_classes.iter().any(|cwe_class| {
@@ -299,7 +301,7 @@ fn evaluate_tool_result(
         });
 
     let expected_cwe = expected_cwe.clone();
-    let reported_cwe = Some(tool_result.result.cwes.clone());
+    let reported_cwe = Some(tool_result.result.rule.cwes.clone());
 
     (
         ExpectedResult {
@@ -359,7 +361,7 @@ fn evaluate_tool_results(
             }
         }
     }
-    for truth_cwe in &truth_result.result.cwes.0 {
+    for truth_cwe in &truth_result.result.rule.cwes.0 {
         if let Some(tool_results) = cwe_to_tool_results.get(truth_cwe) {
             for tool_result in tool_results {
                 tool_results_to_evaluate.insert(tool_result);
@@ -408,7 +410,7 @@ fn evaluate_tool_results(
         .unwrap_or((
             ExpectedResult {
                 expected_kind: truth_result.kind,
-                expected_cwe: truth_result.result.cwes.clone(),
+                expected_cwe: truth_result.result.rule.cwes.clone(),
             },
             ResultMatch::new(serde_json::from_str(truth_result_str.as_str()).unwrap()),
         ));
@@ -434,7 +436,7 @@ pub fn evaluate_tool(
         let path_to_tool_results = prepare_path_to_tool_results(tool_results);
         let mut cwe_to_tool_results: HashMap<&CWE, HashSet<&ToolResult>> = HashMap::new();
         for result in &tool_results.results {
-            for tool_cwe in &result.result.cwes.0 {
+            for tool_cwe in &result.result.rule.cwes.0 {
                 let entry = cwe_to_tool_results.entry(tool_cwe).or_default();
                 entry.insert(result);
             }

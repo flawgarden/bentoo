@@ -90,7 +90,7 @@ where
                 result.locations.as_ref().map(|locations| {
                     let mut result_builder = ResultBuilder::default();
                     assert!(rule_to_cwes.contains_key(rule_id));
-                    result_builder.rule_id(format!("{}", cwes));
+                    result_builder.rule_id(format!("{}:{}", rule_id, cwes));
                     let locations_out = Self::build_locations(locations);
                     result_builder.locations(locations_out);
                     let empty_text = "".to_string();

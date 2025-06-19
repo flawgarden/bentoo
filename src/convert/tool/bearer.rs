@@ -23,6 +23,7 @@ struct Sink {
 
 #[derive(Debug, Deserialize)]
 struct Finding {
+    pub id: String,
     pub cwe_ids: Vec<String>,
     pub sink: Sink,
     pub title: String,
@@ -45,7 +46,7 @@ fn from_json(json: Value) -> Sarif {
             .iter()
             .map(|id| format!("CWE-{}", id))
             .collect();
-        result_builder.rule_id(prefixed.join(","));
+        result_builder.rule_id(format!("{}:{}", finding.id, prefixed.join(",")));
 
         let region = RegionBuilder::default()
             .start_line(finding.sink.start)
