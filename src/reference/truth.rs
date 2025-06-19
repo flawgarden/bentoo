@@ -159,20 +159,27 @@ impl TryFrom<String> for Rule {
 
     fn try_from(value: String) -> result::Result<Self, Self::Error> {
         let rule_id = value;
+        let tmp = rule_id.clone();
         let cwes: Vec<CWE> = rule_id
             .split_once(":")
-            .map_or(rule_id.as_str(), |x| x.0)
-            .split(',')
-            .map(|cwe| {
-                let cwe = cwe
-                    .trim()
-                    .strip_prefix("CWE-")
-                    .ok_or(ParseError::new("ruleId should have CWE- prefix"))?
-                    .parse()
-                    .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
-                result::Result::<CWE, ParseError>::Ok(CWE(cwe))
+            .map_or(None, |x| if x.0.is_empty() { None } else { Some(x.0) })
+            .map(|x| {
+                x.split(',')
+                    .map(|cwe| {
+                        let cwe = cwe
+                            .trim()
+                            .strip_prefix("CWE-")
+                            .ok_or(ParseError::new(
+                                format!("ruleId should have CWE- prefix: {}", tmp).as_str(),
+                            ))?
+                            .parse()
+                            .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
+                        result::Result::<CWE, ParseError>::Ok(CWE(cwe))
+                    })
+                    .collect::<result::Result<Vec<CWE>, ParseError>>()
+                    .unwrap()
             })
-            .collect::<result::Result<Vec<CWE>, ParseError>>()?;
+            .unwrap_or_default();
         let rule_id: String = rule_id
             .split_once(":")
             .map_or(rule_id.as_str(), |x| x.1)
