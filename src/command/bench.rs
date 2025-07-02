@@ -26,10 +26,7 @@ pub fn bench_all(
     let evaluator = evaluate::Evaluator::new(&runs, output.clone());
 
     let total_count = run_count(&runs.runs);
-    println!(
-        "Evaluating tools on benchmarks. Total run count: {}",
-        total_count
-    );
+    println!("Evaluating tools on benchmarks. Total run count: {total_count}",);
 
     let roots_tools = runs
         .runs

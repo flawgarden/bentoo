@@ -72,7 +72,7 @@ pub fn find_files<P: Fn(&Path) -> bool>(root_path: &Path, file_name_predicate: &
 }
 
 pub fn round_dp3(number: f64) -> f64 {
-    format!("{:.3}", number).parse().unwrap()
+    format!("{number:.3}",).parse().unwrap()
 }
 
 pub trait PartialMax: Iterator {

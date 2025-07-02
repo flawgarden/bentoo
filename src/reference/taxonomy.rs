@@ -97,8 +97,7 @@ impl Taxonomy {
             }
             _ => {
                 panic!(
-                    "Unknown CWE Taxonomy version! Supported versions are {:?}",
-                    SUPPORTED_VERSIONS
+                    "Unknown CWE Taxonomy version! Supported versions are {SUPPORTED_VERSIONS:?}",
                 );
             }
         };

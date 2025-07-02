@@ -500,7 +500,7 @@ impl<'s> Summarizer<'s> {
         fn mk_named_summary_card(cwe: CWEs, results: Vec<&ToolResultCard>) -> NamedSummaryCard {
             let (minimal_matches, matches) = unzip_match_cards(results);
             NamedSummaryCard {
-                name: format!("{}", cwe),
+                name: format!("{cwe}"),
                 summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
             }
         }

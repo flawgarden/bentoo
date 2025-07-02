@@ -173,7 +173,7 @@ impl TryFrom<String> for Rule {
                             .trim()
                             .strip_prefix("CWE-")
                             .ok_or(ParseError::new(
-                                format!("ruleId should have CWE- prefix: {}", rule_id).as_str(),
+                                format!("ruleId should have CWE- prefix: {rule_id}").as_str(),
                             ))?
                             .parse()
                             .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
@@ -190,9 +190,8 @@ impl TryFrom<String> for Rule {
         } else {
             let cwes: Vec<CWE> = rule_id
                 .split(',')
-                .map(|cwe| cwe.trim().strip_prefix("CWE-").and_then(|x| x.parse().ok()))
-                .flatten()
-                .map(|cwe| CWE(cwe))
+                .filter_map(|cwe| cwe.trim().strip_prefix("CWE-").and_then(|x| x.parse().ok()))
+                .map(CWE)
                 .collect();
             let rule_id: String = rule_id.clone();
             Ok(Self {
@@ -213,7 +212,7 @@ impl fmt::Display for CWEs {
         }
         if self.0.len() > 1 {
             for cwe in &self.0[1..self.0.len()] {
-                write!(f, ",{}", cwe)?;
+                write!(f, ",{cwe}")?;
             }
         }
         Ok(())
