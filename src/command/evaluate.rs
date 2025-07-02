@@ -7,7 +7,10 @@ use crate::{
         taxonomy::{Taxonomy, TaxonomyVersion},
         truth::{self, ToolResults},
     },
-    run::{description::runs::RunsInfo, directory::Directory, metadata::ParseStatus},
+    run::{
+        description::runs::RunsInfo, directory::Directory, metadata::ParseStatus,
+        report_config::ReportConfig,
+    },
 };
 
 use super::compare;
@@ -27,7 +30,7 @@ impl<'a> Evaluator<'a> {
         }
     }
 
-    pub fn evaluate_one(&self, directory: &Directory, detailed: bool) {
+    pub fn evaluate_one(&self, directory: &Directory, config: ReportConfig) {
         let output_path = self.output.join(directory.benchmark);
         let metadata = directory.metadata_read();
         if metadata.is_none() {
@@ -57,14 +60,14 @@ impl<'a> Evaluator<'a> {
             .expect("Error: could not load tool results;");
         let truth = truth::TruthResults::try_from(output_path.join("truth.sarif").as_path())
             .expect("Error: could not load truth.sarif");
-        let card = compare::evaluate_tool(&truth, &tool_results, Some(&self.taxonomy), detailed);
+        let card = compare::evaluate_tool(&truth, &tool_results, Some(&self.taxonomy), config);
         serde_json::to_writer_pretty(directory.evaluate_file_write(), &card)
             .expect("error: failure to write json result card");
         metadata.evaluated = true;
         directory.metadata_write(&metadata);
     }
 
-    pub fn evaluate_all(&self, detailed: bool) {
+    pub fn evaluate_all(&self, config: ReportConfig) {
         let roots_tools = self
             .runs
             .runs
@@ -76,7 +79,7 @@ impl<'a> Evaluator<'a> {
 
         for (root, tool) in roots_tools {
             let directory = Directory::new(&self.output, root, tool);
-            self.evaluate_one(&directory, detailed);
+            self.evaluate_one(&directory, config);
         }
 
         println!("Evaluation done");

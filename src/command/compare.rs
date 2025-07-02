@@ -10,6 +10,7 @@ use crate::{
         taxonomy::{Taxonomy, TaxonomyVersion},
         truth::{CWEs, Kind, ToolResult, ToolResults, TruthResult, TruthResults, CWE},
     },
+    run::report_config::ReportConfig,
     util::PartialMax,
 };
 
@@ -27,7 +28,7 @@ impl From<&TruthResult> for ExpectedResult {
     fn from(result: &TruthResult) -> Self {
         Self {
             expected_kind: result.kind,
-            expected_cwe: result.result.cwes.clone(),
+            expected_cwe: result.result.rule.cwes.clone(),
         }
     }
 }
@@ -37,6 +38,7 @@ pub struct MinimalResultMatch {
     pub cwe_1000_match: bool,
     pub at_least_one_file_match: bool,
     pub cwe_match: bool,
+    pub rule_id_match: bool,
     pub at_least_one_region_match: bool,
     pub reported_cwe: Option<CWEs>,
 }
@@ -47,12 +49,11 @@ pub struct ResultMatch {
     pub minimal_match: MinimalResultMatch,
     pub all_files_match: bool,
     pub all_regions_match: bool,
-    pub truth_result: Option<serde_json::Value>,
     pub tool_result: Option<serde_json::Value>,
 }
 
 impl ResultMatch {
-    fn new(truth_result: serde_json::Value) -> Self {
+    fn new() -> Self {
         Self {
             minimal_match: MinimalResultMatch {
                 cwe_1000_match: false,
@@ -60,11 +61,11 @@ impl ResultMatch {
                 cwe_match: false,
                 at_least_one_region_match: false,
                 reported_cwe: None,
+                rule_id_match: false,
             },
             all_files_match: false,
             all_regions_match: false,
             tool_result: None,
-            truth_result: Some(truth_result),
         }
     }
 }
@@ -98,6 +99,7 @@ pub struct ToolResultCard {
     pub expected_result: ExpectedResult,
     pub max_match: Option<Vec<ResultMatch>>,
     pub max_minimal_match: MinimalResultMatch,
+    pub truth_result: Option<serde_json::Value>,
 }
 
 impl PartialOrd for MinimalMatchCard<'_> {
@@ -109,12 +111,14 @@ impl PartialOrd for MinimalMatchCard<'_> {
             return None;
         }
         let self_vector = (
+            self.1.rule_id_match,
             self.1.cwe_1000_match,
             self.1.at_least_one_file_match,
             self.1.cwe_match,
             self.1.at_least_one_region_match,
         );
         let other_vector = (
+            other.1.rule_id_match,
             other.1.cwe_1000_match,
             other.1.at_least_one_file_match,
             other.1.cwe_match,
@@ -151,10 +155,12 @@ impl PartialOrd for MatchCard<'_> {
         let cwe_match_ord = (
             self_minimal_match.cwe_1000_match,
             self_minimal_match.cwe_match,
+            self_minimal_match.rule_id_match,
         )
             .cmp(&(
                 other_minimal_match.cwe_1000_match,
                 other_minimal_match.cwe_match,
+                other_minimal_match.rule_id_match,
             ));
         let files_match_ord = (
             self_minimal_match.at_least_one_file_match,
@@ -218,7 +224,7 @@ fn evaluate_tool_result(
     taxonomy: &Taxonomy,
 ) -> (ExpectedResult, ResultMatch) {
     let expected_kind = truth_result.kind;
-    let expected_cwe = &truth_result.result.cwes;
+    let expected_cwe = &truth_result.result.rule.cwes;
     let mut at_least_one_file_match = false;
     let mut all_files_match = true;
     let mut at_least_one_region_match = false;
@@ -260,12 +266,19 @@ fn evaluate_tool_result(
         at_least_one_region_match |= curr_region_match;
     }
 
+    let rule_id_match = truth_result
+        .result
+        .rule
+        .rule_id
+        .eq(&tool_result.result.rule.rule_id);
+
     let cwe_match = truth_result
         .result
+        .rule
         .cwes
         .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.0.iter())
+        .cartesian_product(tool_result.result.rule.cwes.0.iter())
         .any(
             |(truth_cwe, tool_cwe)| match taxonomy.cwe_partial_cmp(truth_cwe, tool_cwe) {
                 Some(ord) => match ord {
@@ -278,10 +291,11 @@ fn evaluate_tool_result(
 
     let cwe_1000_match = truth_result
         .result
+        .rule
         .cwes
         .0
         .iter()
-        .cartesian_product(tool_result.result.cwes.0.iter())
+        .cartesian_product(tool_result.result.rule.cwes.0.iter())
         .any(|(truth_cwe, tool_cwe)| {
             if let Some(cwe_classes) = taxonomy.to_cwe_1000(truth_cwe) {
                 cwe_classes.iter().any(|cwe_class| {
@@ -299,7 +313,7 @@ fn evaluate_tool_result(
         });
 
     let expected_cwe = expected_cwe.clone();
-    let reported_cwe = Some(tool_result.result.cwes.clone());
+    let reported_cwe = Some(tool_result.result.rule.cwes.clone());
 
     (
         ExpectedResult {
@@ -308,6 +322,7 @@ fn evaluate_tool_result(
         },
         ResultMatch {
             minimal_match: MinimalResultMatch {
+                rule_id_match,
                 cwe_1000_match,
                 at_least_one_file_match,
                 cwe_match,
@@ -317,12 +332,11 @@ fn evaluate_tool_result(
             all_files_match,
             all_regions_match,
             tool_result: None,
-            truth_result: None,
         },
     )
 }
 
-fn evaluate_tool_result_detaled(
+fn evaluate_tool_result_detailed(
     truth_result: &TruthResult,
     tool_result: &ToolResult,
     taxonomy: &Taxonomy,
@@ -330,15 +344,11 @@ fn evaluate_tool_result_detaled(
     let (expected_result, result_match) = evaluate_tool_result(truth_result, tool_result, taxonomy);
     let tool_result_str: String =
         serde_json::to_string_pretty(&sarif::Result::try_from(tool_result).unwrap()).unwrap();
-    let truth_result_str: String =
-        serde_json::to_string_pretty(&sarif::Result::try_from(truth_result).unwrap()).unwrap();
     let tool_result = Some(serde_json::from_str(tool_result_str.as_str()).unwrap());
-    let truth_result = Some(serde_json::from_str(truth_result_str.as_str()).unwrap());
     (
         expected_result,
         ResultMatch {
             tool_result,
-            truth_result,
             ..result_match
         },
     )
@@ -349,7 +359,7 @@ fn evaluate_tool_results(
     path_to_tool_results: &HashMap<&String, HashSet<&ToolResult>>,
     cwe_to_tool_results: &HashMap<&CWE, HashSet<&ToolResult>>,
     taxonomy: &Taxonomy,
-    detailed: bool,
+    config: ReportConfig,
 ) -> ToolResultCard {
     let mut tool_results_to_evaluate: HashSet<&ToolResult> = HashSet::new();
     for truth_location in &truth_result.result.locations.0 {
@@ -359,23 +369,17 @@ fn evaluate_tool_results(
             }
         }
     }
-    for truth_cwe in &truth_result.result.cwes.0 {
+    for truth_cwe in &truth_result.result.rule.cwes.0 {
         if let Some(tool_results) = cwe_to_tool_results.get(truth_cwe) {
             for tool_result in tool_results {
                 tool_results_to_evaluate.insert(tool_result);
             }
         }
     }
-    let max_result_cards = if detailed {
+    let max_result_cards = if config.collect_max_result_cards {
         let max_result_cards = tool_results_to_evaluate
             .iter()
-            .map(|tool_result| {
-                if detailed {
-                    evaluate_tool_result_detaled(truth_result, tool_result, taxonomy)
-                } else {
-                    evaluate_tool_result(truth_result, tool_result, taxonomy)
-                }
-            })
+            .map(|tool_result| evaluate_tool_result_detailed(truth_result, tool_result, taxonomy))
             .partial_max_by(
                 |(result_left, result_match_left), (result_right, result_match_right)| {
                     MatchCard(result_left, result_match_left)
@@ -408,14 +412,19 @@ fn evaluate_tool_results(
         .unwrap_or((
             ExpectedResult {
                 expected_kind: truth_result.kind,
-                expected_cwe: truth_result.result.cwes.clone(),
+                expected_cwe: truth_result.result.rule.cwes.clone(),
             },
-            ResultMatch::new(serde_json::from_str(truth_result_str.as_str()).unwrap()),
+            ResultMatch::new(),
         ));
     ToolResultCard {
         max_match: max_result_cards,
         expected_result: ExpectedResult::from(truth_result),
         max_minimal_match: tool_result_card.1.minimal_match,
+        truth_result: if config.detailed {
+            serde_json::from_str(truth_result_str.as_str()).unwrap()
+        } else {
+            None
+        },
     }
 }
 
@@ -423,18 +432,18 @@ pub fn evaluate_tool(
     truth_results: &TruthResults,
     tool_results: &ToolResults,
     taxonomy: Option<&Taxonomy>,
-    detailed: bool,
+    config: ReportConfig,
 ) -> ToolResultsCard {
     fn inner_evaluate_tool(
         truth_results: &TruthResults,
         tool_results: &ToolResults,
         taxonomy: &Taxonomy,
-        detailed: bool,
+        config: ReportConfig,
     ) -> ToolResultsCard {
         let path_to_tool_results = prepare_path_to_tool_results(tool_results);
         let mut cwe_to_tool_results: HashMap<&CWE, HashSet<&ToolResult>> = HashMap::new();
         for result in &tool_results.results {
-            for tool_cwe in &result.result.cwes.0 {
+            for tool_cwe in &result.result.rule.cwes.0 {
                 let entry = cwe_to_tool_results.entry(tool_cwe).or_default();
                 entry.insert(result);
             }
@@ -449,17 +458,17 @@ pub fn evaluate_tool(
                     &path_to_tool_results,
                     &cwe_to_tool_results,
                     taxonomy,
-                    detailed,
+                    config,
                 )
             })
             .collect();
         ToolResultsCard { result }
     }
     if let Some(taxonomy) = taxonomy {
-        inner_evaluate_tool(truth_results, tool_results, taxonomy, detailed)
+        inner_evaluate_tool(truth_results, tool_results, taxonomy, config)
     } else {
         let taxonomy = prepare_taxonomy();
-        inner_evaluate_tool(truth_results, tool_results, &taxonomy, detailed)
+        inner_evaluate_tool(truth_results, tool_results, &taxonomy, config)
     }
 }
 

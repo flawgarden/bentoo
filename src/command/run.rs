@@ -100,7 +100,7 @@ impl<'a> Runner<'a> {
         let mut metadata = Metadata::default();
 
         if let Err(error) = child {
-            eprintln!("Failed to execute runner script: {}", error);
+            eprintln!("Failed to execute runner script: {error}");
             metadata.status = Status::ScriptError;
         } else {
             let mut child = child.unwrap();
@@ -132,10 +132,7 @@ impl<'a> Runner<'a> {
         std::fs::create_dir_all(&self.output).unwrap();
 
         let total_count = run_count(&self.runs.runs);
-        println!(
-            "Running tools on benchmarks. Total run count: {}",
-            total_count
-        );
+        println!("Running tools on benchmarks. Total run count: {total_count}",);
 
         let roots_tools = self
             .runs

@@ -21,6 +21,7 @@ use crate::{
         },
         directory::Directory,
         metadata::{Metadata, Status},
+        report_config::ReportConfig,
     },
     util,
 };
@@ -108,19 +109,23 @@ impl SummaryRatios {
 
 #[derive(Debug, PartialEq, Serialize)]
 pub struct SummaryStats {
+    at_least_one_file_with_rule_id_match: i64,
     at_least_one_file_with_cwe_match: i64,
     at_least_one_file_with_cwe_1000_match: i64,
     at_least_one_file_without_cwe_match: i64,
     at_least_one_region_with_cwe_match: i64,
+    at_least_one_region_with_rule_id_match: i64,
     at_least_one_region_with_cwe_1000_match: i64,
     at_least_one_region_without_cwe_match: i64,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct SummaryCard {
+    at_least_one_file_with_rule_id_match: SummaryRatios,
     at_least_one_file_with_cwe_match: SummaryRatios,
     at_least_one_file_with_cwe_1000_match: SummaryRatios,
     at_least_one_file_without_cwe_match: SummaryRatios,
+    at_least_one_region_with_rule_id_match: SummaryRatios,
     at_least_one_region_with_cwe_match: SummaryRatios,
     at_least_one_region_with_cwe_1000_match: SummaryRatios,
     at_least_one_region_without_cwe_match: SummaryRatios,
@@ -149,6 +154,8 @@ impl SummaryCard {
                 )
             };
         }
+        let at_least_one_file_with_rule_id_match =
+            union_ratios!(self, other, at_least_one_file_with_rule_id_match);
         let at_least_one_file_with_cwe_match =
             union_ratios!(self, other, at_least_one_file_with_cwe_match);
         let at_least_one_file_with_cwe_1000_match =
@@ -157,6 +164,8 @@ impl SummaryCard {
             union_ratios!(self, other, at_least_one_file_without_cwe_match);
         let at_least_one_region_with_cwe_match =
             union_ratios!(self, other, at_least_one_region_with_cwe_match);
+        let at_least_one_region_with_rule_id_match =
+            union_ratios!(self, other, at_least_one_region_with_rule_id_match);
         let at_least_one_region_with_cwe_1000_match =
             union_ratios!(self, other, at_least_one_region_with_cwe_1000_match);
         let at_least_one_region_without_cwe_match =
@@ -173,6 +182,8 @@ impl SummaryCard {
             ground_truth_negative_count,
             truth_positive_cwe_match_count,
             truth_positive_cwe_1000_match_count,
+            at_least_one_file_with_rule_id_match,
+            at_least_one_region_with_rule_id_match,
         }
     }
 }
@@ -333,7 +344,7 @@ impl<'s> Summarizer<'s> {
                 name: String::new(),
                 results: vec![],
             };
-            evaluate_tool(&truth, &tool_result, None, false)
+            evaluate_tool(&truth, &tool_result, None, ReportConfig::default())
         };
 
         let summary = self.summarize_tool(tool, &metadata, &card);
@@ -382,13 +393,18 @@ impl<'s> Summarizer<'s> {
             .into_iter()
             .partition(|card| card.as_ref().0.expected_kind == truth::Kind::Fail);
         let calc_stat = |results: Vec<T>| {
+            let mut at_least_one_file_with_rule_id_match: i64 = 0;
             let mut at_least_one_file_with_cwe_match: i64 = 0;
             let mut at_least_one_file_with_cwe_1000_match: i64 = 0;
             let mut at_least_one_file_without_cwe_match: i64 = 0;
+            let mut at_least_one_region_with_rule_id_match: i64 = 0;
             let mut at_least_one_region_with_cwe_match: i64 = 0;
             let mut at_least_one_region_with_cwe_1000_match: i64 = 0;
             let mut at_least_one_region_without_cwe_match: i64 = 0;
             for card in results.iter() {
+                at_least_one_file_with_rule_id_match += (card.as_ref().1.at_least_one_file_match
+                    && card.as_ref().1.rule_id_match)
+                    as i64;
                 at_least_one_file_with_cwe_match +=
                     (card.as_ref().1.at_least_one_file_match && card.as_ref().1.cwe_match) as i64;
                 at_least_one_file_with_cwe_1000_match += (card.as_ref().1.at_least_one_file_match
@@ -396,6 +412,9 @@ impl<'s> Summarizer<'s> {
                     as i64;
                 at_least_one_file_without_cwe_match +=
                     card.as_ref().1.at_least_one_file_match as i64;
+                at_least_one_region_with_rule_id_match +=
+                    (card.as_ref().1.at_least_one_region_match && card.as_ref().1.rule_id_match)
+                        as i64;
                 at_least_one_region_with_cwe_match +=
                     (card.as_ref().1.at_least_one_region_match && card.as_ref().1.cwe_match) as i64;
                 at_least_one_region_with_cwe_1000_match +=
@@ -411,6 +430,8 @@ impl<'s> Summarizer<'s> {
                 at_least_one_region_with_cwe_match,
                 at_least_one_region_with_cwe_1000_match,
                 at_least_one_region_without_cwe_match,
+                at_least_one_file_with_rule_id_match,
+                at_least_one_region_with_rule_id_match,
             }
         };
         let ground_truth_positive_count = fail_results.len();
@@ -441,6 +462,12 @@ impl<'s> Summarizer<'s> {
             };
         }
         SummaryCard {
+            at_least_one_file_with_rule_id_match: calc_summary_ratio!(
+                at_least_one_file_with_rule_id_match
+            ),
+            at_least_one_region_with_rule_id_match: calc_summary_ratio!(
+                at_least_one_region_with_rule_id_match
+            ),
             at_least_one_file_with_cwe_match: calc_summary_ratio!(at_least_one_file_with_cwe_match),
             at_least_one_file_with_cwe_1000_match: calc_summary_ratio!(
                 at_least_one_file_with_cwe_1000_match
@@ -473,7 +500,7 @@ impl<'s> Summarizer<'s> {
         fn mk_named_summary_card(cwe: CWEs, results: Vec<&ToolResultCard>) -> NamedSummaryCard {
             let (minimal_matches, matches) = unzip_match_cards(results);
             NamedSummaryCard {
-                name: format!("{}", cwe),
+                name: format!("{cwe}"),
                 summary: Summarizer::summarize_match_card_vec(minimal_matches, matches),
             }
         }

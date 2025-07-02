@@ -154,6 +154,54 @@ impl fmt::Display for CWE {
     }
 }
 
+impl TryFrom<String> for Rule {
+    type Error = ParseError;
+
+    fn try_from(value: String) -> result::Result<Self, Self::Error> {
+        let rule_id = value;
+        let splited = rule_id.split_once(":");
+        let rule_id = rule_id.clone();
+        if let Some(splited) = splited {
+            let cwes: Vec<CWE> = if splited.0.is_empty() {
+                vec![]
+            } else {
+                splited
+                    .0
+                    .split(',')
+                    .map(|cwe| {
+                        let cwe = cwe
+                            .trim()
+                            .strip_prefix("CWE-")
+                            .ok_or(ParseError::new(
+                                format!("ruleId should have CWE- prefix: {rule_id}").as_str(),
+                            ))?
+                            .parse()
+                            .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
+                        result::Result::<CWE, ParseError>::Ok(CWE(cwe))
+                    })
+                    .collect::<result::Result<Vec<CWE>, ParseError>>()
+                    .unwrap()
+            };
+            let rule_id: String = splited.1.to_string();
+            Ok(Self {
+                rule_id,
+                cwes: CWEs(cwes),
+            })
+        } else {
+            let cwes: Vec<CWE> = rule_id
+                .split(',')
+                .filter_map(|cwe| cwe.trim().strip_prefix("CWE-").and_then(|x| x.parse().ok()))
+                .map(CWE)
+                .collect();
+            let rule_id: String = rule_id.clone();
+            Ok(Self {
+                rule_id,
+                cwes: CWEs(cwes),
+            })
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, PartialOrd, Ord, PartialEq, Eq, Hash, Clone)]
 pub struct CWEs(pub Vec<CWE>);
 
@@ -164,7 +212,7 @@ impl fmt::Display for CWEs {
         }
         if self.0.len() > 1 {
             for cwe in &self.0[1..self.0.len()] {
-                write!(f, ",{}", cwe)?;
+                write!(f, ",{cwe}")?;
             }
         }
         Ok(())
@@ -172,8 +220,21 @@ impl fmt::Display for CWEs {
 }
 
 #[derive(PartialEq, Eq, Hash)]
-pub struct Result {
+pub struct Rule {
+    pub rule_id: String,
     pub cwes: CWEs,
+}
+
+impl fmt::Display for Rule {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}:{}", self.cwes, self.rule_id)?;
+        Ok(())
+    }
+}
+
+#[derive(PartialEq, Eq, Hash)]
+pub struct Result {
+    pub rule: Rule,
     pub message: Option<String>,
     pub locations: Locations,
 }
@@ -349,22 +410,12 @@ impl TryFrom<&sarif::Result> for Result {
     type Error = ParseError;
 
     fn try_from(result: &sarif::Result) -> result::Result<Self, ParseError> {
-        let cwes: Vec<CWE> = result
+        let rule_id = result
             .rule_id
             .as_ref()
             .ok_or(ParseError::new("result should have ruleId"))?
-            .split(',')
-            .map(|cwe| {
-                let cwe = cwe
-                    .trim()
-                    .strip_prefix("CWE-")
-                    .ok_or(ParseError::new("ruleId should have CWE- prefix"))?
-                    .parse()
-                    .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
-                result::Result::<CWE, ParseError>::Ok(CWE(cwe))
-            })
-            .collect::<result::Result<Vec<CWE>, ParseError>>()?;
-        let cwes = CWEs(cwes);
+            .clone();
+        let rule = Rule::try_from(rule_id)?;
         let message = result.message.text.clone();
         let locations = result.locations.as_ref();
         let locations = match locations {
@@ -372,9 +423,9 @@ impl TryFrom<&sarif::Result> for Result {
             Some(locations) => Locations::try_from(locations)?,
         };
         Ok(Self {
+            rule,
             locations,
             message,
-            cwes,
         })
     }
 }
@@ -384,7 +435,7 @@ impl TryFrom<&Result> for sarif::Result {
 
     fn try_from(result: &Result) -> result::Result<Self, BuildError> {
         let mut result_builder = ResultBuilder::default();
-        let cwes = format!("{}", result.cwes);
+        let cwes = format!("{}", result.rule);
         let locations = Vec::try_from(&result.locations)?;
         result_builder.rule_id(cwes).locations(locations);
         if let Some(text) = result.message.as_ref() {

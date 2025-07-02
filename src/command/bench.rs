@@ -7,6 +7,7 @@ use crate::{
     run::{
         description::{run_count, runs::RunsInfo, tools::ToolsInfo},
         directory::Directory,
+        report_config::ReportConfig,
     },
 };
 
@@ -18,17 +19,14 @@ pub fn bench_all(
     output: PathBuf,
     timeout: Option<Duration>,
     isolate_root: bool,
-    detailed: bool,
+    config: ReportConfig,
 ) {
     let runner = run::Runner::new(&runs, &tools, timeout, output.clone(), isolate_root);
     let parser = parse::Parser::new(&runs, &tools, output.clone());
     let evaluator = evaluate::Evaluator::new(&runs, output.clone());
 
     let total_count = run_count(&runs.runs);
-    println!(
-        "Evaluating tools on benchmarks. Total run count: {}",
-        total_count
-    );
+    println!("Evaluating tools on benchmarks. Total run count: {total_count}",);
 
     let roots_tools = runs
         .runs
@@ -49,7 +47,7 @@ pub fn bench_all(
         let directory = Directory::new(&output, benchmark, tool);
         runner.run_one(&directory);
         parser.parse_one(&directory);
-        evaluator.evaluate_one(&directory, detailed);
+        evaluator.evaluate_one(&directory, config);
     }
 
     println!("Evaluation done");

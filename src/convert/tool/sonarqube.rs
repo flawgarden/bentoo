@@ -130,7 +130,7 @@ fn from_json(json: Value) -> Sarif {
             .unwrap();
         result_builder.message(sarif_message);
 
-        let cwe = format!("{}", cwes);
+        let cwe = format!("{cwes}");
         result_builder.rule_id(cwe);
         results.push(result_builder.build().unwrap());
     }

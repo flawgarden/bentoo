@@ -8,6 +8,8 @@ use serde_sarif::sarif::{
     ToolComponentBuilder,
 };
 
+use crate::reference::truth::{CWEs, Rule, CWE};
+
 #[derive(Debug, Deserialize)]
 struct Column {
     start: i64,
@@ -23,6 +25,7 @@ struct Sink {
 
 #[derive(Debug, Deserialize)]
 struct Finding {
+    pub id: String,
     pub cwe_ids: Vec<String>,
     pub sink: Sink,
     pub title: String,
@@ -40,12 +43,20 @@ fn from_json(json: Value) -> Sarif {
 
     for finding in report.findings.unwrap_or_default() {
         let mut result_builder = ResultBuilder::default();
-        let prefixed: Vec<String> = finding
-            .cwe_ids
-            .iter()
-            .map(|id| format!("CWE-{}", id))
-            .collect();
-        result_builder.rule_id(prefixed.join(","));
+        let prefixed: CWEs = CWEs(
+            finding
+                .cwe_ids
+                .iter()
+                .map(|id| CWE(id.parse().unwrap()))
+                .collect(),
+        );
+        result_builder.rule_id(format!(
+            "{}",
+            Rule {
+                rule_id: finding.id,
+                cwes: prefixed,
+            }
+        ));
 
         let region = RegionBuilder::default()
             .start_line(finding.sink.start)
