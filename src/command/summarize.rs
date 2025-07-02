@@ -21,6 +21,7 @@ use crate::{
         },
         directory::Directory,
         metadata::{Metadata, Status},
+        report_config::ReportConfig,
     },
     util,
 };
@@ -343,7 +344,7 @@ impl<'s> Summarizer<'s> {
                 name: String::new(),
                 results: vec![],
             };
-            evaluate_tool(&truth, &tool_result, None, false)
+            evaluate_tool(&truth, &tool_result, None, ReportConfig::default())
         };
 
         let summary = self.summarize_tool(tool, &metadata, &card);

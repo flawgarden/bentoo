@@ -2,6 +2,7 @@ use bentoo::command::{bench, compare, convert, evaluate, parse, run, summarize, 
 use bentoo::reference::truth;
 use bentoo::run::description::{runs::RunsInfo, tools::ToolsInfo};
 
+use bentoo::run::report_config::ReportConfig;
 use clap::{arg, Parser, Subcommand};
 use duration_str::parse;
 use std::path::{Path, PathBuf};
@@ -33,6 +34,8 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        /// Collect max results cards
+        collect_max_result_cards: bool,
     },
     /// Generate a runs template for given project
     Template {
@@ -80,6 +83,8 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        /// Collect max results cards
+        collect_max_result_cards: bool,
     },
     /// Calculate statistics and metrics from tools cards
     Summarize {
@@ -108,6 +113,8 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        /// Collect max results cards
+        collect_max_result_cards: bool,
     },
 }
 
@@ -128,12 +135,17 @@ fn main() {
             truth,
             tool,
             detailed,
+            collect_max_result_cards,
         } => {
+            let config = ReportConfig {
+                detailed,
+                collect_max_result_cards,
+            };
             let truth = truth::TruthResults::try_from(Path::new(&truth))
                 .expect("Could not parse truth file");
             let tool = truth::ToolResults::try_from(Path::new(&tool))
                 .expect("Could not parse tool result");
-            let card = compare::evaluate_tool(&truth, &tool, None, detailed);
+            let card = compare::evaluate_tool(&truth, &tool, None, config);
             println!("{}", serde_json::to_string_pretty(&card).unwrap());
         }
         Command::Template { tools, root } => {
@@ -164,9 +176,14 @@ fn main() {
             runs,
             output,
             detailed,
+            collect_max_result_cards,
         } => {
+            let config = ReportConfig {
+                detailed,
+                collect_max_result_cards,
+            };
             let runs = RunsInfo::new(runs);
-            evaluate::Evaluator::new(&runs, output).evaluate_all(detailed);
+            evaluate::Evaluator::new(&runs, output).evaluate_all(config);
         }
         Command::Summarize {
             runs,
@@ -182,10 +199,15 @@ fn main() {
             timeout,
             isolate_root,
             detailed,
+            collect_max_result_cards,
         } => {
+            let config = ReportConfig {
+                detailed,
+                collect_max_result_cards,
+            };
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            bench::bench_all(runs, tools, output, timeout, isolate_root, detailed);
+            bench::bench_all(runs, tools, output, timeout, isolate_root, config);
         }
     }
 }

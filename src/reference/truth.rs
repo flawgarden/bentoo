@@ -159,18 +159,21 @@ impl TryFrom<String> for Rule {
 
     fn try_from(value: String) -> result::Result<Self, Self::Error> {
         let rule_id = value;
-        let tmp = rule_id.clone();
-        let cwes: Vec<CWE> = rule_id
-            .split_once(":")
-            .map_or(None, |x| if x.0.is_empty() { None } else { Some(x.0) })
-            .map(|x| {
-                x.split(',')
+        let splited = rule_id.split_once(":");
+        let rule_id = rule_id.clone();
+        if let Some(splited) = splited {
+            let cwes: Vec<CWE> = if splited.0.is_empty() {
+                vec![]
+            } else {
+                splited
+                    .0
+                    .split(',')
                     .map(|cwe| {
                         let cwe = cwe
                             .trim()
                             .strip_prefix("CWE-")
                             .ok_or(ParseError::new(
-                                format!("ruleId should have CWE- prefix: {}", tmp).as_str(),
+                                format!("ruleId should have CWE- prefix: {}", rule_id).as_str(),
                             ))?
                             .parse()
                             .map_err(|_| ParseError::new("ruleId should have number suffix"))?;
@@ -178,16 +181,25 @@ impl TryFrom<String> for Rule {
                     })
                     .collect::<result::Result<Vec<CWE>, ParseError>>()
                     .unwrap()
+            };
+            let rule_id: String = splited.1.to_string();
+            Ok(Self {
+                rule_id,
+                cwes: CWEs(cwes),
             })
-            .unwrap_or_default();
-        let rule_id: String = rule_id
-            .split_once(":")
-            .map_or(rule_id.as_str(), |x| x.1)
-            .to_string();
-        Ok(Self {
-            rule_id,
-            cwes: CWEs(cwes),
-        })
+        } else {
+            let cwes: Vec<CWE> = rule_id
+                .split(',')
+                .map(|cwe| cwe.trim().strip_prefix("CWE-").and_then(|x| x.parse().ok()))
+                .flatten()
+                .map(|cwe| CWE(cwe))
+                .collect();
+            let rule_id: String = rule_id.clone();
+            Ok(Self {
+                rule_id,
+                cwes: CWEs(cwes),
+            })
+        }
     }
 }
 
@@ -424,7 +436,7 @@ impl TryFrom<&Result> for sarif::Result {
 
     fn try_from(result: &Result) -> result::Result<Self, BuildError> {
         let mut result_builder = ResultBuilder::default();
-        let cwes = format!("{}", result.rule.cwes);
+        let cwes = format!("{}", result.rule);
         let locations = Vec::try_from(&result.locations)?;
         result_builder.rule_id(cwes).locations(locations);
         if let Some(text) = result.message.as_ref() {
