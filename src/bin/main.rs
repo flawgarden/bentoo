@@ -34,6 +34,7 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        #[arg(long)]
         /// Collect max results cards
         collect_max_result_cards: bool,
     },
@@ -83,6 +84,7 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        #[arg(long)]
         /// Collect max results cards
         collect_max_result_cards: bool,
     },
@@ -113,6 +115,7 @@ enum Command {
         #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
+        #[arg(long)]
         /// Collect max results cards
         collect_max_result_cards: bool,
     },
