@@ -5,9 +5,9 @@ use itertools::Itertools;
 use crate::{
     command::summarize,
     run::{
+        configs::{ReportConfig, RunConfig},
         description::{run_count, runs::RunsInfo, tools::ToolsInfo},
         directory::Directory,
-        report_config::ReportConfig,
     },
 };
 
@@ -18,10 +18,10 @@ pub fn bench_all(
     tools: ToolsInfo,
     output: PathBuf,
     timeout: Option<Duration>,
-    isolate_root: bool,
-    config: ReportConfig,
+    report_config: ReportConfig,
+    run_config: RunConfig,
 ) {
-    let runner = run::Runner::new(&runs, &tools, timeout, output.clone(), isolate_root);
+    let runner = run::Runner::new(&runs, &tools, timeout, output.clone(), run_config);
     let parser = parse::Parser::new(&runs, &tools, output.clone());
     let evaluator = evaluate::Evaluator::new(&runs, output.clone());
 
@@ -47,7 +47,7 @@ pub fn bench_all(
         let directory = Directory::new(&output, benchmark, tool);
         runner.run_one(&directory);
         parser.parse_one(&directory);
-        evaluator.evaluate_one(&directory, config);
+        evaluator.evaluate_one(&directory, report_config);
     }
 
     println!("Evaluation done");

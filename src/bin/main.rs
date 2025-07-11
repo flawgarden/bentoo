@@ -2,7 +2,7 @@ use bentoo::command::{bench, compare, convert, evaluate, parse, run, summarize, 
 use bentoo::reference::truth;
 use bentoo::run::description::{runs::RunsInfo, tools::ToolsInfo};
 
-use bentoo::run::report_config::ReportConfig;
+use bentoo::run::configs::{ReportConfig, RunConfig};
 use clap::{arg, Parser, Subcommand};
 use duration_str::parse;
 use std::path::{Path, PathBuf};
@@ -62,6 +62,9 @@ enum Command {
         #[arg(long)]
         /// Isolate the whole root directory instead of the project one
         isolate_root: bool,
+        #[arg(long)]
+        /// Skip retrying to run failed runs
+        skip_failed: bool,
     },
     /// Parse tools' output for further evaluation
     Parse {
@@ -113,6 +116,9 @@ enum Command {
         /// Isolate the whole root directory instead of the project one
         isolate_root: bool,
         #[arg(long)]
+        /// Skip retrying to run failed runs
+        skip_failed: bool,
+        #[arg(long)]
         /// Produce a detailed report
         detailed: bool,
         #[arg(long)]
@@ -161,10 +167,16 @@ fn main() {
             output,
             timeout,
             isolate_root,
+            skip_failed,
         } => {
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            run::Runner::new(&runs, &tools, timeout, output, isolate_root).run_all();
+
+            let run_config = RunConfig {
+                isolate_root,
+                skip_failed,
+            };
+            run::Runner::new(&runs, &tools, timeout, output, run_config).run_all();
         }
         Command::Parse {
             tools,
@@ -201,16 +213,23 @@ fn main() {
             output,
             timeout,
             isolate_root,
+            skip_failed,
             detailed,
             collect_max_result_cards,
         } => {
-            let config = ReportConfig {
+            let report_config = ReportConfig {
                 detailed,
                 collect_max_result_cards,
             };
+
+            let run_config = RunConfig {
+                isolate_root,
+                skip_failed,
+            };
+
             let runs = RunsInfo::new(runs);
             let tools = ToolsInfo::new(tools);
-            bench::bench_all(runs, tools, output, timeout, isolate_root, config);
+            bench::bench_all(runs, tools, output, timeout, report_config, run_config);
         }
     }
 }

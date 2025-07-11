@@ -10,7 +10,7 @@ use crate::{
         taxonomy::{Taxonomy, TaxonomyVersion},
         truth::{CWEs, Kind, ToolResult, ToolResults, TruthResult, TruthResults, CWE},
     },
-    run::report_config::ReportConfig,
+    run::configs::ReportConfig,
     util::PartialMax,
 };
 

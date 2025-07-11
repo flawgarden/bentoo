@@ -11,6 +11,7 @@ use itertools::Itertools;
 
 use crate::{
     run::{
+        configs::RunConfig,
         description::{run_count, runs::RunsInfo, tools::ToolsInfo},
         directory::Directory,
         metadata::{Metadata, Status},
@@ -23,7 +24,7 @@ pub struct Runner<'a> {
     tools: &'a ToolsInfo,
     timeout: Option<Duration>,
     output: PathBuf,
-    isolate_root: bool,
+    config: RunConfig,
 }
 
 impl<'a> Runner<'a> {
@@ -32,7 +33,7 @@ impl<'a> Runner<'a> {
         tools: &'a ToolsInfo,
         timeout: Option<Duration>,
         output: PathBuf,
-        isolate_root: bool,
+        config: RunConfig,
     ) -> Self {
         fs::create_dir_all(home_dir().unwrap().join(".bentoo")).unwrap();
         Runner {
@@ -40,7 +41,7 @@ impl<'a> Runner<'a> {
             tools,
             timeout,
             output,
-            isolate_root,
+            config,
         }
     }
 
@@ -65,7 +66,16 @@ impl<'a> Runner<'a> {
         }
 
         if let Some(metadata) = directory.metadata_read() {
-            if metadata.status == Status::ScriptError {
+            if self.config.skip_failed {
+                if metadata.status == Status::ScriptError {
+                    println!("Runner: Run script failed to run during previous run, skipping");
+                } else if metadata.exit_code != 0 {
+                    println!("Runner: Previous run exited with non-zero exit code, skipping");
+                } else {
+                    println!("Runner: Previous run was OK, skipping");
+                }
+                return;
+            } else if metadata.status == Status::ScriptError {
                 println!("Runner: Run script failed to run during previous run, retrying");
             } else if metadata.exit_code != 0 {
                 println!("Runner: Previous run exited with non-zero exit code, retrying");
@@ -78,7 +88,7 @@ impl<'a> Runner<'a> {
         }
 
         let isolator_tmp = tempfile::TempDir::new_in(home_dir().unwrap().join(".bentoo")).unwrap();
-        let benchmark_tmp = if self.isolate_root {
+        let benchmark_tmp = if self.config.isolate_root {
             copy_dir(&self.runs.root, isolator_tmp.path()).unwrap();
             isolator_tmp
                 .path()

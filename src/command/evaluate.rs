@@ -8,8 +8,8 @@ use crate::{
         truth::{self, ToolResults},
     },
     run::{
-        description::runs::RunsInfo, directory::Directory, metadata::ParseStatus,
-        report_config::ReportConfig,
+        configs::ReportConfig, description::runs::RunsInfo, directory::Directory,
+        metadata::ParseStatus,
     },
 };
 

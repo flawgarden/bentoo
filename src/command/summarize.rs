@@ -15,13 +15,13 @@ use crate::{
         truth::{self, CWEs, Kind, ToolResults, TruthResults},
     },
     run::{
+        configs::ReportConfig,
         description::{
             runs::{Runs, RunsInfo},
             tools::Tool,
         },
         directory::Directory,
         metadata::{Metadata, Status},
-        report_config::ReportConfig,
     },
     util,
 };
