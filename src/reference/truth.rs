@@ -368,7 +368,7 @@ impl TryFrom<&Location> for sarif::PhysicalLocation {
         if let Some(region) = region {
             builder.region(region);
         }
-        builder.build().map_err(|_| (BuildError()))
+        builder.build().map_err(|_| BuildError())
     }
 }
 

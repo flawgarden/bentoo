@@ -41,9 +41,9 @@ impl Display for Tool {
 
 impl Tools {
     pub fn get(&self, id: &Tool) -> (&Script, &Config) {
-        let tool = self.tools.iter().find(|x| (x.name == id.script)).unwrap();
+        let tool = self.tools.iter().find(|x| x.name == id.script).unwrap();
 
-        let config = tool.configs.iter().find(|x| (x.name == id.config)).unwrap();
+        let config = tool.configs.iter().find(|x| x.name == id.config).unwrap();
 
         (tool, config)
     }

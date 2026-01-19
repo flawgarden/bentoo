@@ -3,7 +3,7 @@ use bentoo::reference::truth;
 use bentoo::run::description::{runs::RunsInfo, tools::ToolsInfo};
 
 use bentoo::run::report_config::ReportConfig;
-use clap::{arg, Parser, Subcommand};
+use clap::{Parser, Subcommand};
 use duration_str::parse;
 use std::path::{Path, PathBuf};
 use std::time::Duration;

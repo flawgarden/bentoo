@@ -44,12 +44,7 @@ fn from_report(sarif: &Sarif) -> Sarif {
     for run in &sarif.runs {
         if let Some(run_results) = run.results.as_ref() {
             for result in run_results {
-                let message_text = result
-                    .message
-                    .text
-                    .as_ref()
-                    .map(|s| s.as_str())
-                    .unwrap_or("");
+                let message_text = result.message.text.as_deref().unwrap_or("");
 
                 // Extract CWE from message text
                 let cwe = extract_cwe_from_message(message_text);
@@ -61,11 +56,7 @@ fn from_report(sarif: &Sarif) -> Sarif {
                 };
 
                 // Get the original rule_id for the combined rule format
-                let original_rule_id = result
-                    .rule_id
-                    .as_ref()
-                    .map(|s| s.as_str())
-                    .unwrap_or("JvmTaintAnalysis");
+                let original_rule_id = result.rule_id.as_deref().unwrap_or("JvmTaintAnalysis");
 
                 let mut result_builder = ResultBuilder::default();
 
