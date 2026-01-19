@@ -5,6 +5,7 @@ pub mod coverity;
 pub mod cppcheck;
 pub mod gosec;
 pub mod insider;
+pub mod qodana;
 pub mod semgrep;
 pub mod snyk;
 pub mod sonarqube;

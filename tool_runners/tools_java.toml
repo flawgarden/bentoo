@@ -51,3 +51,12 @@ parse_command = { command = "bentoo", args = "convert snyk" }
 [[tools.configs]]
 name = "Java"
 args = ""
+
+[[tools]]
+script = "qodana.sh"
+name = "Qodana"
+parse_command = { command = "bentoo", args = "convert qodana" }
+
+[[tools.configs]]
+name = "Java"
+args = ""
