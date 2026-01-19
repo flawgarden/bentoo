@@ -3,7 +3,8 @@ use std::path::PathBuf;
 use serde_sarif::sarif::Sarif;
 
 use crate::convert::tool::{
-    bandit, bearer, codeql, coverity, cppcheck, gosec, insider, qodana, semgrep, snyk, sonarqube,
+    bandit, bearer, codeql, coverity, cppcheck, gosec, insider, qodana, semgrep, seqra, snyk,
+    sonarqube,
 };
 
 pub fn convert_from(format: String, file: PathBuf) -> Sarif {
@@ -19,6 +20,7 @@ pub fn convert_from(format: String, file: PathBuf) -> Sarif {
         "cppcheck" => cppcheck::from_file(file.as_path()),
         "coverity" => coverity::from_file(file.as_path()),
         "qodana" => qodana::from_file(file.as_path()),
+        "seqra" => seqra::from_file(file.as_path()),
         _ => {
             panic!("Error: unknown tool");
         }

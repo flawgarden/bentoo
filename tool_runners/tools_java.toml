@@ -60,3 +60,12 @@ parse_command = { command = "bentoo", args = "convert qodana" }
 [[tools.configs]]
 name = "Java"
 args = ""
+
+[[tools]]
+script = "seqra.sh"
+name = "Seqra"
+parse_command = { command = "bentoo", args = "convert seqra" }
+
+[[tools.configs]]
+name = "Java"
+args = ""
